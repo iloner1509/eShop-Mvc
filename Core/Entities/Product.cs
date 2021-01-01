@@ -1,0 +1,137 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using eShop_Mvc.Core.Enums;
+using eShop_Mvc.Core.Interfaces;
+using eShop_Mvc.SharedKernel;
+
+namespace eShop_Mvc.Core.Entities
+{
+    public class Product : BaseEntity<int>, ISwitchable, IHasSeoMetaData, IDateTracking
+    {
+        public Product()
+        {
+        }
+
+        public Product(string name, string image, int quantity, decimal price, decimal? promotionPrice, int categoryId, decimal originalPrice, string description, string content, bool? homeFlag, bool? hotFlag, int? viewCount, string tags, string unit, Status status, string seoTitle, string seoAlias, string seoKeywords, string seoDescription, DateTime dateCreated, DateTime dateModified)
+        {
+            Name = name;
+            Image = image;
+            Price = price;
+            PromotionPrice = promotionPrice;
+            CategoryId = categoryId;
+            OriginalPrice = originalPrice;
+            Description = description;
+            Content = content;
+            HomeFlag = homeFlag;
+            HotFlag = hotFlag;
+            ViewCount = viewCount;
+            Tags = tags;
+            Unit = unit;
+            Quantity = quantity;
+            Status = status;
+            SeoTitle = seoTitle;
+            SeoAlias = seoAlias;
+            SeoKeywords = seoKeywords;
+            SeoDescription = seoDescription;
+            DateCreated = dateCreated;
+            DateModified = dateModified;
+
+            ProductTags = new List<ProductTag>();
+            ProductImages = new List<ProductImage>();
+        }
+
+        public Product(int id, string name, int quantity, string image, decimal price, decimal? promotionPrice, int categoryId, decimal originalPrice, string description, string content, bool? homeFlag, bool? hotFlag, int? viewCount, string tags, string unit, Status status, string seoTitle, string seoAlias, string seoKeywords, string seoDescription, DateTime dateCreated, DateTime dateModified)
+        {
+            Id = id;
+            Name = name;
+            Image = image;
+            Price = price;
+            PromotionPrice = promotionPrice;
+            CategoryId = categoryId;
+            OriginalPrice = originalPrice;
+            Description = description;
+            Content = content;
+            Quantity = quantity;
+            HomeFlag = homeFlag;
+            HotFlag = hotFlag;
+            ViewCount = viewCount;
+            Tags = tags;
+            Unit = unit;
+            Status = status;
+            SeoTitle = seoTitle;
+            SeoAlias = seoAlias;
+            SeoKeywords = seoKeywords;
+            SeoDescription = seoDescription;
+            DateCreated = dateCreated;
+            DateModified = dateModified;
+
+            ProductTags = new List<ProductTag>();
+            ProductImages = new List<ProductImage>();
+        }
+
+        [StringLength(100)]
+        [Required]
+        public string Name { get; set; }
+
+        [StringLength(250)]
+        [Required]
+        public string Image { get; set; }
+
+        [Required]
+        [DefaultValue(0)]
+        public decimal Price { get; set; }
+
+        [Required]
+        [DefaultValue(0)]
+        public int Quantity { get; set; }
+
+        public decimal? PromotionPrice { get; set; }
+
+        [Required]
+        public int CategoryId { get; set; }
+
+        [Required]
+        public decimal OriginalPrice { get; set; }
+
+        [StringLength(250)]
+        public string Description { get; set; }
+
+        public string Content { get; set; }
+        public bool? HomeFlag { get; set; }
+        public bool? HotFlag { get; set; }
+        public int? ViewCount { get; set; }
+
+        [StringLength(200)]
+        public string Tags { get; set; }
+
+        public string Unit { get; set; }
+
+        [Required]
+        public Status Status { get; set; }
+
+        [StringLength(250)]
+        public string SeoTitle { get; set; }
+
+        [StringLength(250)]
+        public string SeoAlias { get; set; }
+
+        [StringLength(250)]
+        public string SeoKeywords { get; set; }
+
+        [StringLength(250)]
+        public string SeoDescription { get; set; }
+
+        [Required]
+        public DateTime DateCreated { get; set; }
+
+        public DateTime DateModified { get; set; }
+        public virtual ProductCategory ProductCategory { get; set; }
+        public virtual ICollection<ProductTag> ProductTags { get; set; }
+        public virtual ICollection<BillDetail> BillDetails { get; set; }
+        public virtual ICollection<ProductImage> ProductImages { get; set; }
+        public virtual ICollection<WholePrice> WholePrices { get; set; }
+    }
+}
