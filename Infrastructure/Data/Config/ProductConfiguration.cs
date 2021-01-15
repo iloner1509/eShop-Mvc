@@ -9,7 +9,7 @@ namespace eShop_Mvc.Infrastructure.Data.Config
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasOne(p => p.ProductCategory).WithMany(pc => pc.Products)
-                .HasForeignKey(p => p.CategoryId).OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey(p => p.CategoryId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

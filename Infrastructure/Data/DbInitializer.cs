@@ -1,6 +1,6 @@
 ﻿using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Enums;
-using eShop_Mvc.Core.Interfaces;
+using eShop_Mvc.SharedKernel.Enums;
+using eShop_Mvc.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

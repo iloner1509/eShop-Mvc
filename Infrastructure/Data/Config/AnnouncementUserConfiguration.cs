@@ -8,8 +8,9 @@ namespace eShop_Mvc.Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<AnnouncementUser> builder)
         {
+            builder.Property(au => au.AnnouncementId).HasMaxLength(50).HasColumnType("varchar(50)");
             builder.HasOne(au => au.Announcement).WithMany(au => au.AnnouncementUsers)
-                .HasForeignKey(au => au.AnnouncementId).OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey(au => au.AnnouncementId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -9,8 +9,9 @@ namespace eShop_Mvc.Infrastructure.Data.Config
         public void Configure(EntityTypeBuilder<AdvertisementPosition> builder)
         {
             builder.Property(ap => ap.Id).HasMaxLength(50).HasColumnType("varchar(50)").IsRequired();
+            builder.Property(ap => ap.PageId).HasMaxLength(20).HasColumnType("varchar(20)");
             builder.HasOne(ap => ap.AdvertisementPage).WithMany(apg => apg.AdvertisementPositions)
-                .HasForeignKey(ap => ap.PageId).OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey(ap => ap.PageId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

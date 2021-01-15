@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eShop_Mvc.Infrastructure.Data
 {
-    public class EfRepository<T, K> : IRepository<T, K>, IDisposable where T : BaseEntity<K>
+    public class EfRepository<T, TId> : IRepository<T, TId>, IDisposable where T : BaseEntity<TId>
     {
         private readonly AppDbContext _context;
 
@@ -18,15 +18,11 @@ namespace eShop_Mvc.Infrastructure.Data
             _context = context;
         }
 
-        public T FindById(K id, params Expression<Func<T, object>>[] includeProperties)
-        {
-            return FindAll(includeProperties).SingleOrDefault(x => x.Id.Equals(id));
-        }
+        public async Task<T> FindByIdAsync(TId id, params Expression<Func<T, object>>[] includeProperties)
+            => await FindAll(includeProperties).SingleOrDefaultAsync(x => x.Id.Equals(id));
 
-        public T FindSingle(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
-        {
-            return FindAll(includeProperties).SingleOrDefault(predicate);
-        }
+        public async Task<T> FindSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+            => await FindAll(includeProperties).SingleOrDefaultAsync(predicate);
 
         public IQueryable<T> FindAll(params Expression<Func<T, object>>[] includeProperties)
         {
@@ -56,37 +52,39 @@ namespace eShop_Mvc.Infrastructure.Data
             return items.Where(predicate);
         }
 
-        public void Add(T entity)
+        public async Task<T> AddAsync(T entity)
         {
-            _context.Set<T>().Add(entity);
+            await _context.Set<T>().AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
-        public void Update(T entity)
+        public Task UpdateAsync(T entity)
         {
             _context.Set<T>().Update(entity);
+            return _context.SaveChangesAsync();
         }
 
-        public void Delete(T entity)
+        public Task DeleteAsync(T entity)
         {
             _context.Set<T>().Remove(entity);
+            return _context.SaveChangesAsync();
         }
 
-        public void Delete(K id)
+        public async Task DeleteAsync(TId id)
         {
-            Delete(FindById(id));
+            var entity = await FindByIdAsync(id);
+            await DeleteAsync(entity);
         }
 
-        public void DeleteMultiple(IEnumerable<T> entities)
+        public void DeleteMultipleAsync(IEnumerable<T> entities)
         {
             _context.Set<T>().RemoveRange(entities);
         }
 
         public void Dispose()
         {
-            if (_context != null)
-            {
-                _context.Dispose();
-            }
+            _context?.Dispose();
         }
     }
 }

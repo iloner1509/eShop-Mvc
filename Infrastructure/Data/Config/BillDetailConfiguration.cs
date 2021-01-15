@@ -10,9 +10,9 @@ namespace eShop_Mvc.Infrastructure.Data.Config
         public void Configure(EntityTypeBuilder<BillDetail> builder)
         {
             builder.HasOne(bd => bd.Bill).WithMany(b => b.BillDetails).HasForeignKey(bd => bd.BillId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(bd => bd.Product).WithMany(p => p.BillDetails).HasForeignKey(bd => bd.ProductId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

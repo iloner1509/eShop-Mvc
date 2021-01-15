@@ -1,9 +1,9 @@
-﻿using System;
+﻿using eShop_Mvc.SharedKernel;
+using eShop_Mvc.SharedKernel.Enums;
+using eShop_Mvc.SharedKernel.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using eShop_Mvc.Core.Enums;
-using eShop_Mvc.Core.Interfaces;
-using eShop_Mvc.SharedKernel;
 
 namespace eShop_Mvc.Core.Entities
 {
@@ -31,6 +31,7 @@ namespace eShop_Mvc.Core.Entities
         public string Content { get; set; }
 
         public Guid UserId { get; set; }
+
         public virtual AppUser User { get; set; }
         public virtual ICollection<AnnouncementUser> AnnouncementUsers { get; set; }
 

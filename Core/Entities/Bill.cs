@@ -1,11 +1,11 @@
-﻿using System;
+﻿using eShop_Mvc.SharedKernel;
+using eShop_Mvc.SharedKernel.Enums;
+using eShop_Mvc.SharedKernel.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using eShop_Mvc.Core.Enums;
-using eShop_Mvc.Core.Interfaces;
-using eShop_Mvc.SharedKernel;
 
 namespace eShop_Mvc.Core.Entities
 {
@@ -53,7 +53,7 @@ namespace eShop_Mvc.Core.Entities
         public string CustomerAddress { get; set; }
 
         [MaxLength(50)]
-        [Column(TypeName = "varchar")]
+        [Column(TypeName = "varchar(50)")]
         [Required]
         public string CustomerMobile { get; set; }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using eShop_Mvc.SharedKernel;
 
 namespace eShop_Mvc.Core.Entities
@@ -24,7 +25,8 @@ namespace eShop_Mvc.Core.Entities
         public Guid RoleId { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(50)]
+        [Column(TypeName = "varchar(50)")]
         public string FunctionId { get; set; }
 
         public bool CanCreate { get; set; }

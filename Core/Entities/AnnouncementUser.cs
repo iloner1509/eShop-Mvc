@@ -17,7 +17,6 @@ namespace eShop_Mvc.Core.Entities
             HasRead = hasRead;
         }
 
-        [StringLength(100)]
         public string AnnouncementId { get; set; }
 
         public Guid UserId { get; set; }

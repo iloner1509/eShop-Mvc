@@ -9,7 +9,7 @@ namespace eShop_Mvc.Infrastructure.Data.Config
         public void Configure(EntityTypeBuilder<Advertisement> builder)
         {
             builder.HasOne(a => a.AdvertisementPosition).WithMany(ap => ap.Advertisements)
-                .HasForeignKey(a => a.PositionId).OnDelete(DeleteBehavior.SetNull);
+                .HasForeignKey(a => a.PositionId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections;
+﻿using eShop_Mvc.SharedKernel;
+using eShop_Mvc.SharedKernel.Enums;
+using eShop_Mvc.SharedKernel.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using eShop_Mvc.Core.Enums;
-using eShop_Mvc.Core.Interfaces;
-using eShop_Mvc.SharedKernel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eShop_Mvc.Core.Entities
 {
@@ -82,18 +82,21 @@ namespace eShop_Mvc.Core.Entities
 
         [Required]
         [DefaultValue(0)]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
         [Required]
         [DefaultValue(0)]
         public int Quantity { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal? PromotionPrice { get; set; }
 
         [Required]
         public int CategoryId { get; set; }
 
         [Required]
+        [Column(TypeName = "decimal(18,2)")]
         public decimal OriginalPrice { get; set; }
 
         [StringLength(250)]

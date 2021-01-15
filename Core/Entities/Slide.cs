@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using eShop_Mvc.Core.Enums;
-using eShop_Mvc.SharedKernel;
+﻿using eShop_Mvc.SharedKernel;
+using eShop_Mvc.SharedKernel.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace eShop_Mvc.Core.Entities
 {

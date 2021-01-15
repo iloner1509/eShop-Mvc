@@ -1,9 +1,10 @@
-﻿using System;
+﻿using eShop_Mvc.SharedKernel.Enums;
+using eShop_Mvc.SharedKernel.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using eShop_Mvc.Core.Enums;
-using eShop_Mvc.Core.Interfaces;
-using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eShop_Mvc.Core.Entities
 {
@@ -30,7 +31,10 @@ namespace eShop_Mvc.Core.Entities
         public string FullName { get; set; }
 
         public DateTime? BirthDay { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Balance { get; set; }
+
         public string Avatar { get; set; }
 
         [Required]

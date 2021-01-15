@@ -1,4 +1,5 @@
-﻿using eShop_Mvc.SharedKernel;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using eShop_Mvc.SharedKernel;
 
 namespace eShop_Mvc.Core.Entities
 {
@@ -29,6 +30,7 @@ namespace eShop_Mvc.Core.Entities
         public int ProductId { get; set; }
         public int Quantity { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
         public virtual Bill Bill { get; set; }

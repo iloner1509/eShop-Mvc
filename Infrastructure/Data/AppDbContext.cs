@@ -1,11 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Reflection;
-using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Interfaces;
+﻿using eShop_Mvc.Core.Entities;
+using eShop_Mvc.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
+using System.Linq;
+using System.Reflection;
 
 namespace eShop_Mvc.Infrastructure.Data
 {
