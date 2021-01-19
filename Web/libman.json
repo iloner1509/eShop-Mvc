@@ -1,0 +1,124 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "font-awesome@5.15.2",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "nprogress@0.2.0",
+      "destination": "wwwroot/lib/nprogress/"
+    },
+
+    {
+      "library": "bootstrap-daterangepicker@3.0.5",
+      "destination": "wwwroot/lib/bootstrap-daterangepicker/"
+    },
+
+    {
+      "library": "fastclick@1.0.6",
+      "destination": "wwwroot/lib/fastclick/"
+    },
+    {
+      "library": "Chart.js@2.9.4",
+      "destination": "wwwroot/lib/Chart.js/"
+    },
+
+    {
+      "library": "flot@0.8.3",
+      "destination": "wwwroot/lib/flot/"
+    },
+    {
+      "library": "datejs@1.0",
+      "destination": "wwwroot/lib/datejs/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "flot-orderbars@1.0.0",
+      "destination": "wwwroot/lib/flot-orderbars/",
+      "files": [
+        "README.md",
+        "js/jquery.flot.orderBars.js",
+        "js/jquery.flot.orderBars.min.js"
+      ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "flot-spline@0.0.1",
+      "destination": "wwwroot/lib/flot-spline/",
+      "files": [
+        "LICENSE",
+        "js/jquery.flot.spline.js",
+        "js/jquery.flot.spline.min.js"
+      ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "flot.curvedlines@1.1.1",
+      "destination": "wwwroot/lib/flot.curvedlines/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "jquery-sparkline@2.4.0",
+      "destination": "wwwroot/lib/jquery-sparkline/",
+      "files": [
+        "src/base.js",
+        "src/base.min.js",
+        "src/chart-bar.js",
+        "src/chart-bar.min.js",
+        "src/chart-box.js",
+        "src/chart-box.min.js",
+        "src/chart-bullet.js",
+        "src/chart-bullet.min.js",
+        "src/chart-discrete.js",
+        "src/chart-discrete.min.js",
+        "src/chart-line.js",
+        "src/chart-line.min.js",
+        "src/chart-pie.js",
+        "src/chart-pie.min.js",
+        "src/chart-tristate.js",
+        "src/chart-tristate.min.js",
+        "src/defaults.js",
+        "src/defaults.min.js",
+        "src/footer.js",
+        "src/footer.min.js",
+        "src/header.js",
+        "src/header.min.js",
+        "src/interact.js",
+        "src/interact.min.js",
+        "src/rangemap.js",
+        "src/rangemap.min.js",
+        "src/simpledraw.js",
+        "src/simpledraw.min.js",
+        "src/utils.js",
+        "src/utils.min.js",
+        "src/vcanvas-base.js",
+        "src/vcanvas-base.min.js",
+        "src/vcanvas-canvas.js",
+        "src/vcanvas-canvas.min.js",
+        "src/vcanvas-vml.js",
+        "src/vcanvas-vml.min.js",
+        "build.js",
+        "build.min.js",
+        "Changelog.txt",
+        "jquery.sparkline.js",
+        "jquery.sparkline.min.js",
+        "README.md"
+      ]
+    },
+    {
+      "library": "bootbox.js@5.5.2",
+      "destination": "wwwroot/lib/bootbox.js/"
+    },
+    {
+      "library": "animate.css@4.1.1",
+      "destination": "wwwroot/lib/animate.css/"
+    },
+
+    {
+      "library": "notify@0.4.2",
+      "destination": "wwwroot/lib/notify/"
+    }
+  ]
+}

@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 
 namespace eShop_Mvc
 {
@@ -31,7 +32,7 @@ namespace eShop_Mvc
                     _configuration.GetConnectionString("DefaultConnection"), ob => ob.MigrationsAssembly("eShop_Mvc.Infrastructure")));
             services.AddDefaultIdentity<AppUser>(options =>
                 {
-                    options.SignIn.RequireConfirmedAccount = true;
+                    options.SignIn.RequireConfirmedAccount = false;
 
                     // Password settings
                     options.Password.RequireDigit = false;
@@ -55,7 +56,11 @@ namespace eShop_Mvc
 
             services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
             services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
+
             services.AddScoped<IDbInitializer, DbInitializer>();
+
+            services.AddMvc(o => o.EnableEndpointRouting = false).AddNewtonsoftJson(o => o.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -84,9 +89,14 @@ namespace eShop_Mvc
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute(
+                    name: "Admin",
+                    areaName: "Admin",
+                    pattern: "Admin/{controller=Login}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapRazorPages();
             });
             using var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
