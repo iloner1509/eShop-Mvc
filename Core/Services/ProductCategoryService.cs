@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eShop_Mvc.Core.Entities;
@@ -7,7 +8,7 @@ using eShop_Mvc.SharedKernel.Enums;
 using eShop_Mvc.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace eShop_MvcMvc.Core.Services
+namespace eShop_Mvc.Core.Services
 {
     public class ProductCategoryService : IProductCategoryService
     {
@@ -20,7 +21,11 @@ namespace eShop_MvcMvc.Core.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Task<ProductCategory> AddAsync(ProductCategory productCategory) => _productCategoryRepository.AddAsync(productCategory);
+        public async Task<ProductCategory> AddAsync(ProductCategory productCategory)
+        {
+            await _productCategoryRepository.AddAsync(productCategory);
+            return productCategory;
+        }
 
         public Task UpdateAsync(ProductCategory productCategory) => _productCategoryRepository.UpdateAsync(productCategory);
 
@@ -91,6 +96,11 @@ namespace eShop_MvcMvc.Core.Services
         public void Save()
         {
             _unitOfWork.Commit();
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

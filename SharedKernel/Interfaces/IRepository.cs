@@ -16,7 +16,7 @@ namespace eShop_Mvc.SharedKernel.Interfaces
 
         IQueryable<T> FindAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
 
-        Task<T> AddAsync(T entity);
+        Task AddAsync(T entity);
 
         Task UpdateAsync(T entity);
 

@@ -52,11 +52,10 @@ namespace eShop_Mvc.Infrastructure.Data
             return items.Where(predicate);
         }
 
-        public async Task<T> AddAsync(T entity)
+        public async Task AddAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
             await _context.SaveChangesAsync();
-            return entity;
         }
 
         public Task UpdateAsync(T entity)

@@ -1,8 +1,8 @@
-﻿using eShop_Mvc.SharedKernel.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using eShop_Mvc.SharedKernel.Enums;
 
-namespace eShop_Mvc.Models
+namespace eShop_Mvc.Models.ProductViewModels
 {
     public class ProductCategoryViewModel
     {

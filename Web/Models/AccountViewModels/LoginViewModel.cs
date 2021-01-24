@@ -17,7 +17,7 @@ namespace eShop_Mvc.Models.AccountViewModels
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember")]
+        [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }
     }
 }

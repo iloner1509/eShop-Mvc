@@ -1,6 +1,10 @@
 using System;
 using AutoMapper;
 using eShop_Mvc.Core.Entities;
+using eShop_Mvc.Core.Interfaces;
+using eShop_Mvc.Core.Services;
+using eShop_Mvc.Helpers;
+using eShop_Mvc.Helpers.AutoMapper;
 using eShop_Mvc.Infrastructure.Data;
 using eShop_Mvc.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -26,7 +30,7 @@ namespace eShop_Mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddAutoMapper();
+            services.AddAutoMapper(typeof(MappingProfiles));
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(
                     _configuration.GetConnectionString("DefaultConnection"), ob => ob.MigrationsAssembly("eShop_Mvc.Infrastructure")));
@@ -59,7 +63,16 @@ namespace eShop_Mvc
 
             services.AddScoped<IDbInitializer, DbInitializer>();
 
+            services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
             services.AddMvc(o => o.EnableEndpointRouting = false).AddNewtonsoftJson(o => o.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
+            // Repository pattern and unit of work
+            services.AddTransient(typeof(IRepository<,>), typeof(EfRepository<,>));
+            services.AddTransient(typeof(IUnitOfWork), typeof(EfUnitOfWork));
+
+            // Services
+            services.AddTransient<IProductCategoryService, ProductCategoryService>();
+            services.AddTransient<IFunctionService, FunctionService>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();

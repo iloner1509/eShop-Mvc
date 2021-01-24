@@ -9,10 +9,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\SharedKernel\eShop_Mvc.SharedKernel.csproj" />
   </ItemGroup>
 </Project>
