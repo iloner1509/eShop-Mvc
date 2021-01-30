@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace eShop_Mvc
@@ -64,7 +65,11 @@ namespace eShop_Mvc
             services.AddScoped<IDbInitializer, DbInitializer>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
-            services.AddMvc(o => o.EnableEndpointRouting = false).AddNewtonsoftJson(o => o.SerializerSettings.ContractResolver = new DefaultContractResolver());
+            services.AddMvc(o => o.EnableEndpointRouting = false).AddNewtonsoftJson(o =>
+            {
+                o.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
 
             // Repository pattern and unit of work
             services.AddTransient(typeof(IRepository<,>), typeof(EfRepository<,>));
@@ -73,6 +78,7 @@ namespace eShop_Mvc
             // Services
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
             services.AddTransient<IFunctionService, FunctionService>();
+            services.AddTransient<IProductService, ProductService>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();

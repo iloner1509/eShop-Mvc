@@ -8,8 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly SignInManager<AppUser> _signInManager;
 
@@ -17,11 +16,6 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         {
             _signInManager = signInManager;
         }
-
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
 
         [HttpPost]
         public async Task<IActionResult> LogOut()

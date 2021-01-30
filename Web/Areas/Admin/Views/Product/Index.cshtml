@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+@section Scripts{
+
+    <script src="~/app/Controller/Product/index.js"></script>
+    <script>
+        var product = new productController();
+        product.initialize();
+    </script>
+}
+<div class="page-title">
+    <div class="title_left">
+        <h3>Danh sách sản phẩm </h3>
+    </div>
+
+    <div class="title_right">
+        <div class="col-md-5 col-sm-5 form-group pull-right top_search">
+            <div class="input-group">
+                <input type="text" class="form-control" id="txt-search-keyword" placeholder="Tìm kiếm">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" id="btnSearch" type="button">Go!</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="row" style="display: block;">
+    <div class="col-md-12 col-sm-12">
+        <div class="x_panel">
+            <div class="x_content">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Danh mục</th>
+                            <th>Giá</th>
+                            <th>Hình ảnh</th>
+                            <th>Ngày tạo</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbl-content">
+                    </tbody>
+                </table>
+                @*Pagination*@
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="dataTables_info" id="datatable-checkbox_info" roles="status" aria-live="polite">
+                            <select id="ddl-show-page">
+                                <option value="10" selected="selected">10</option>
+                                <option value="20">20</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                            </select>
+                            <span class="item-per-page">Bản ghi/trang</span>
+                            Tổng số bản ghi: <strong id="lbl-total-records"></strong>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="dataTables_paginate paging_simple_number" id="datatable-checkbox_paginate">
+                            <ul id="paginationUL">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="table-template" type="x-tmpl-mustache">
+    <tr>
+        <th scope="row">
+            <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+        </th>
+        <th>{{Name}}</th>
+        <th>{{CategoryName}}</th>
+        <th>{{Price}}</th>
+        <th>{{{Image}}}</th>
+        <th>{{CreatedDate}}</th>
+        <th>{{{Status}}}</th>
+    </tr>
+</script>

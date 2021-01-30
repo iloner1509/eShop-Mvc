@@ -13,7 +13,7 @@
                         <ul class="nav child_menu">
                             @foreach (var child in Model.Where(x => x.ParentId == item.Id))
                             {
-                                <li><a href="@child.URL">Dashboard</a></li>
+                                <li><a href="@child.URL">@child.Name</a></li>
                             }
                         </ul>
                     }

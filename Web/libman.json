@@ -119,6 +119,14 @@
     {
       "library": "notify@0.4.2",
       "destination": "wwwroot/lib/notify/"
+    },
+    {
+      "library": "mustache.js@4.1.0",
+      "destination": "wwwroot/lib/mustache.js/"
+    },
+    {
+      "library": "twbs-pagination@1.4.2",
+      "destination": "wwwroot/lib/twbs-pagination/"
     }
   ]
 }

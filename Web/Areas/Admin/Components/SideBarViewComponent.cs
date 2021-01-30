@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
+using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
 using eShop_Mvc.Extensions;
 using eShop_Mvc.Models.System;
@@ -28,12 +29,12 @@ namespace eShop_Mvc.Areas.Admin.Components
             List<FunctionViewModel> functions;
             if (roles.Split(";").Contains("Admin"))
             {
-                functions = _mapper.Map<List<FunctionViewModel>>(await _functionService.GetAllAsync(String.Empty));
+                functions = _mapper.Map<IReadOnlyList<Function>, List<FunctionViewModel>>(await _functionService.GetAllAsync(String.Empty));
             }
             else
             {
                 // To do: get by permission
-                functions = _mapper.Map<List<FunctionViewModel>>(await _functionService.GetAllAsync(String.Empty));
+                functions = _mapper.Map<IReadOnlyList<Function>, List<FunctionViewModel>>(await _functionService.GetAllAsync(String.Empty));
             }
             return View(functions);
         }

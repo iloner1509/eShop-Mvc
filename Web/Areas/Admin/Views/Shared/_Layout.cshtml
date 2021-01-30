@@ -184,6 +184,7 @@
     <!-- Chart.js -->
 
     <script src="~/lib/Chart.js/Chart.min.js"></script>
+    <script src="~/lib/mustache.js/mustache.min.js"></script>
     <!-- jQuery Sparklines -->
     <script src="~/lib/jquery-sparkline/jquery.sparkline.min.js"></script>
     <!-- Flot -->
@@ -207,9 +208,11 @@
 
     <script src="~/lib/notify/notify.min.js"></script>
     <script src="~/lib/notify/styles/metro/notify-metro.min.js"></script>
+    <script src="~/lib/twbs-pagination/jquery.twbsPagination.min.js"></script>
     <script src="~/app/Shared/system.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="~/admin-site/js/custom.min.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

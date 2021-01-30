@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
-    public class HomeController : BaseController
+    [Area("Admin")]
+    [Authorize]
+    public class BaseController : Controller
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
     }
 }
