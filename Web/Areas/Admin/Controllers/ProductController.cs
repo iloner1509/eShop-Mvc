@@ -14,11 +14,13 @@ namespace eShop_Mvc.Areas.Admin.Controllers
     public class ProductController : BaseController
     {
         private readonly IProductService _productService;
+        private readonly IProductCategoryService _productCategoryService;
         private readonly IMapper _mapper;
 
-        public ProductController(IProductService productService, IMapper mapper)
+        public ProductController(IProductService productService, IProductCategoryService productCategoryService, IMapper mapper)
         {
             _productService = productService;
+            _productCategoryService = productCategoryService;
             _mapper = mapper;
         }
 
@@ -36,6 +38,14 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             return new OkObjectResult(model);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            var model = _mapper.Map<IReadOnlyList<ProductCategory>, IReadOnlyList<ProductCategoryViewModel>>(await _productCategoryService.GetAllAsync());
+            return new OkObjectResult(model);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> GetAllPaging(int? categoryId, string keyword, int page, int pageSize)
         {
             var model = await _productService.GetAllPagingAsync(categoryId, keyword, page, pageSize);

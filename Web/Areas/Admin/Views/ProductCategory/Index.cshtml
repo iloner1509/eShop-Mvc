@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+@section Styles
+{
+
+    <link href="~/lib/EasyUI/themes/metro/easyui.css" rel="stylesheet" />
+    <link href="~/lib/EasyUI/themes/icon.css" rel="stylesheet" />
+}
+@section Scripts{
+    <script src="~/lib/EasyUI/jquery.easyui.min.js"></script>
+    <script src="~/app/Controller/ProductCategory/index.js" asp-append-version="true"></script>
+    <script>
+        var productCategory = new productCategoryController();
+        productCategory.initialize();
+    </script>
+}
+<div class="page-title">
+    <div class="title_left">
+        <h3>Danh sách loại sản phẩm</h3>
+    </div>
+
+    <div class="title_right">
+        <div class="col-md-2 col-sm-2 form-group pull-right">
+            <button class="btn btn-success" id="btnCreateCategory" type="button">Tạo</button>
+        </div>
+        <div class="col-md-4 col-sm-12 form-group pull-right">
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="row" style="display: block;">
+        <div class="col-md-12 col-sm-12">
+            <div class="x_panel">
+                <div class="x_content">
+                    <ul id="treeProductCategory">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -120,7 +120,7 @@
     unflattern: function (arr) {
         let map = {};
         let roots = [];
-        for (let i = 0; i < arr.length; ++i) {
+        for (let i = 0; i < arr.length; i += 1) {
             let node = arr[i];
             node.children = [];
             map[node.id] = i; // use map to look-up the parents

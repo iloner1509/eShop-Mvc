@@ -49,7 +49,7 @@ namespace eShop_Mvc.Infrastructure.Data
                 }
             }
 
-            return items.Where(predicate);
+            return items.AsQueryable().Where(predicate);
         }
 
         public async Task AddAsync(T entity)
