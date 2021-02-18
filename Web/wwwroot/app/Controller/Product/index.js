@@ -3,9 +3,25 @@
         loadCategories();
         loadData(false);
         registerEvents();
+        registerControls();
     }
 
     function registerEvents() {
+        $("#frmEdit").validate({
+            errorClass: "red",
+            ignore: [],
+            lang: "vi",
+            rules: {
+                txtName: { required: true },
+                ddlCategoryId: { required: true },
+                txtPrice: {
+                    required: true,
+                    number: true
+                },
+                txtOriginalPrice: { number: true },
+                txtPromotionPrice: { number: true }
+            }
+        });
         $("#ddl-show-page").on("change",
             function () {
                 system.config.pageSize = $(this).val();
@@ -22,8 +38,210 @@
                     loadData();
                 }
             });
+        $("#btnCreateProduct").on("click",
+            function () {
+                resetForm();
+
+                initDropDownTree();
+                $("#modalAddEdit").modal("show");
+            });
+        $("body").on("click",
+            ".btn-edit",
+            function (e) {
+                e.preventDefault();
+                let productId = $(this).data("id");
+                loadDetails(productId);
+            });
+        $("body").on("click",
+            ".btn-delete",
+            function (e) {
+                e.preventDefault();
+                let productId = $(this).data("id");
+                deleteProduct(productId);
+            });
+        $("#btnSave").on("click",
+            function (e) {
+                if ($("#frmEdit").valid()) {
+                    e.preventDefault();
+                    var id = $("#hidIdM").val();
+                    var categoryId = $("#ddlCategoryId").combotree("getValue");
+                    var name = $("#txtName").val();
+                    var description = $("#txtDescription").val();
+                    var unit = $("#txtUnit").val();
+                    var price = $("#txtPrice").val();
+                    var originalPrice = $("#txtOriginalPrice").val();
+                    var promotionPrice = $("#txtPromotionPrice").val();
+                    var image = $("#txtImage").val();
+                    var tags = $("#txtTag").val();
+                    var seoKeyword = $("#txtSeoKeyword").val();
+                    var seoDescription = $("#txtSeoDescription").val();
+                    var seoTitle = $("#txtSeoTitle").val();
+                    var seoAlias = $("#txtSeoAlias").val();
+                    var content = CKEDITOR.instances.txtContent.getData();
+                    var status = $("#ckStatus").prop("checked") === true ? 1 : 0;
+                    var hot = $("#ckHot").prop("checked");
+                    var showHome = $("#ckShowHome").prop("checked");
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/Product/SaveEntity",
+                        data: {
+                            Id: id,
+                            Name: name,
+                            CategoryId: categoryId,
+                            Description: description,
+                            Unit: unit,
+                            Price: price,
+                            OriginalPrice: originalPrice,
+                            PromotionPrice: promotionPrice,
+                            Image: image,
+                            Tags: tags,
+                            SeoKeywords: seoKeyword,
+                            SeoDescription: seoDescription,
+                            SeoTitle: seoTitle,
+                            SeoAlias: seoAlias,
+                            Status: status,
+                            HomeFlag: showHome,
+                            HotFlag: hot,
+                            Content: content
+                        },
+                        dataType: "json",
+                        success: function () {
+                            system.notify("Cập nhật thành công.", "success");
+                            $("#modalAddEdit").modal("hide");
+                            resetForm();
+                            loadData(true);
+                        },
+                        error: function () {
+                            system.notify("Xảy ra lỗi khi cập nhật sản phẩm !", "error");
+                        }
+                    });
+                }
+            });
     }
 
+    function registerControls() {
+        CKEDITOR.replace("txtContent", {});
+        ////Fix: cannot click on element ck in modal
+        //$.fn.modal.Constructor.prototype.enforceFocus = function () {
+        //    $(document)
+        //        .off('focusin.bs.modal') // guard against infinite focus loop
+        //        .on('focusin.bs.modal', $.proxy(function (e) {
+        //            if (
+        //                this.$element[0] !== e.target && !this.$element.has(e.target).length
+        //                // CKEditor compatibility fix start.
+        //                && !$(e.target).closest('.cke_dialog, .cke').length
+        //                // CKEditor compatibility fix end.
+        //            ) {
+        //                this.$element.trigger('focus');
+        //            }
+        //        }, this));
+        //};
+    }
+    function deleteProduct(productId) {
+        system.confirm("Bạn có muốn xóa ?",
+            function () {
+                $.ajax({
+                    url: "/Admin/Product/Delete",
+                    type: "POST",
+                    data: {
+                        id: productId
+                    },
+                    dataType: "json",
+                    success: function () {
+                        system.notify("Xóa thành công", "success");
+                        loadData();
+                    },
+                    error: function () {
+                        system.notify("Có lỗi khi xóa sản phẩm !", "error");
+                    }
+                });
+            });
+    }
+    function loadDetails(productId) {
+        $.ajax({
+            url: "/Admin/Product/GetById",
+            type: "GET",
+            data: {
+                id: productId
+            },
+            dataType: "json",
+            success: function (res) {
+                let data = res;
+                $("#hidIdM").val(data.Id);
+                $("#txtName").val(data.Name);
+                initDropDownTree(data.CategoryId);
+                $("#txtDescription").val(data.Description);
+                $("#txtUnit").val(data.Unit);
+                $("#txtPrice").val(data.Price);
+                $("#txtOriginalPrice").val(data.OriginalPrice);
+                $("#txtPromotionPrice").val(data.PromotionPrice);
+                $("#txtImage").val(data.Image);
+                $("#txtTag").val(data.Tags);
+                $("#txtSeoKeyword").val(data.SeoKeywords);
+                $("#txtSeoDescription").val(data.SeoDescription);
+                $("#txtSeoAlias").val(data.SeoAlias);
+                $("#txtSeoTitle").val(data.SeoTitle);
+                CKEDITOR.instances.txtContent.setData(data.Content);
+
+                $("#ckStatus").prop("checked", data.Status === 1);
+                $("#ckHot").prop("checked", data.HotFlag);
+                $("#ckShowHome").prop("checked", data.HomeFlag);
+
+                $("#modalAddEdit").modal("show");
+            },
+            error: function () {
+                system.notify("Có lỗi khi truy cập dữ liệu sản phẩm", "error");
+            }
+        });
+    }
+    function resetForm() {
+        $("#hidIdM").val(0);
+        $("#txtName").val("");
+        initDropDownTree("");
+
+        $("#txtDescription").val("");
+        $("#txtUnit").val("");
+        $("#txtImage").val("");
+        $("#txtPrice").val("");
+        $("#txtOrginalPrice").val("");
+        $("#txtPromotionPrice").val("");
+        $("#txtTag").val("");
+        $("#txtSeoKeyword").val("");
+        $("#txtSeoDescription").val("");
+        $("#txtSeoTitle").val("");
+        $("#txtSeoAlias").val("");
+        $("#ckStatus").prop("checked", true);
+        $("#ckHot").prop("checked", false);
+        $("#ckShowHome").prop("checked", false);
+    }
+    function initDropDownTree(selectedId) {
+        $.ajax({
+            url: "/Admin/Product/GetAllCategories",
+            type: "GET",
+            dataType: "json",
+            async: false,
+            success: function (res) {
+                let data = [];
+                $.each(res,
+                    function (i, item) {
+                        data.push({
+                            id: item.Id,
+                            text: item.Name,
+                            parentId: item.ParentId,
+                            sortOrder: item.SortOrder
+                        });
+                    });
+                let arr = system.unflattern(data);
+                $("#ddlCategoryId").combotree({
+                    data: arr
+                });
+                if (selectedId != undefined) {
+                    $("#ddlCategoryId").combotree("setValue", selectedId);
+                }
+            }
+        });
+    }
     function loadCategories() {
         $.ajax({
             type: "GET",

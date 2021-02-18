@@ -10,8 +10,9 @@ namespace eShop_Mvc.Infrastructure.Data.Config
         {
             builder.HasKey(pt => new { pt.ProductId, pt.TagId });
             builder.Property(pt => pt.TagId).HasMaxLength(50).IsRequired();
-            builder.HasOne(pt => pt.Tag).WithMany(t => t.ProductTags).HasForeignKey(pt => pt.TagId).OnDelete(DeleteBehavior.Restrict);
-            builder.HasOne(pt => pt.Product).WithMany(p => p.ProductTags).HasForeignKey(pt => pt.ProductId).OnDelete(DeleteBehavior.Restrict);
+            builder.Property(pt => pt.Id).ValueGeneratedOnAdd();
+            builder.HasOne(pt => pt.Tag).WithMany(t => t.ProductTags).HasForeignKey(pt => pt.TagId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(pt => pt.Product).WithMany(p => p.ProductTags).HasForeignKey(pt => pt.ProductId).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

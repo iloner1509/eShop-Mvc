@@ -10,7 +10,7 @@ using eShop_Mvc.Infrastructure.Data;
 namespace eShop_Mvc.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210113174921_InitialCreate")]
+    [Migration("20210217134608_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -894,7 +894,9 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         .HasMaxLength(50);
 
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("ProductId", "TagId");
 
@@ -1121,7 +1123,7 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     b.HasOne("eShop_Mvc.Core.Entities.Bill", "Bill")
                         .WithMany("BillDetails")
                         .HasForeignKey("BillId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("eShop_Mvc.Core.Entities.Product", "Product")
@@ -1136,13 +1138,13 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     b.HasOne("eShop_Mvc.Core.Entities.Blog", "Blog")
                         .WithMany("BlogTags")
                         .HasForeignKey("BlogId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("eShop_Mvc.Core.Entities.Tag", "Tag")
                         .WithMany("BlogTags")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -1184,13 +1186,13 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     b.HasOne("eShop_Mvc.Core.Entities.Product", "Product")
                         .WithMany("ProductTags")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("eShop_Mvc.Core.Entities.Tag", "Tag")
                         .WithMany("ProductTags")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

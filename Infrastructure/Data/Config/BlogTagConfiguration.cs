@@ -11,9 +11,9 @@ namespace eShop_Mvc.Infrastructure.Data.Config
             builder.HasKey(bt => new { bt.BlogId, bt.TagId });
             builder.Property(bt => bt.TagId).HasMaxLength(50).HasColumnType("varchar(50)").IsRequired();
             builder.HasOne(bt => bt.Tag).WithMany(t => t.BlogTags).HasForeignKey(bt => bt.TagId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(bt => bt.Blog).WithMany(b => b.BlogTags).HasForeignKey(bt => bt.BlogId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -1,13 +1,12 @@
-﻿using System;
+﻿using eShop_Mvc.Core.Entities;
+using eShop_Mvc.Core.Interfaces;
+using eShop_Mvc.SharedKernel;
+using eShop_Mvc.SharedKernel.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Interfaces;
-using eShop_Mvc.SharedKernel;
-using eShop_Mvc.SharedKernel.Enums;
-using eShop_Mvc.SharedKernel.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace eShop_Mvc.Core.Services
 {
@@ -38,25 +37,81 @@ namespace eShop_Mvc.Core.Services
 
         public async Task<IReadOnlyList<Product>> GetAllAsync() => await _productRepository.FindAll(x => x.ProductCategory).ToListAsync();
 
-        public Task<Product> AddAsync(Product product)
+        public async Task<Product> AddAsync(Product product)
         {
-            throw new NotImplementedException();
+            List<ProductTag> productTags = new List<ProductTag>();
+            if (!string.IsNullOrEmpty(product.Tags))
+            {
+                string[] tags = product.Tags.Split(",");
+                foreach (var tag in tags)
+                {
+                    var tagId = TextHelper.ToUnsignString(tag);
+                    if (!_tagRepository.FindAll(x => x.Id == tagId).Any())
+                    {
+                        Tag t = new Tag
+                        {
+                            Id = tagId,
+                            Name = tag,
+                            Type = "Product"
+                        };
+                        await _tagRepository.AddAsync(t);
+                    }
+                    ProductTag productTag = new ProductTag
+                    {
+                        TagId = tagId
+                    };
+                    productTags.Add(productTag);
+                }
+
+                foreach (var productTag in productTags)
+                {
+                    product.ProductTags.Add(productTag);
+                }
+            }
+            await _productRepository.AddAsync(product);
+            return product;
         }
 
-        public Task UpdateAsync(Product product)
+        public async Task UpdateAsync(Product product)
         {
-            throw new NotImplementedException();
+            List<ProductTag> productTags = new List<ProductTag>();
+            if (!string.IsNullOrEmpty(product.Tags))
+            {
+                string[] tags = product.Tags.Split(",");
+                foreach (var tag in tags)
+                {
+                    var tagId = TextHelper.ToUnsignString(tag);
+                    if (!_tagRepository.FindAll(x => x.Id == tagId).Any())
+                    {
+                        Tag t = new Tag
+                        {
+                            Id = tagId,
+                            Name = tag,
+                            Type = "Product"
+                        };
+                        await _tagRepository.AddAsync(t);
+                    }
+
+                    _productTagRepository.DeleteMultipleAsync(_productTagRepository.FindAll(x => x.Id == product.Id)
+                        .ToList());
+                    ProductTag productTag = new ProductTag
+                    {
+                        TagId = tagId
+                    };
+                    productTags.Add(productTag);
+                }
+
+                foreach (var productTag in productTags)
+                {
+                    product.ProductTags.Add(productTag);
+                }
+            }
+            await _productRepository.UpdateAsync(product);
         }
 
-        public Task DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task DeleteAsync(int id) => _productRepository.DeleteAsync(id);
 
-        public Task<Product> GetByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Task<Product> GetByIdAsync(int id) => _productRepository.FindByIdAsync(id);
 
         public Task ImportExcelAsync(string filePath, int categoryId)
         {
@@ -65,7 +120,7 @@ namespace eShop_Mvc.Core.Services
 
         public void Save()
         {
-            throw new NotImplementedException();
+            _unitOfWork.Commit();
         }
 
         public Task AddImageAsync(int productId, string[] images)

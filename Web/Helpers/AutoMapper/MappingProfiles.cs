@@ -10,8 +10,8 @@ namespace eShop_Mvc.Helpers.AutoMapper
     {
         public MappingProfiles()
         {
-            CreateMap<ProductCategory, ProductCategoryViewModel>();
-            CreateMap<Product, ProductViewModel>();
+            CreateMap<ProductCategory, ProductCategoryViewModel>().ReverseMap();
+            CreateMap<Product, ProductViewModel>().ReverseMap();
             CreateMap<Function, FunctionViewModel>();
         }
     }

@@ -508,13 +508,13 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         column: x => x.BlogId,
                         principalTable: "Blogs",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BlogTags_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -584,7 +584,7 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         column: x => x.BillId,
                         principalTable: "Bills",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_BillDetails_Products_ProductId",
                         column: x => x.ProductId,
@@ -621,6 +621,7 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     ProductId = table.Column<int>(nullable: false),
                     TagId = table.Column<string>(maxLength: 50, nullable: false),
                     Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
@@ -630,13 +631,13 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ProductTags_Tags_TagId",
                         column: x => x.TagId,
                         principalTable: "Tags",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

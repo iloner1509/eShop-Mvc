@@ -1,0 +1,137 @@
+﻿<div id="modalAddEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Thêm/ sửa sản phẩm</h5>
+                <button type="button" class="bootbox-cancel close" data-dismiss="modal" aria-hidden="True">
+                    x
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form id="frmEdit" role="form" class="form-horizontal">
+                        <div class="form-group" style="display: flex">
+                            <input type="hidden" id="hidIdM" value="0" />
+                            <label for="txtName" class="col-sm-2 control-label no-padding">Tên sản phẩm</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="txtName" class="form-control" id="txtName" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <label class="col-sm-2 control-label no-padding">Danh mục</label>
+                            <div class="col-sm-10">
+                                <input name="ddlCategoryId" class="form-control" id="ddlCategoryId" value="" />
+                            </div>
+                        </div>
+                        @*<div class="form-group" style="display: flex">
+                                <label for="txtAlias" class="col-sm-2 control-label no-padding">Alias</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="txtAlias" class="form-control" id="txtAlias" />
+                                </div>
+                            </div>*@
+                        <div class="form-group" style="display: flex">
+                            <label for="txtDescription" class="col-sm-2 control-label no-padding">Mô tả</label>
+                            <div class="col-sm-10">
+                                <textarea rows="3" name="txtDescription" class="form-control" id="txtDescription"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <label for="txtUnit" class="col-sm-2 control-label no-padding">Đơn vị</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="txtUnit" class="form-control" id="txtUnit" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <label for="txtPrice" class="col-sm-2 control-label no-padding">Giá bán:</label>
+                            <div class="col-sm-10">
+                                <input type="number" name="txtPrice" class="form-control" id="txtPrice" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <label for="txtOriginalPrice" class="col-sm-2 control-label no-padding">Giá gốc:</label>
+                            <div class="col-sm-10">
+                                <input type="number" name="txtOriginalPrice" class="form-control" id="txtOriginalPrice" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <label for="txtPromotionPrice" class="col-sm-2 control-label no-padding">Giá khuyến mại:</label>
+                            <div class="col-sm-10">
+                                <input type="number" name="txtPromotionPrice" class="form-control" id="txtPromotionPrice" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <label for="txtImage" class="col-sm-2 control-label no-padding">Ảnh</label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input type="text" name="txtImage" class="form-control" id="txtImage" />
+                                    <input type="file" id="fileInputImage" style="display: none" />
+                                    <span class="input-group-btn">
+                                        <input type="button" class="btn btn-primary" id="btnSelectImg" value="Chọn ảnh" />
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <label for="txtContent" class="col-sm-2 control-label no-padding">Mô tả chi tiết :</label>
+                            <div class="col-sm-10">
+                                <textarea rows="6" name="txtContent" class="form-control" id="txtContent"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <label for="txtSeoTitle" class="col-sm-2 control-label no-padding">Tiêu đề SEO</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="txtSeoTitle" class="form-control" id="txtSeoTitle" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <label for="txtSeoAlias" class="col-sm-2 control-label no-padding">SEO URL</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="txtSeoAlias" class="form-control" id="txtSeoAlias" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <label for="txtSeoKeyword" class="col-sm-2 control-label no-padding">Từ khóa SEO</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="txtSeoKeyword" class="form-control" id="txtSeoKeyword" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <label for="txtSeoDescription" class="col-sm-2 control-label no-padding">Mô tả SEO</label>
+                            <div class="col-sm-10">
+                                <textarea rows="3" name="txtSeoDescription" class="form-control" id="txtSeoDescription"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <label for="txtTag" class="col-sm-2 control-label no-padding">Tag (ngăn cách bởi dấu ,)</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="txtTag" class="form-control" id="txtTag" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <div class="col-sm-10">
+                                <div class="float-right">
+                                    <label>
+                                        <input type="checkbox" id="ckStatus" checked="checked" />
+                                        <span class="text">Active</span>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" id="ckShowHome" />
+                                        <span class="text">Hiện trên trang chủ</span>
+                                    </label>
+                                    <label>
+                                        <input type="checkbox" id="ckHot" />
+                                        <span class="text">Sản phẩm bán chạy</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSave" class="btn btn-primary">Lưu</button>
+                <button type="button" id="btnCancel" class="btn btn-dark" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

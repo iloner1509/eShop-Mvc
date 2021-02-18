@@ -3,11 +3,18 @@
 }
 @section Scripts{
 
+    <script src="~/lib/EasyUI/jquery.easyui.min.js"></script>
     <script src="~/app/Controller/Product/index.js"></script>
     <script>
         var product = new productController();
         product.initialize();
     </script>
+}
+@section Styles
+{
+
+    <link href="~/lib/EasyUI/themes/metro/easyui.css" rel="stylesheet" />
+    <link href="~/lib/EasyUI/themes/icon.css" rel="stylesheet" />
 }
 <div class="page-title">
     <div class="title_left">
@@ -27,6 +34,9 @@
             <select class="form-control" id="dllCategory">
                 <option>Chọn danh mục</option>
             </select>
+        </div>
+        <div class="col-md-4 col-sm-12 form-group pull-right">
+            <button id="btnCreateProduct" class="btn btn-success">Thêm sản phẩm</button>
         </div>
     </div>
 </div>
@@ -80,8 +90,8 @@
 <script id="table-template" type="x-tmpl-mustache">
     <tr>
         <th scope="row">
-            <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i></button>
-            <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
+            <button class="btn btn-primary btn-sm btn-edit" data-id="{{Id}}"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-danger btn-sm btn-delete" data-id="{{Id}}"><i class="fas fa-trash"></i></button>
         </th>
         <th>{{Name}}</th>
         <th>{{CategoryName}}</th>
@@ -91,3 +101,4 @@
         <th>{{{Status}}}</th>
     </tr>
 </script>
+@await Html.PartialAsync("_AddEditModal")
