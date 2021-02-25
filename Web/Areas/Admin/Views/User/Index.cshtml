@@ -1,42 +1,29 @@
-﻿@{
-    ViewData["Title"] = "Index";
+﻿@using Microsoft.AspNetCore.Authentication
+@{
+    ViewData["Title"] = "Danh sách người dùng";
 }
 @section Scripts{
-
-    <script src="~/lib/EasyUI/jquery.easyui.min.js"></script>
-    <script src="~/app/Controller/Product/index.js"></script>
+    <script src="~/app/Controller/User/index.js" asp-append-version="true"></script>
     <script>
-        var product = new productController();
-        product.initialize();
+        var user = new UserController();
+        user.initialize();
     </script>
 }
-@section Styles
-{
-
-    <link href="~/lib/EasyUI/themes/metro/easyui.css" rel="stylesheet" />
-    <link href="~/lib/EasyUI/themes/icon.css" rel="stylesheet" />
-}
+<input type="hidden" id="hid-category-id" />
 <div class="page-title">
     <div class="title_left">
-        <h3>Danh sách sản phẩm </h3>
+        <h3>Danh sách User hệ thống </h3>
     </div>
 
     <div class="title_right">
-        <div class="col-md-5 col-sm-5 form-group pull-right">
+        <div class="col-md-6 col-sm-6 form-group pull-right">
             <div class="input-group">
+                <button id="btnCreateUser" class="btn btn-success">Tạo</button>
                 <input type="text" class="form-control" id="txt-search-keyword" placeholder="Tìm kiếm">
                 <span class="input-group-btn">
                     <button class="btn btn-primary" id="btnSearch" type="button">Tìm kiếm</button>
                 </span>
             </div>
-        </div>
-        <div class="col-md-4 col-sm-12 form-group pull-right">
-            <select class="form-control" id="dllCategory">
-                <option>Chọn danh mục</option>
-            </select>
-        </div>
-        <div class="col-md-4 col-sm-12 form-group pull-right">
-            <button id="btnCreateProduct" class="btn btn-success">Thêm sản phẩm</button>
         </div>
     </div>
 </div>
@@ -51,10 +38,9 @@
                     <thead>
                         <tr>
                             <th>Tác vụ</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Danh mục</th>
-                            <th>Giá</th>
-                            <th>Hình ảnh</th>
+                            <th>Tên tài khoản</th>
+                            <th>Họ tên</th>
+                            <th>Avatar</th>
                             <th>Ngày tạo</th>
                             <th>Trạng thái</th>
                         </tr>
@@ -72,7 +58,7 @@
                                 <option value="30">30</option>
                                 <option value="50">50</option>
                             </select>
-                            <span class="item-per-page">Bản ghi/trang</span>
+                            <span class="item-per-page">Bản ghi/ trang</span>
                             Tổng số bản ghi: <strong id="lbl-total-records"></strong>
                         </div>
                     </div>
@@ -93,12 +79,19 @@
             <button class="btn btn-primary btn-sm btn-edit" data-id="{{Id}}"><i class="fas fa-edit"></i></button>
             <button class="btn btn-danger btn-sm btn-delete" data-id="{{Id}}"><i class="fas fa-trash"></i></button>
         </th>
-        <th>{{Name}}</th>
-        <th>{{CategoryName}}</th>
-        <th>{{Price}}</th>
-        <th>{{{Image}}}</th>
-        <th>{{CreatedDate}}</th>
+        <th>{{UserName}}</th>
+        <th>{{FullName}}</th>
+        <th>{{Avatar}}</th>
+        <th>{{DateCreated}}</th>
         <th>{{{Status}}}</th>
     </tr>
+</script>
+<script id="role-template" type="x-tmpl-mustache">
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" {{Checked}} name="ckRoles" value="{{Name}}" />
+            <span class="text">{{Description}}</span>
+        </label>
+    </div>
 </script>
 @await Html.PartialAsync("_AddEditModal")

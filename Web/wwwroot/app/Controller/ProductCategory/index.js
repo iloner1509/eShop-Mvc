@@ -141,6 +141,33 @@
                 }
                 return false;
             });
+        $("#btnSelectImg").on("click",
+            function () {
+                $("#fileInputImage").click();
+            });
+        $("#fileInputImage").on("change",
+            function () {
+                let fileUpload = $(this).get(0);
+                let files = fileUpload.files;
+                let data = new FormData();
+                for (let i = 0; i < files.length; i++) {
+                    data.append(files[i].name, files[i]);
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/Upload/UploadImage",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (path) {
+                        $("#txtImage").val(path);
+                        system.notify("Upload ảnh thành công", "success");
+                    },
+                    error: function () {
+                        system.notify("Xảy ra lỗi khi upload ảnh !", "error");
+                    }
+                });
+            });
     }
 
     function resetForm() {

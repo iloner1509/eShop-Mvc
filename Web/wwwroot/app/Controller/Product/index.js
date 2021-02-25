@@ -59,6 +59,33 @@
                 let productId = $(this).data("id");
                 deleteProduct(productId);
             });
+        $("#btnSelectImg").on("click",
+            function () {
+                $("#fileInputImage").click();
+            });
+        $("#fileInputImage").on("change",
+            function () {
+                let fileUpload = $(this).get(0);
+                let files = fileUpload.files;
+                let data = new FormData();
+                for (let i = 0; i < files.length; i++) {
+                    data.append(files[i].name, files[i]);
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/Upload/UploadImage",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (path) {
+                        $("#txtImage").val(path);
+                        system.notify("Upload ảnh thành công", "success");
+                    },
+                    error: function () {
+                        system.notify("Xảy ra lỗi khi upload ảnh !", "error");
+                    }
+                });
+            });
         $("#btnSave").on("click",
             function (e) {
                 if ($("#frmEdit").valid()) {
@@ -121,22 +148,25 @@
     }
 
     function registerControls() {
-        CKEDITOR.replace("txtContent", {});
-        ////Fix: cannot click on element ck in modal
-        //$.fn.modal.Constructor.prototype.enforceFocus = function () {
-        //    $(document)
-        //        .off('focusin.bs.modal') // guard against infinite focus loop
-        //        .on('focusin.bs.modal', $.proxy(function (e) {
-        //            if (
-        //                this.$element[0] !== e.target && !this.$element.has(e.target).length
-        //                // CKEditor compatibility fix start.
-        //                && !$(e.target).closest('.cke_dialog, .cke').length
-        //                // CKEditor compatibility fix end.
-        //            ) {
-        //                this.$element.trigger('focus');
-        //            }
-        //        }, this));
-        //};
+        CKEDITOR.replace("txtContent",
+            {
+                //filebrowserUploadUrl: "/Admin/Upload/UploadImageForCkEditor"
+            });
+        //Fix: cannot click on element ck in modal
+        $.fn.modal.Constructor.prototype.enforceFocus = function () {
+            $(document)
+                .off('focusin.bs.modal') // guard against infinite focus loop
+                .on('focusin.bs.modal', $.proxy(function (e) {
+                    if (
+                        this.$element[0] !== e.target && !this.$element.has(e.target).length
+                        // CKEditor compatibility fix start.
+                        && !$(e.target).closest('.cke_dialog, .cke').length
+                        // CKEditor compatibility fix end.
+                    ) {
+                        this.$element.trigger('focus');
+                    }
+                }, this));
+        };
     }
     function deleteProduct(productId) {
         system.confirm("Bạn có muốn xóa ?",
@@ -149,8 +179,8 @@
                     },
                     dataType: "json",
                     success: function () {
+                        loadData(true);
                         system.notify("Xóa thành công", "success");
-                        loadData();
                     },
                     error: function () {
                         system.notify("Có lỗi khi xóa sản phẩm !", "error");
@@ -199,7 +229,7 @@
         $("#hidIdM").val(0);
         $("#txtName").val("");
         initDropDownTree("");
-
+        CKEDITOR.instances.txtContent.setData("");
         $("#txtDescription").val("");
         $("#txtUnit").val("");
         $("#txtImage").val("");

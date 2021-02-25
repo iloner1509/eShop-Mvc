@@ -79,6 +79,7 @@ namespace eShop_Mvc
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
             services.AddTransient<IFunctionService, FunctionService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IRoleService, RoleService>();
 
             services.AddControllersWithViews();
             services.AddRazorPages();

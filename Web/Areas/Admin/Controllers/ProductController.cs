@@ -1,16 +1,13 @@
-﻿using System;
+﻿using AutoMapper;
+using eShop_Mvc.Core.Entities;
+using eShop_Mvc.Core.Interfaces;
+using eShop_Mvc.Models.ProductViewModels;
+using eShop_Mvc.SharedKernel;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Interfaces;
-using eShop_Mvc.Helpers;
-using eShop_Mvc.Models.ProductViewModels;
-using eShop_Mvc.SharedKernel;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
@@ -19,14 +16,12 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         private readonly IProductService _productService;
         private readonly IProductCategoryService _productCategoryService;
         private readonly IMapper _mapper;
-        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IProductService productService, IProductCategoryService productCategoryService, IMapper mapper, IWebHostEnvironment webHostEnvironment)
+        public ProductController(IProductService productService, IProductCategoryService productCategoryService, IMapper mapper)
         {
             _productService = productService;
             _productCategoryService = productCategoryService;
             _mapper = mapper;
-            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()

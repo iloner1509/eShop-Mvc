@@ -1,0 +1,36 @@
+﻿<div id="modalAddEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Thêm/ cập nhật Role</h5>
+                <button type="button" class="bootbox-cancel close" data-dismiss="modal" aria-hidden="True">
+                    x
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form id="frmEdit" role="form" class="form-horizontal">
+                        <div class="form-group" style="display: flex">
+                            <input type="hidden" id="hidIdM" value="" />
+                            <label for="txtName" class="col-sm-2 control-label no-padding">Tên role</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="txtName" class="form-control" id="txtName" />
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex">
+                            <label for="txtDescription" class="col-sm-2 control-label no-padding">Mô tả</label>
+                            <div class="col-sm-10">
+                                <textarea rows="3" name="txtDescription" class="form-control" id="txtDescription"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnSave" class="btn btn-primary">Lưu</button>
+                <button type="button" id="btnCancel" class="btn btn-dark" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
