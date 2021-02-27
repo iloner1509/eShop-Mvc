@@ -24,5 +24,6 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Authorization\" />
   </ItemGroup>
 </Project>

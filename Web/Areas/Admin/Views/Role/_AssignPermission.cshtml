@@ -1,0 +1,88 @@
+﻿<div id="modal-grantpermission" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Gán quyền</h5>
+                <button type="button" class="bootbox-cancel close" data-dismiss="modal" aria-hidden="True">
+                    x
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <input type="hidden" id="hidRoleIdM" value="" />
+                        <table class="table table-hover tree" id="tblFunction">
+                            <thead>
+                                <tr>
+                                    <th>Tên quyền</th>
+                                    <th>
+                                        <label>
+                                            <input type="checkbox" name="" value="{{Id}}" id="ckCheckView" />
+                                            <span class="text">Xem</span>
+                                        </label>
+                                    </th>
+                                    <th>
+                                        <label>
+                                            <input type="checkbox" name="" value="{{Id}}" id="ckCheckCreate" />
+                                            <span class="text">Tạo</span>
+                                        </label>
+                                    </th>
+                                    <th>
+                                        <label>
+                                            <input type="checkbox" name="" value="{{Id}}" id="ckCheckEdit" />
+                                            <span class="text">Sửa</span>
+                                        </label>
+                                    </th>
+                                    <th>
+                                        <label>
+                                            <input type="checkbox" name="" value="{{Id}}" id="ckCheckDelete" />
+                                            <span class="text">Xóa</span>
+                                        </label>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="list-data-function">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <button type="button" id="btnSavePermission" class="btn btn-primary">Lưu</button>
+                    <button type="button" id="btnCancel" class="btn btn-dark" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script id="result-data-function" type="x-tmpl-mustache">
+    <tr class="treegrid-{{Id}} {{treegridparent}}" data-id="{{Id}}">
+
+        <td>{{Name}}</td>
+        <td>
+            <label>
+                <input type="checkbox" name="" value="{{Id}}" class="ckView" />
+                <span class="text">Gán</span>
+            </label>
+        </td>
+        <td>
+            <label>
+                <input type="checkbox" name="" value="{{Id}}" class="ckCreate" />
+                <span class="text">Gán</span>
+            </label>
+        </td>
+        <td>
+            <label>
+                <input type="checkbox" name="" value="{{Id}}" class="ckEdit" />
+                <span class="text">Gán</span>
+            </label>
+        </td>
+        <td>
+            <label>
+                <input type="checkbox" name="" value="{{Id}}" class="ckDelete" />
+                <span class="text">Gán</span>
+            </label>
+        </td>
+    </tr>
+</script>

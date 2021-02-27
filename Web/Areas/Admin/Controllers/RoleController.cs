@@ -109,15 +109,16 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult ListAllFunction(Guid roleId)
+        public async Task<IActionResult> ListAllFunction(Guid roleId)
         {
-            return new OkObjectResult(_roleService.GetListPermissionWithRole(roleId));
+            var function = await _roleService.GetListPermissionWithRole(roleId);
+            return new OkObjectResult(function);
         }
 
         [HttpPost]
-        public IActionResult SavePermission(List<PermissionViewModel> listPermission, Guid roleId)
+        public async Task<IActionResult> SavePermission(List<PermissionViewModel> listPermission, Guid roleId)
         {
-            _roleService.SavePermission(
+            await _roleService.SavePermission(
                 _mapper.Map<List<PermissionViewModel>, List<Permission>>(listPermission),
                 roleId);
             return new OkResult();

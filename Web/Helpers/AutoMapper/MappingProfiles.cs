@@ -13,7 +13,7 @@ namespace eShop_Mvc.Helpers.AutoMapper
         {
             CreateMap<ProductCategory, ProductCategoryViewModel>().ReverseMap();
             CreateMap<Product, ProductViewModel>().ReverseMap();
-            CreateMap<Function, FunctionViewModel>();
+            CreateMap<Function, FunctionViewModel>().ReverseMap();
             CreateMap<AppUser, AppUserViewModel>();
             CreateMap<AppRole, AppRoleViewModel>().ReverseMap();
             CreateMap<Permission, PermissionViewModel>().ReverseMap();

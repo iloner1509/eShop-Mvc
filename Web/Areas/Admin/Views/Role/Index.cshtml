@@ -1,9 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Index";
 }
-
+@section Styles
+{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/css/jquery.treegrid.css" integrity="sha512-71qUGiAKYenKPrbtmhOTP8I2ElEN9DBF5sxNvw3TzKYQDf2Yp8A7mnakECuMjLzJ1s4s/DICbsIlOvzINIa2Pw==" crossorigin="anonymous" />
+}
 @section Scripts{
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/js/jquery.treegrid.min.js" integrity="sha512-CO5XensPF3OFwLPmDJ4oTi2h8tyOQkND2DiWEHxDb3/g8yYtnWGOS+r34jDM1/UAzcK4wKvnnCevs+OpFcP3jQ==" crossorigin="anonymous"></script>
     <script src="~/app/Controller/Role/index.js" asp-append-version="true"></script>
     <script>
         var role = new RoleController();
@@ -84,3 +87,4 @@
 </script>
 
 @await Html.PartialAsync("_AddEditModal")
+@await Html.PartialAsync("_AssignPermission")
