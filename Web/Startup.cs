@@ -1,5 +1,6 @@
 using System;
 using AutoMapper;
+using eShop_Mvc.Authorization;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
 using eShop_Mvc.Core.Services;
@@ -7,6 +8,7 @@ using eShop_Mvc.Helpers;
 using eShop_Mvc.Helpers.AutoMapper;
 using eShop_Mvc.Infrastructure.Data;
 using eShop_Mvc.SharedKernel.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -81,7 +83,9 @@ namespace eShop_Mvc
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IRoleService, RoleService>();
 
-            services.AddControllersWithViews();
+            // Authorization
+            services.AddTransient<IAuthorizationHandler, ResourceBasedAuthorizationHandler>();
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
         }
 

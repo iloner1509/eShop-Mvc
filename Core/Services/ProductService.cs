@@ -3,10 +3,13 @@ using eShop_Mvc.Core.Interfaces;
 using eShop_Mvc.SharedKernel;
 using eShop_Mvc.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using eShop_Mvc.SharedKernel.Enums;
 
 namespace eShop_Mvc.Core.Services
 {
@@ -113,9 +116,37 @@ namespace eShop_Mvc.Core.Services
 
         public Task<Product> GetByIdAsync(int id) => _productRepository.FindByIdAsync(id);
 
-        public Task ImportExcelAsync(string filePath, int categoryId)
+        public async Task ImportExcelAsync(string filePath, int categoryId)
         {
-            throw new NotImplementedException();
+            using (var package = new ExcelPackage(new FileInfo(filePath)))
+            {
+                ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                Product product;
+                for (var i = worksheet.Dimension.Start.Row + 1; i <= worksheet.Dimension.End.Row; i++)
+                {
+                    product = new Product();
+                    product.CategoryId = categoryId;
+                    product.Name = worksheet.Cells[i, 1].Value.ToString();
+                    product.Description = worksheet.Cells[i, 2].Value.ToString();
+                    decimal.TryParse(worksheet.Cells[i, 3].Value.ToString(), out var originalPrice);
+                    product.OriginalPrice = originalPrice;
+                    decimal.TryParse(worksheet.Cells[i, 4].Value.ToString(), out var price);
+                    product.Price = price;
+                    decimal.TryParse(worksheet.Cells[i, 5].Value.ToString(), out var promotionPrice);
+                    product.PromotionPrice = promotionPrice;
+                    product.Content = worksheet.Cells[i, 6].Value.ToString();
+                    product.SeoKeywords = worksheet.Cells[i, 7].Value.ToString();
+                    product.SeoDescription = worksheet.Cells[i, 8].Value.ToString();
+                    bool.TryParse(worksheet.Cells[i, 9].Value.ToString(), out var hotFlag);
+                    product.HotFlag = hotFlag;
+                    bool.TryParse(worksheet.Cells[i, 10].Value.ToString(), out var homeFlag);
+                    product.HomeFlag = homeFlag;
+                    product.Status = Status.Active;
+                    product.DateCreated = DateTime.Now;
+                    product.Image = "";
+                    await _productRepository.AddAsync(product);
+                }
+            }
         }
 
         public void Save()

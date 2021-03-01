@@ -22,7 +22,7 @@
     </div>
 
     <div class="title_right">
-        <div class="col-md-5 col-sm-5 form-group pull-right">
+        <div class="col-md-4 col-sm-3 form-group pull-right">
             <div class="input-group">
                 <input type="text" class="form-control" id="txt-search-keyword" placeholder="Tìm kiếm">
                 <span class="input-group-btn">
@@ -37,6 +37,9 @@
         </div>
         <div class="col-md-4 col-sm-12 form-group pull-right">
             <button id="btnCreateProduct" class="btn btn-success">Thêm sản phẩm</button>
+            <a href="~/template/ProductImportTemplate.xlsx" class="btn btn-dark">Tải mẫu</a>
+            <button class="btn btn-primary" id="btn-import" type="button"><i class="fas fa-file-upload"></i></button>
+            <button class="btn btn-secondary" id="btn-export" type="button"><i class="fas fa-file-excel"></i></button>
         </div>
     </div>
 </div>
@@ -102,3 +105,4 @@
     </tr>
 </script>
 @await Html.PartialAsync("_AddEditModal")
+@await Html.PartialAsync("_ImportExcelModal")

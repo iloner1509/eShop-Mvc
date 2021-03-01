@@ -1,0 +1,35 @@
+﻿<div id="importExcelModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Import Excel</h5>
+                <button type="button" class="bootbox-cancel close" data-dismiss="modal" aria-hidden="True">
+                    x
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form id="frmImport" role="form" class="form-horizontal">
+                        <div class="form-group" style="display: flex">
+
+                            <label for="choseFile" class="col-sm-2 control-label no-padding">Chọn file</label>
+                            <div class="col-sm-10">
+                                <input type="file" name="choseFile" class="form-control" id="choseFile" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+                            <label class="col-sm-2 control-label no-padding">Danh mục</label>
+                            <div class="col-sm-10">
+                                <input name="ddlImportCategoryId" class="form-control" id="ddlImportCategoryId" value="" required="" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnImportExcel" class="btn btn-primary">Xác nhận</button>
+                <button type="button" id="btnCancel" class="btn btn-dark" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

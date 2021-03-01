@@ -145,6 +145,49 @@
                     });
                 }
             });
+        $("#btn-import").on("click",
+            function () {
+                initDropDownTree();
+                $("#importExcelModal").modal("show");
+            });
+        $("#btnImportExcel").on("click",
+            function () {
+                var uploadedFiles = $("#choseFile").get(0).files;
+                // Create form data object
+                var fileData = new FormData();
+                for (var i = 0; i < uploadedFiles.length; i++) {
+                    fileData.append("files", uploadedFiles[i]);
+                }
+                fileData.append("categoryId", $("#ddlImportCategoryId").combotree("getValue"));
+                $.ajax({
+                    url: "/Admin/Product/ImportExcel",
+                    type: "POST",
+                    data: fileData,
+                    processData: false,
+                    contentType: false,
+
+                    success: function () {
+                        system.notify("Cập nhật sản phẩm từ file thành công", "success");
+                        $("#importExcelModal").modal("hide");
+                        loadData();
+                    }
+                });
+            });
+        $("#btn-export").on("click",
+            function () {
+                $.ajax({
+                    url: "/Admin/Product/ExportExcel",
+                    type: "POST",
+
+                    success: function (res) {
+                        system.notify("Xuất file thành công", "success");
+                        window.location.href = res;
+                    },
+                    error: function () {
+                        system.notify("Có lỗi khi xuất file", "error");
+                    }
+                });
+            });
     }
 
     function registerControls() {
@@ -264,6 +307,9 @@
                     });
                 let arr = system.unflattern(data);
                 $("#ddlCategoryId").combotree({
+                    data: arr
+                });
+                $("#ddlImportCategoryId").combotree({
                     data: arr
                 });
                 if (selectedId != undefined) {

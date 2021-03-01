@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using eShop_Mvc.Authorization;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Models.AccountViewModels;
 using eShop_Mvc.SharedKernel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -17,11 +19,13 @@ namespace eShop_Mvc.Areas.Admin.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly IAuthorizationService _authorizationService;
 
-        public UserController(UserManager<AppUser> userManager, IMapper mapper)
+        public UserController(UserManager<AppUser> userManager, IMapper mapper, IAuthorizationService authorizationService)
         {
             _userManager = userManager;
             _mapper = mapper;
+            _authorizationService = authorizationService;
         }
 
         [HttpPost]
@@ -144,8 +148,13 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             return new OkObjectResult(allUser);
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            var result = await _authorizationService.AuthorizeAsync(User, "USER", Operations.Read);
+            if (!result.Succeeded)
+            {
+                return new RedirectResult("/Admin/Login/Index");
+            }
             return View();
         }
     }
