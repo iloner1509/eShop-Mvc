@@ -1,45 +1,45 @@
 ﻿@{
-    ViewData["Title"] = "Quản lý sản phẩm";
+    ViewData["Title"] = "Quản lý đơn hàng";
 }
+
 @section Scripts{
 
-    <script src="~/lib/EasyUI/jquery.easyui.min.js"></script>
-    <script src="~/app/Controller/Product/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
+
+    <script src="~/app/Controller/Bill/index.js" asp-append-version="true"></script>
     <script>
-        var product = new productController();
-        product.initialize();
+        var bill = new BillController();
+        bill.initialize();
     </script>
 }
 @section Styles
 {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
 
-    <link href="~/lib/EasyUI/themes/metro/easyui.css" rel="stylesheet" />
-    <link href="~/lib/EasyUI/themes/icon.css" rel="stylesheet" />
 }
 <div class="page-title">
     <div class="title_left">
-        <h3>Danh sách sản phẩm </h3>
+        <h3>Danh sách đơn hàng </h3>
     </div>
 
     <div class="title_right">
-        <div class="col-md-4 col-sm-3 form-group pull-right">
+        <div class="col-md-2 col-sm-2 form-group pull-right">
+            <button id="btnCreateBill" class="btn btn-success">Thêm đơn hàng</button>
+        </div>
+        <div class="col-md-3 col-sm-3 form-group pull-right">
             <div class="input-group">
                 <input type="text" class="form-control" id="txt-search-keyword" placeholder="Tìm kiếm">
                 <span class="input-group-btn">
-                    <button class="btn btn-primary" id="btnSearch" type="button">Tìm kiếm</button>
+                    <button class="btn btn-primary" id="btnSearch" type="button"><i class="fas fa-search"></i></button>
                 </span>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12 form-group pull-right">
-            <select class="form-control" id="dllCategory">
-                <option>Chọn danh mục</option>
-            </select>
+
+        <div class="col-md-3 col-sm-3 form-group pull-right">
+            <input type="text" name="txtFromDate" value="" id="txtFromDate" class="form-control" placeholder="Từ ngày" />
         </div>
-        <div class="col-md-4 col-sm-12 form-group pull-right">
-            <button id="btnCreateProduct" class="btn btn-success">Thêm sản phẩm</button>
-            <a href="~/template/ProductImportTemplate.xlsx" class="btn btn-dark">Tải mẫu</a>
-            <button class="btn btn-primary" id="btn-import" type="button"><i class="fas fa-file-upload"></i></button>
-            <button class="btn btn-secondary" id="btn-export" type="button"><i class="fas fa-file-excel"></i></button>
+        <div class="col-md-3 col-sm-3 form-group pull-right">
+            <input type="text" name="txtToDate" value="" id="txtToDate" class="form-control" placeholder="Đến ngày" />
         </div>
     </div>
 </div>
@@ -54,12 +54,12 @@
                     <thead>
                         <tr>
                             <th>Tác vụ</th>
-                            <th>Tên sản phẩm</th>
-                            <th>Danh mục</th>
-                            <th>Giá</th>
-                            <th>Hình ảnh</th>
-                            <th>Ngày tạo</th>
+                            <th>Id</th>
+                            <th>Tên khách hàng</th>
+                            <th>Phương thức thanh toán</th>
+                            <th>Ngày đặt hàng</th>
                             <th>Trạng thái</th>
+                            <th>Chi tiết</th>
                         </tr>
                     </thead>
                     <tbody id="tbl-content">
@@ -93,16 +93,14 @@
 <script id="table-template" type="x-tmpl-mustache">
     <tr>
         <th scope="row">
-            <button class="btn btn-primary btn-sm btn-edit" data-id="{{Id}}"><i class="fas fa-edit"></i></button>
-            <button class="btn btn-danger btn-sm btn-delete" data-id="{{Id}}"><i class="fas fa-trash"></i></button>
+            <button class="btn btn-primary btn-sm btn-view" data-id="{{Id}}"><i class="fas fa-eye"></i></button>
+            @*<button class="btn btn-danger btn-sm btn-delete" data-id="{{Id}}"><i class="fas fa-trash"></i></button>*@
         </th>
-        <th>{{Name}}</th>
-        <th>{{CategoryName}}</th>
-        <th>{{Price}}</th>
-        <th>{{{Image}}}</th>
-        <th>{{CreatedDate}}</th>
-        <th>{{{Status}}}</th>
+        <th>{{Id}}</th>
+        <th>{{CustomerName}}</th>
+        <th>{{{PaymentMethod}}}</th>
+        <th>{{{DateCreated}}}</th>
+        <th>{{{BillStatus}}}</th>
     </tr>
 </script>
-@await Html.PartialAsync("_AddEditModal")
-@await Html.PartialAsync("_ImportExcelModal")
+@await Html.PartialAsync("_DetailModal")

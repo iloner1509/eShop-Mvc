@@ -19,6 +19,8 @@ namespace eShop_Mvc.Helpers.AutoMapper
             CreateMap<Permission, PermissionViewModel>().ReverseMap();
             CreateMap<Announcement, AnnouncementViewModel>().MaxDepth(2).ReverseMap();
             CreateMap<AnnouncementUser, AnnouncementUserViewModel>().ReverseMap();
+            CreateMap<Bill, BillViewModel>().MaxDepth(2).ReverseMap();
+            CreateMap<BillDetail, BillDetailViewModel>().MaxDepth(2).ReverseMap();
         }
     }
 }

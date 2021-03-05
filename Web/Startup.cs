@@ -82,6 +82,7 @@ namespace eShop_Mvc
             services.AddTransient<IFunctionService, FunctionService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<IBillService, BillService>();
 
             // Authorization
             services.AddTransient<IAuthorizationHandler, ResourceBasedAuthorizationHandler>();

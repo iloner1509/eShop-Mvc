@@ -1,0 +1,103 @@
+﻿<div id="modal-detail" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Chi tiết hóa đơn</h5>
+                <button type="button" class="bootbox-cancel close" data-dismiss="modal" aria-hidden="True">
+                    x
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form id="frmDetail" role="form" class="form-horizontal">
+                        <div class="form-group" style="display: flex">
+                            <input type="hidden" id="hidIdM" value="0" />
+                            <label for="txtCustomerName" class="col-sm-2 control-label no-padding">Tên khách hàng</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="txtCustomerName" class="form-control" id="txtCustomerName" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+
+                            <label for="txtCustomerAddress" class="col-sm-2 control-label no-padding">Địa chỉ</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="txtCustomerAddress" class="form-control" id="txtCustomerAddress" />
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex">
+
+                            <label for="txtCustomerMobile" class="col-sm-2 control-label no-padding">Số điện thoại</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="txtCustomerMobile" class="form-control" id="txtCustomerMobile" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+
+                            <label for="txtCustomerMessage" class="col-sm-2 control-label no-padding">Lời nhắn của khách hàng</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="txtCustomerMessage" class="form-control" id="txtCustomerMessage" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+
+                            <label class="col-sm-2 control-label no-padding">Phương thức thanh toán</label>
+                            <div class="col-sm-10">
+                                <select id="ddlPaymentMethod" class="form-control">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+
+                            <label class="col-sm-2 control-label no-padding">Tình trạng đơn hàng</label>
+                            <div class="col-sm-10">
+                                <select id="ddlBillStatus" class="form-control">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+
+                            <label class="col-sm-2 control-label no-padding">Chi tiết đơn hàng</label>
+                            <div class="col-sm-10">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Tên sản phẩm</th>
+                                            <th>Số lượng</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbl-bill-detail">
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="5">
+                                                <button type="button" id="btnAddDetail" class="btn btn-primary">Thêm</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <script id="bill-detail-template" type="x-tmpl-mustache">
+                                    <tr data-id="{{Id}}">
+                                        <td>{{{Products}}}</td>
+                                        <td><input type="number" class="txtQuantity" value="{{Quantity}}" /></td>
+                                        <td><button type="button" class="btn btn-warning btn-delete-detail"><i class="fas fa-trash"></i></button></td>
+                                    </tr>
+                                </script>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-sm-12 pull-right">
+                    <button type="button" id="btnSave" class="btn btn-primary">Lưu</button>
+                    <button type="button" id="btnConfirm" class="btn btn-secondary">Xác nhận thanh toán</button>
+                    <button type="button" id="btnPending" class="btn btn-danger">Đang chờ xử lý</button>
+                    <button type="button" id="btnCancel" class="btn btn-warning">Hủy đơn</button>
+                    <button type="button" id="btnExport" class="btn btn-info">Xuất hóa đơn</button>
+                    <button type="button" id="btnClose" class="btn btn-dark" data-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
