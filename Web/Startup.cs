@@ -88,6 +88,7 @@ namespace eShop_Mvc
             services.AddTransient<IAuthorizationHandler, ResourceBasedAuthorizationHandler>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
+            services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
