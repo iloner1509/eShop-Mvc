@@ -87,10 +87,6 @@ namespace eShop_Mvc.Core.Services
         {
             var categories = await _productCategoryRepository.FindAll(x => x.HomeFlag == true, c => c.Products)
                 .OrderBy(x => x.HomeOrder).Take(top).ToListAsync();
-            foreach (var productCategory in categories)
-            {
-                //
-            }
 
             return categories;
         }

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Models;
 using eShop_Mvc.Models.AccountViewModels;
+using eShop_Mvc.Models.Common;
 using eShop_Mvc.Models.ProductViewModels;
 using eShop_Mvc.Models.System;
 
@@ -21,6 +21,7 @@ namespace eShop_Mvc.Helpers.AutoMapper
             CreateMap<AnnouncementUser, AnnouncementUserViewModel>().ReverseMap();
             CreateMap<Bill, BillViewModel>().MaxDepth(2).ReverseMap();
             CreateMap<BillDetail, BillDetailViewModel>().MaxDepth(2).ReverseMap();
+            CreateMap<Tag, TagViewModel>().ReverseMap();
         }
     }
 }

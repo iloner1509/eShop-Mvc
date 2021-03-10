@@ -1,0 +1,49 @@
+﻿@model eShop_Mvc.SharedKernel.PagedResult<ProductViewModel>
+@{
+    var urlTemplate = Url.Action() + "?page={0}";
+    var request = ViewContext.HttpContext.Request;
+    foreach (var key in request.Query.Keys)
+    {
+        if (key == "page")
+        {
+            continue;
+        }
+        urlTemplate += $"&{key}={request.Query[key]}";
+    }
+    var startIndex = Math.Max(Model.CurrentPage - 5, 1);
+    var endIndex = Math.Min(Model.CurrentPage + 5, Model.PageCount);
+}
+<div class="pagination-area">
+    @if (Model.PageCount > 1)
+    {
+        <ul>
+            @if (Model.CurrentPage == startIndex)
+            {
+                <li><i class="fa fa-angle-left"></i></li>
+            }
+            else
+            {
+                <li><a href="@urlTemplate.Replace("{0}",Model.PageCount.ToString())"><i class="fa fa-angle-left"></i></a></li>
+            }
+            @for (var i = startIndex; i <= endIndex; ++i)
+            {
+                if (i == Model.CurrentPage)
+                {
+                    <li><a class="active" href="#">@i</a></li>
+                }
+                else
+                {
+                    <li><a href="@urlTemplate.Replace("{0}",i.ToString())">@i</a></li>
+                }
+            }
+            @if (Model.CurrentPage == endIndex)
+            {
+                <li><i class="fa fa-angle-right"></i></li>
+            }
+            else
+            {
+                <li><a href="@urlTemplate.Replace("{0}",Model.PageCount.ToString())"><i class="fa fa-angle-right"></i></a></li>
+            }
+        </ul>
+    }
+</div>

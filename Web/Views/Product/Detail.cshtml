@@ -1,0 +1,184 @@
+﻿@using eShop_Mvc.SharedKernel.Enums
+@using Microsoft.EntityFrameworkCore.Metadata.Conventions
+@model DetailViewModel
+@{
+    ViewData["Title"] = @Model.Product.Name;
+}
+
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <ul>
+                    <li class="home"> <a title="Trang chủ" href="/">Trang chủ</a><span>&raquo;</span></li>
+                    <li class=""> <a title="@Model.Category.Name" href="/Product/Catalog/@Model.Category.Id">@Model.Category.Name</a><span>&raquo;</span></li>
+                    <li><strong>@Model.Product.Name</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumbs End -->
+<!-- Main Container -->
+<div class="main-container col1-layout">
+    <div class="container">
+        <div class="row">
+            <div class="col-main">
+                <div class="product-view-area">
+                    <div class="product-big-image col-xs-12 col-sm-5 col-lg-5 col-md-5">
+                        <div class="icon-sale-label sale-left">Sale</div>
+                        <div class="large-image"> <a href="@Model.Product.Image" class="cloud-zoom" id="zoom1" rel="useWrapper: false, adjustY:0, adjustX:20"> <img class="zoom-img" src="@Model.Product.Image" alt="@Model.Product.Name"> </a> </div>
+                        <div class="flexslider flexslider-thumb">
+                            @*<ul class="previews-list slides">
+
+                                    <li><a href='images/products/product-1.jpg' class='cloud-zoom-gallery' rel="useZoom: 'zoom1', smallImage: 'images/products/product-1.jpg' "><img src="images/products/product-1.jpg" alt="Thumbnail 2" /></a></li>
+                                </ul>*@
+                        </div>
+
+                        <!-- end: more-images -->
+                    </div>
+                    <div class="col-xs-12 col-sm-7 col-lg-7 col-md-7 product-details-area">
+                        <div class="product-name">
+                            <h1>@Model.Product.Name</h1>
+                        </div>
+                        @if (Model.Product.PromotionPrice.HasValue)
+                        {
+                            <div class="price-box">
+                                <p class="special-price"><span class="price">@Model.Product.PromotionPrice.Value.ToString("N0")</span> </p>
+                                <p class="old-price"> <span class="price"> @Model.Product.OriginalPrice.ToString("N0") </span> </p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="price-box">
+
+                                <p class="old-price"> <span class="price"> @Model.Product.OriginalPrice.ToString("N0") </span> </p>
+                            </div>
+                        }
+                        <div class="ratings">
+
+                            <p class="availability @(Model.Product.Status==Status.Active?"in-stock":"out-of-stock") pull-right">Tình trạng: <span>@Model.Product.Status</span></p>
+                        </div>
+                        <div class="short-description">
+                            <h2>Mô tả</h2>
+                            <p>@Model.Product.Description</p>
+                        </div>
+
+                        <div class="product-variation">
+                            <form action="#" method="post">
+                                <div class="cart-plus-minus">
+                                    <label for="qty">Số lượng:</label>
+                                    <div class="numbers-row">
+                                        <div onClick="var result = document.getElementById('txtQuantity'); var qty = result.value; if( !isNaN( qty ) &amp;&amp; qty &gt; 0 ) result.value--;return false;" class="dec qtybutton"><i class="fa fa-minus">&nbsp;</i></div>
+                                        <input type="text" class="qty" title="Qty" value="1" maxlength="12" id="txtQuantity" name="txtQuantity">
+                                        <div onClick="var result = document.getElementById('txtQuantity'); var qty = result.value; if( !isNaN( qty )) result.value++;return false;" class="inc qtybutton"><i class="fa fa-plus">&nbsp;</i></div>
+                                    </div>
+                                </div>
+                                <button class="button pro-add-to-cart" title="Thêm vào giỏ hàng" type="button" id="btnAddToCart" data-id="@Model.Product.Id"><span><i class="fa fa-shopping-basket"></i> Thêm vào giỏ hàng</span></button>
+                            </form>
+                        </div>
+                        <div class="product-cart-option">
+                            <ul>
+                                <li><a href="#"><i class="fa fa-heart-o"></i><span>Add to Wishlist</span></a></li>
+                            </ul>
+                        </div>
+                        @if (Model.Tags.Count > 0)
+                        {
+                            <div class="pro-tags">
+                                <div class="pro-tags-title">Tags:</div>
+                                @foreach (var tag in Model.Tags)
+                                {
+                                    <a href="/Tag/@tag.Id">@tag.Name</a>
+                                }
+                            </div>
+                        }
+
+                        <div class="share-box">
+                            <div class="title">Share in social media</div>
+                            <div class="socials-box"> <a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i class="fa fa-twitter"></i></a> <a href="#"><i class="fa fa-google-plus"></i></a> <a href="#"><i class="fa fa-youtube"></i></a> <a href="#"><i class="fa fa-linkedin"></i></a> <a href="#"><i class="fa fa-instagram"></i></a> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="product-overview-tab">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="product-tab-inner">
+                                <ul id="product-detail-tab" class="nav nav-tabs product-tabs">
+                                    <li class="active"> <a href="#description" data-toggle="tab"> Mô tả </a> </li>
+                                </ul>
+                                <div id="productTabContent" class="tab-content">
+                                    <div class="tab-pane fade in active" id="description">
+                                        <div class="std">
+                                            <p>
+                                                @Html.Raw(@Model.Product.Content)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Related Product Slider -->
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="related-product-area">
+                <div class="page-header">
+                    <h2>Các sản phẩm khác</h2>
+                </div>
+                <div class="related-products-pro">
+                    <div class="slider-items-products">
+                        <div id="related-product-slider" class="product-flexslider hidden-buttons">
+                            <div class="slider-items slider-width-col4 fadeInUp">
+                                @foreach (var product in Model.RelatedProducts)
+                                {
+                                    <div class="product-item">
+                                        <div class="item-inner">
+
+                                            <div class="product-thumbnail">
+                                                <div class="pr-img-area">
+                                                    <a title="@product.Name" href="/Product/Detail/@product.Id">
+                                                        <figure> <img class="first-img" src="@product.Image" alt="@product.Name"> <img class="hover-img" src="@product.Image" alt="@product.Name"></figure>
+                                                    </a>
+                                                </div>
+                                                <div class="pr-info-area">
+                                                    <div class="pr-button">
+                                                        <div class="mt-button add_to_wishlist"> <a href="wishlist.html"> <i class="fa fa-heart-o"></i> </a> </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="item-info">
+                                                <div class="info-inner">
+                                                    <div class="item-title"> <a title="@product.Name" href="/Product/Detail/@product.Id">@product.Name </a> </div>
+                                                    <div class="item-content">
+
+                                                        <div class="item-price">
+                                                            <div class="price-box"> <span class="regular-price"> <span class="price">@product.Price</span> </span> </div>
+                                                        </div>
+                                                        <div class="pro-action">
+                                                            <button type="button" class="add-to-cart" data-id="@product.Id"><span> Thêm vào giỏ hàng</span> </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Related Product Slider End -->
+<!-- service section -->

@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using eShop_Mvc.SharedKernel.Enums;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace eShop_Mvc.Core.Services
 {
@@ -174,29 +175,39 @@ namespace eShop_Mvc.Core.Services
             throw new NotImplementedException();
         }
 
-        public Task<IReadOnlyList<Product>> GetLatestAsync(int top)
+        public async Task<IReadOnlyList<Product>> GetLatestAsync(int top)
         {
-            throw new NotImplementedException();
+            return await _productRepository.FindAll(x => x.Status == Status.Active)
+                .OrderByDescending(x => x.DateCreated).Take(top).ToListAsync();
         }
 
-        public Task<IReadOnlyList<Product>> GetHotProductsAsync(int top)
+        public async Task<IReadOnlyList<Product>> GetHotProductsAsync(int top)
         {
-            throw new NotImplementedException();
+            return await _productRepository.FindAll(x => x.Status == Status.Active && x.HotFlag == true)
+                .OrderByDescending(x => x.DateCreated).Take(top).ToListAsync();
         }
 
-        public Task<IReadOnlyList<Product>> GetRelatedProductsAsync(int id, int top)
+        public async Task<IReadOnlyList<Product>> GetRelatedProductsAsync(int id, int top)
         {
-            throw new NotImplementedException();
+            var product = await _productRepository.FindByIdAsync(id);
+            return await _productRepository
+                .FindAll(x => x.Id != id && x.Status == Status.Active && x.CategoryId == product.CategoryId)
+                .OrderByDescending(x => x.DateCreated).Take(top).ToListAsync();
         }
 
-        public Task<IReadOnlyList<Product>> GetUpSellProductsAsync(int top)
+        public async Task<IReadOnlyList<Tag>> GetProductTagsAsync(int productId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<IReadOnlyList<Tag>> GetProductTagsAsync(int productId)
-        {
-            throw new NotImplementedException();
+            var tags = _tagRepository.FindAll();
+            var productTags = _productTagRepository.FindAll();
+            var query = from t in tags
+                        join pt in productTags on t.Id equals pt.TagId
+                        where pt.ProductId == productId
+                        select new Tag()
+                        {
+                            Id = t.Id,
+                            Name = t.Name
+                        };
+            return await query.ToListAsync();
         }
 
         public bool CheckAvailability(int productId)

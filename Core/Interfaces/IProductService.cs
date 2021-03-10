@@ -36,8 +36,6 @@ namespace eShop_Mvc.Core.Interfaces
 
         Task<IReadOnlyList<Product>> GetRelatedProductsAsync(int id, int top);
 
-        Task<IReadOnlyList<Product>> GetUpSellProductsAsync(int top);
-
         Task<IReadOnlyList<Tag>> GetProductTagsAsync(int productId);
 
         bool CheckAvailability(int productId);
