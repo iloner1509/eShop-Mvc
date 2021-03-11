@@ -1,0 +1,48 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <ul>
+                    <li class="home"> <a title="Go to Home Page" href="/">Trang chủ</a><span>&raquo;</span></li>
+                    <li><strong>Đăng nhập</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumbs End -->
+<!-- Main Container -->
+<section class="main-container col1-layout">
+    <div class="main container">
+        <div class="page-content">
+            <div class="account-login">
+                <div class="box-authentication">
+                    <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+                        <h4>Đăng nhập</h4>
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <label asp-for="Username">Username:<span class="required">*</span></label>
+                        <input asp-for="Username" type="text" class="form-control">
+                        <label asp-for="Password">Password<span class="required">*</span></label>
+                        <input asp-for="Password" type="password" class="form-control">
+                        <p class="forgot-pass"><a href="#">Quên mật khẩu?</a></p>
+                        <button type="submit" class="button"><i class="icon-lock icons"></i>&nbsp; <span>Đăng nhập</span></button>
+                        <label class="inline" asp-for="RememberMe">
+                            <input type="checkbox" asp-for="RememberMe" name="rememberme">
+                            Remember me
+                        </label>
+                    </form>
+                </div>
+                <div class="box-authentication">
+                    <h4>Đăng ký</h4>
+                    <p>Chưa có tài khoản? <a href="/Account/Register">Đăng ký ngay</a></p>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,103 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+@section Scripts
+{
+    <recaptcha-script validation-message-element-id="recaptchaErrorMessage"></recaptcha-script>
+}
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <ul>
+                    <li class="home"> <a title="Go to Home Page" href="/">Trang chủ</a><span>&raquo;</span></li>
+                    <li><strong>Đăng ký tài khoản</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumbs End -->
+<!-- Main Container -->
+<section class="main-container col1-layout">
+    <div class="main container">
+        <div class="page-content">
+            <div class="account-login">
+                <div class="col-md-3 col-sm-2"></div>
+                <div class="col-md-6 col-sm-8">
+                    <div class="single-input p-bottom50 clearfix">
+                        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="check-title">
+                                        <div asp-validation-summary="All" class="text-danger"></div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <label>Họ tên:</label>
+                                    <div class="input-text">
+                                        <input type="text" asp-for="FullName" name="fullName" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <label>Username:</label>
+                                    <div class="input-text">
+                                        <input type="text" asp-for="Username" name="userName" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <label>Email:</label>
+                                    <div class="input-text">
+                                        <input type="email" asp-for="Email" name="email" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Password:</label>
+                                    <div class="input-text">
+                                        <input type="password" asp-for="Password" name="password" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Xác nhận mật khẩu:</label>
+                                    <div class="input-text">
+                                        <input type="password" name="confirmPassword" asp-for="ConfirmPassword" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <label>Ngày sinh:</label>
+                                    <div class="input-text">
+                                        <input type="date" asp-for="DateOfBirth" name="dateOfBirth" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <label>Địa chỉ:</label>
+                                    <div class="input-text">
+                                        <input type="text" asp-for="Address" name="address" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    <label>SĐT:</label>
+                                    <div class="input-text">
+                                        <input type="text" asp-for="PhoneNumber" name="phoneNumber" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <recaptcha></recaptcha>
+
+                                    <span class="text-danger" id="recaptchaErrorMessage"></span>
+                                </div>
+                                <div class="col-xs-12">
+
+                                    <div class="submit-text">
+                                        <button class="button" type="submit"><i class="fa fa-user"></i>&nbsp; <span>Đăng ký</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

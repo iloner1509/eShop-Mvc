@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using PaulMiami.AspNetCore.Mvc.Recaptcha;
 
 namespace eShop_Mvc
 {
@@ -71,6 +72,13 @@ namespace eShop_Mvc
             {
                 o.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+
+            // recaptcha
+            services.AddRecaptcha(new RecaptchaOptions()
+            {
+                SiteKey = _configuration["Recaptcha:SiteKey"],
+                SecretKey = _configuration["Recaptcha:SecretKey"]
             });
 
             // Repository pattern and unit of work

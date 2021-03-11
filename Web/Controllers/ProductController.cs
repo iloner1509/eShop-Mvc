@@ -59,6 +59,28 @@ namespace eShop_Mvc.Controllers
             return View(catalog);
         }
 
+        public async Task<IActionResult> Search(string keyword, int? pageSize, string sortBy, int page = 1)
+        {
+            ViewData["BodyClass"] = "shop_list_page";
+            pageSize ??= _configuration.GetValue<int>("PageSize");
+            var result = await _productService.GetAllPagingAsync(null, keyword, page, pageSize.Value);
+            var catalog = new SearchViewModel()
+            {
+                PageSize = pageSize,
+                SortType = sortBy,
+                Data = new PagedResult<ProductViewModel>()
+                {
+                    CurrentPage = result.CurrentPage,
+                    RowCount = result.RowCount,
+                    PageSize = result.PageSize,
+                    Results = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(result.Results)
+                },
+                Keyword = keyword
+            };
+
+            return View(catalog);
+        }
+
         public async Task<IActionResult> Detail(int id)
         {
             ViewData["BodyClass"] = "product-page";
