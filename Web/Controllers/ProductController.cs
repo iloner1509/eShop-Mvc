@@ -94,6 +94,7 @@ namespace eShop_Mvc.Controllers
             model.Tags =
                 _mapper.Map<IReadOnlyList<Tag>, IReadOnlyList<TagViewModel>>(
                     await _productService.GetProductTagsAsync(id));
+            model.Available = model.Product.Quantity > 0;
             return View(model);
         }
     }

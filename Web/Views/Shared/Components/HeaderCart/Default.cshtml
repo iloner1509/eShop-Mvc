@@ -1,0 +1,55 @@
+﻿@model List<CartViewModel>
+@{
+    ViewData["Title"] = "Default";
+}
+
+<div class="mini-cart" id="headerCart">
+    <div data-toggle="dropdown" data-hover="dropdown" class="basket dropdown-toggle">
+        <a href="#">
+            <div class="cart-icon">
+                <i class="icon-basket-loaded icons"></i>
+                @if (Model.Count > 0)
+                {
+                    int totalItem = 0;
+                    foreach (var item in Model)
+                    {
+                        totalItem += item.Quantity;
+                    }
+                    <span class="cart-total">@totalItem</span>
+                }
+            </div>
+            <div class="shoppingcart-inner hidden-xs"><span class="cart-title">Giỏ hàng</span> </div>
+        </a>
+    </div>
+    <div>
+        <div class="top-cart-content">
+            @if (Model.Count > 0)
+            {
+                <div class="block-subtitle hidden">Các sản phẩm đã thêm gần đây</div>
+                <ul id="cart-sidebar" class="mini-products-list">
+                    @foreach (var item in Model)
+                    {
+                        var url = $"/Product/Detail/{@item.Product.Id}";
+                        <li class="item odd">
+                            <a href="@url" title="@item.Product.Name" class="product-image"><img src="@item.Product.Image" alt="@item.Product.Name" width="65"></a>
+                            <div class="product-details">
+                                <a href="#" title="Xóa khỏi giỏ hàng" class="remove-cart" data-id="@item.Product.Id"><i class="pe-7s-trash"></i></a>
+                                <p class="product-name"><a href="@url">@item.Product.Name</a> </p>
+                                <strong>@item.Quantity</strong> x <span class="price">@((item.Product.PromotionPrice ?? item.Product.Price).ToString("N0"))</span>
+                            </div>
+                        </li>
+                    }
+                </ul>
+                <div class="top-subtotal">Tổng tiền hàng: <span class="price">@Model.Sum(m => m.Quantity * m.Price).ToString("N0")</span></div>
+                <div class="actions">
+                    <button class="btn-checkout" type="button" onClick="location.href = 'checkout.html'"><i class="fa fa-check"></i><span>Thanh toán</span></button>
+                    <button class="view-cart" type="button" onClick="location.href = '/Cart'"><i class="fa fa-shopping-cart"></i><span>Giỏ hàng</span></button>
+                </div>
+            }
+            else
+            {
+                <div class="block-subtitle">Không có sản phẩm nào trong giỏ hàng</div>
+            }
+        </div>
+    </div>
+</div>

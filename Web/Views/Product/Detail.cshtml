@@ -4,7 +4,14 @@
 @{
     ViewData["Title"] = @Model.Product.Name;
 }
+@section Scripts{
 
+    <script src="~/client-side/js/controller/product/index.js"></script>
+    <script>
+        var productDetailObj = new ProductDetailController();
+        productDetailObj.initialize();
+    </script>
+}
 <div class="breadcrumbs">
     <div class="container">
         <div class="row">

@@ -72,13 +72,22 @@ namespace eShop_Mvc
             {
                 o.SerializerSettings.ContractResolver = new DefaultContractResolver();
                 o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-            });
+            }).AddSessionStateTempDataProvider();
 
             // recaptcha
             services.AddRecaptcha(new RecaptchaOptions()
             {
                 SiteKey = _configuration["Recaptcha:SiteKey"],
                 SecretKey = _configuration["Recaptcha:SecretKey"]
+            });
+
+            // Session
+            services.AddDistributedMemoryCache();
+            services.AddSession(option =>
+            {
+                option.IdleTimeout = TimeSpan.FromHours(2);
+                option.Cookie.HttpOnly = true;
+                option.Cookie.IsEssential = true;
             });
 
             // Repository pattern and unit of work
@@ -120,7 +129,7 @@ namespace eShop_Mvc
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapAreaControllerRoute(

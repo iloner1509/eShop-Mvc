@@ -1,7 +1,57 @@
-﻿
+﻿@model IReadOnlyList<ProductCategoryViewModel>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Danh mục sản phẩm";
 }
 
-<h2>Index</h2>
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <ul>
+                    <li class="home"> <a title="Go to Home Page" href="/">Home</a><span>&raquo;</span></li>
 
+                    <li><strong>Danh mục sản phẩm</strong></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumbs End -->
+<!-- Main Container -->
+<div class="main-container col1-layout">
+    <div class="container">
+        <div class="row">
+            <div class="col-main col-sm-12 col-xs-12">
+                <div class="shop-inner">
+
+                    <div class="product-grid-area">
+                        @foreach (var item in Model)
+                        {
+                            <ul class="products-grid">
+                                <li class="item col-lg-3 col-md-4 col-sm-6 col-xs-6 ">
+                                    <div class="product-item">
+                                        <div class="item-inner">
+                                            <div class="product-thumbnail">
+
+                                                <div class="pr-img-area">
+                                                    <a title="@item.Name" href="/Product/Catalog/@item.Id">
+                                                        <figure> <img class="first-img" src="@item.Image" alt="@item.Name"> <img class="hover-img" src="@item.Image" alt="@item.Name"></figure>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="item-info">
+                                                <div class="info-inner">
+                                                    <div class="item-title"> <a title="@item.Name" href="/Product/Catalog/@item.Id">@item.Name </a> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

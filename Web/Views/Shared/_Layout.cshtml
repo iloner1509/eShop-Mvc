@@ -82,6 +82,15 @@
     <!-- Slider Js -->
 
     <script src="~/client-side/js/revolution-slider.js"></script>
+    <script src="~/client-side/js/shared/system.js"></script>
+    <script src="~/lib/notify/notify.min.js"></script>
+    <script src="~/lib/notify/styles/metro/notify-metro.min.js"></script>
+    <script src="~/lib/mustache.js/mustache.min.js"></script>
+    <script src="~/client-side/js/controller/base/index.js"></script>
+    <script>
+        var baseObj = new BaseController();
+        baseObj.initialize();
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
