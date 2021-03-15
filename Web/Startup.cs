@@ -36,8 +36,12 @@ namespace eShop_Mvc
         {
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddDbContext<AppDbContext>(options =>
+            {
                 options.UseSqlServer(
-                    _configuration.GetConnectionString("DefaultConnection"), ob => ob.MigrationsAssembly("eShop_Mvc.Infrastructure")));
+                    _configuration.GetConnectionString("DefaultConnection"),
+                    ob => ob.MigrationsAssembly("eShop_Mvc.Infrastructure"));
+                options.EnableSensitiveDataLogging();
+            });
             services.AddDefaultIdentity<AppUser>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount = false;
@@ -91,7 +95,7 @@ namespace eShop_Mvc
             });
 
             // Repository pattern and unit of work
-            services.AddTransient(typeof(IRepository<,>), typeof(EfRepository<,>));
+            services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
             services.AddTransient(typeof(IUnitOfWork), typeof(EfUnitOfWork));
 
             // Services

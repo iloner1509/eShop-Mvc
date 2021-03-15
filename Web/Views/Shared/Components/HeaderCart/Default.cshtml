@@ -42,7 +42,7 @@
                 </ul>
                 <div class="top-subtotal">Tổng tiền hàng: <span class="price">@Model.Sum(m => m.Quantity * m.Price).ToString("N0")</span></div>
                 <div class="actions">
-                    <button class="btn-checkout" type="button" onClick="location.href = 'checkout.html'"><i class="fa fa-check"></i><span>Thanh toán</span></button>
+                    <button class="btn-checkout" type="button" onClick="location.href = '/Cart/Checkout'"><i class="fa fa-check"></i><span>Thanh toán</span></button>
                     <button class="view-cart" type="button" onClick="location.href = '/Cart'"><i class="fa fa-shopping-cart"></i><span>Giỏ hàng</span></button>
                 </div>
             }

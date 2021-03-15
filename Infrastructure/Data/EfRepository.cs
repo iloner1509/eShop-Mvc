@@ -19,7 +19,7 @@ namespace eShop_Mvc.Infrastructure.Data
         }
 
         public async Task<T> FindByIdAsync(TId id, params Expression<Func<T, object>>[] includeProperties)
-            => await FindAll(includeProperties).SingleOrDefaultAsync(x => x.Id.Equals(id));
+            => await FindAll(includeProperties).AsNoTracking().SingleOrDefaultAsync(x => x.Id.Equals(id));
 
         public async Task<T> FindSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
             => await FindAll(includeProperties).SingleOrDefaultAsync(predicate);

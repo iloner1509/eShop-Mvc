@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
 using eShop_Mvc.Extensions;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using eShop_Mvc.SharedKernel.Enums;
 
 namespace eShop_Mvc.Controllers
 {
@@ -16,12 +18,14 @@ namespace eShop_Mvc.Controllers
         private readonly IProductService _productService;
 
         private readonly IMapper _mapper;
+        private readonly IBillService _billService;
 
-        public CartController(IProductService productService, IMapper mapper)
+        public CartController(IProductService productService, IMapper mapper, IBillService billService)
         {
             _productService = productService;
 
             _mapper = mapper;
+            _billService = billService;
         }
 
         public IActionResult Index()
@@ -29,9 +33,65 @@ namespace eShop_Mvc.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult Checkout()
         {
-            return View();
+            var model = new CheckoutViewModel();
+            var session = HttpContext.Session.Get<List<CartViewModel>>("CartSession");
+            model.Cart = session;
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Checkout(CheckoutViewModel model)
+        {
+            var session = HttpContext.Session.Get<List<CartViewModel>>("CartSession");
+            if (ModelState.IsValid)
+            {
+                if (session != null)
+                {
+                    var details = new List<BillDetailViewModel>();
+                    foreach (var item in session)
+                    {
+                        details.Add(new BillDetailViewModel()
+                        {
+                            //Product = item.Product,
+                            Price = item.Price,
+                            Quantity = item.Quantity,
+                            ProductId = item.Product.Id
+                        });
+                    }
+                    var bill = new BillViewModel()
+                    {
+                        CustomerMobile = model.CustomerMobile,
+                        CustomerName = model.CustomerName,
+                        CustomerAddress = model.CustomerAddress,
+                        CustomerMessage = model.CustomerMessage,
+                        BillDetails = details,
+                        BillStatus = BillStatus.New
+                    };
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        bill.CustomerId = Guid.Parse(User.GetSpecificClaim("UserId"));
+                    }
+
+                    await _billService.CreateAsync(_mapper.Map<BillViewModel, Bill>(bill));
+                    try
+                    {
+                        _billService.Save();
+                        ViewData["Success"] = true;
+                    }
+                    catch (Exception e)
+                    {
+                        ViewData["Success"] = false;
+                        ModelState.AddModelError("", e.Message);
+                    }
+                }
+            }
+
+            model.Cart = session;
+            return View(model);
         }
 
         #region Ajax request
