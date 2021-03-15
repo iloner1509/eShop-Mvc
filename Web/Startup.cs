@@ -4,6 +4,7 @@ using eShop_Mvc.Authorization;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
 using eShop_Mvc.Core.Services;
+using eShop_Mvc.Extensions;
 using eShop_Mvc.Helpers;
 using eShop_Mvc.Helpers.AutoMapper;
 using eShop_Mvc.Infrastructure.Data;
@@ -110,6 +111,15 @@ namespace eShop_Mvc
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
             services.AddApplicationInsightsTelemetry();
+
+            // Image resizer
+            services.AddImageResizer();
+
+            // Caching
+            services.AddMemoryCache();
+
+            // Min response
+            services.AddMinResponse();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -127,8 +137,9 @@ namespace eShop_Mvc
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+            app.UseImageResizer();
             app.UseStaticFiles();
-
+            app.UseMinResponse();
             app.UseRouting();
 
             app.UseAuthentication();
