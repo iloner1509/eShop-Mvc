@@ -358,7 +358,7 @@
                             {
                                 Id: item.Id,
                                 Name: item.Name,
-                                Image: item.Image === null ? '<img src="/admin-site/images/notfound.png" width="25">' : '<img src="/admin-site/images/test.jpg" width="25">',
+                                Image: item.Image === null ?  '<img src="/admin-site/images/test.jpg" width="25">':`<img src="${item.Image}" width="25">` ,
                                 Price: system.formatNumber(item.Price, 0),
                                 CategoryName: item.ProductCategory.Name,
                                 CreatedDate: system.dateTimeFormatJson(item.DateCreated),

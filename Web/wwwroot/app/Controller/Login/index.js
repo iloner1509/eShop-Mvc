@@ -1,5 +1,8 @@
-﻿var loginController = function () {
-    var login = function (user, pass) {
+﻿var LoginController = function () {
+    this.initialize = function () {
+        registerEvent();
+    }
+    function login (user, pass) {
         $.ajax({
             type: "POST",
             data: {
@@ -18,7 +21,7 @@
         });
     }
 
-    var registerEvent = function () {
+    function registerEvent () {
         $('#frmLogin').validate({
             errorClass: "red",
             ignore: [],
@@ -42,7 +45,5 @@
                 }
             });
     }
-    this.initialize = function () {
-        registerEvent();
-    }
+    
 }

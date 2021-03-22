@@ -25,6 +25,33 @@
                 }
             }
         });
+        $("#btnSelectImg").on("click",
+            function () {
+                $("#fileInputImage").click();
+            });
+        $("#fileInputImage").on("change",
+            function () {
+                let fileUpload = $(this).get(0);
+                let files = fileUpload.files;
+                let data = new FormData();
+                for (let i = 0; i < files.length; i++) {
+                    data.append(files[i].name, files[i]);
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/Admin/Upload/UploadImage",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function (path) {
+                        $("#txtImage").val(path);
+                        system.notify("Upload ảnh thành công", "success");
+                    },
+                    error: function () {
+                        system.notify("Xảy ra lỗi khi upload ảnh !", "error");
+                    }
+                });
+            });
         $("#txt-search-keyword").on("keypress",
             function (e) {
                 if (e.which === 13) {
@@ -67,6 +94,7 @@
                         $("#txtUserName").val(data.UserName);
                         $("#txtEmail").val(data.Email);
                         $("#txtPhoneNumber").val(data.PhoneNumber);
+                        $("#txtImage").val(data.Avatar);
 
                         $("#ckStatus").prop("checked", data.Status === 1);
                         initRole(data.Roles);
@@ -86,6 +114,7 @@
                     let fullName = $("#txtFullName").val();
                     let userName = $("#txtUserName").val();
                     let email = $("#txtEmail").val();
+                    let avatar = $("#txtImage").val();
                     let phoneNumber = $("#txtPhoneNumber").val();
                     let password = $("#txtPassword").val();
                     let roles = [];
@@ -107,7 +136,8 @@
                             Email: email,
                             PhoneNumber: phoneNumber,
                             Status: status,
-                            Roles: roles
+                            Roles: roles,
+                            Avatar:avatar
                         },
                         dataType: "json",
                         success: function () {
@@ -191,7 +221,7 @@
                                     UserName: item.UserName,
                                     FullName: item.FullName,
 
-                                    Avatar: item.Avatar === null ? '<img src="/admin-site/images/notfound.png" width="25">' : '<img src="/admin-site/images/test.jpg" width="25">',
+                                    Avatar: item.Avatar === null ? '<img src="/admin-site/images/notfound.png?w=25&h=25">' : `<img src="${item.Avatar}?w=25&h=25">`,
 
                                     DateCreated: system.dateTimeFormatJson(item.DateCreated),
                                     Status: system.getStatus(item.Status)

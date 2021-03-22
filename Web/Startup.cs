@@ -41,7 +41,7 @@ namespace eShop_Mvc
                 options.UseSqlServer(
                     _configuration.GetConnectionString("DefaultConnection"),
                     ob => ob.MigrationsAssembly("eShop_Mvc.Infrastructure"));
-                options.EnableSensitiveDataLogging();
+                //options.EnableSensitiveDataLogging();
             });
             services.AddDefaultIdentity<AppUser>(options =>
                 {

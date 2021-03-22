@@ -32,8 +32,6 @@
 
 <body class="login">
     <div>
-        @*<a class="hiddenanchor" id="signup"></a>
-            <a class="hiddenanchor" id="signin"></a>*@
 
         <div class="login_wrapper">
             <div class="animate form login_form">
@@ -48,7 +46,7 @@
                             <input type="password" class="form-control" id="txtPassword" name="password" placeholder="Password" required="" />
                         </div>
                         <div>
-                            <a class="btn btn-default submit" href="#" id="btnLogin">Đăng nhập</a>
+                            <a class="btn btn-primary submit" href="#" id="btnLogin">Đăng nhập</a>
                             <a class="reset_pass" href="#">Quên mật khẩu ?</a>
                         </div>
 
@@ -121,7 +119,7 @@
     <script src="~/app/Shared/system.js"></script>
     <script src="~/app/Controller/Login/index.js"></script>
     <script>
-        var login = new loginController();
+        var login = new LoginController();
         login.initialize();
     </script>
 </body>

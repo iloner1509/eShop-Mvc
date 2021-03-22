@@ -22,7 +22,7 @@ namespace eShop_Mvc.Infrastructure.Data
             => await FindAll(includeProperties).AsNoTracking().SingleOrDefaultAsync(x => x.Id.Equals(id));
 
         public async Task<T> FindSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
-            => await FindAll(includeProperties).SingleOrDefaultAsync(predicate);
+            => await FindAll(includeProperties).AsNoTracking().SingleOrDefaultAsync(predicate);
 
         public IQueryable<T> FindAll(params Expression<Func<T, object>>[] includeProperties)
         {
