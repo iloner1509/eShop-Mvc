@@ -18,7 +18,7 @@ namespace eShop_Mvc.Models.AccountViewModels
         public string PhoneNumber { get; set; }
         public string Avatar { get; set; }
         public string Gender { get; set; }
-        public Status Status { get; set; }
+        public Status Status { get; set; } = Status.Active;
         public DateTime DateCreated { get; set; }
         public ICollection<string> Roles { get; set; }
     }

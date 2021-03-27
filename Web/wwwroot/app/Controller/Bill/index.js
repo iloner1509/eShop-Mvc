@@ -100,13 +100,13 @@
             function (e) {
                 if ($("#frmDetail").valid()) {
                     e.preventDefault();
-                    var id = $("#hidIdM").val();
-                    var customerName = $("#txtCustomerName").val();
-                    var customerAddress = $("#txtCustomerAddress").val();
-                    var customerMobile = $("#txtCustomerMobile").val();
-                    var customerMessage = $("#txtCustomerMessage").val();
-                    var paymentMethod = $("#ddlPaymentMethod").val();
-                    var billStatus = $("#ddlBillStatus").val();
+                    let id = $("#hidIdM").val();
+                    let customerName = $("#txtCustomerName").val();
+                    let customerAddress = $("#txtCustomerAddress").val();
+                    let customerMobile = $("#txtCustomerMobile").val();
+                    let customerMessage = $("#txtCustomerMessage").val();
+                    let paymentMethod = $("#ddlPaymentMethod").val();
+                    let billStatus = $("#ddlBillStatus").val();
 
                     var billDetails = [];
                     $.each($("#tbl-bill-detail tr"),

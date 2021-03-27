@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using eShop_Mvc.Authorization;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Models.AccountViewModels;
@@ -12,6 +8,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
@@ -20,12 +21,21 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
         private readonly IAuthorizationService _authorizationService;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public UserController(UserManager<AppUser> userManager, IMapper mapper, IAuthorizationService authorizationService)
+        public UserController(UserManager<AppUser> userManager, IMapper mapper, IAuthorizationService authorizationService, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _mapper = mapper;
             _authorizationService = authorizationService;
+            _signInManager = signInManager;
+        }
+
+        public async Task<IActionResult> UserProfile()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var model = await _userManager.FindByIdAsync(userId);
+            return View(_mapper.Map<AppUser, AppUserViewModel>(model));
         }
 
         [HttpPost]
@@ -64,23 +74,61 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 var user = await _userManager.FindByIdAsync(appUser.Id.ToString());
                 // remove current roles
                 var currentRoles = await _userManager.GetRolesAsync(user);
-                var result = await _userManager.AddToRolesAsync(user, appUser.Roles.Except(currentRoles).ToArray());
-                if (result.Succeeded)
+                if (appUser.Roles != null)
                 {
-                    string[] needRemoveRoles = currentRoles.Except(appUser.Roles).ToArray();
-                    await _userManager.RemoveFromRolesAsync(user, needRemoveRoles);
-
-                    // update user
-                    user.FullName = appUser.FullName;
-                    user.Email = appUser.Email;
-                    user.Avatar = appUser.Avatar;
-                    user.PhoneNumber = appUser.PhoneNumber;
-                    user.Status = appUser.Status;
-                    user.DateModified = DateTime.Now;
-                    await _userManager.UpdateAsync(user);
+                    var result = await _userManager.AddToRolesAsync(user, appUser.Roles.Except(currentRoles).ToArray());
+                    if (result.Succeeded)
+                    {
+                        string[] needRemoveRoles = currentRoles.Except(appUser.Roles).ToArray();
+                        await _userManager.RemoveFromRolesAsync(user, needRemoveRoles);
+                    }
                 }
+
+                user.FullName = appUser.FullName;
+                user.Email = appUser.Email;
+                user.Avatar = appUser.Avatar;
+                user.PhoneNumber = appUser.PhoneNumber;
+                user.BirthDay = DateTime.ParseExact(appUser.BirthDay, "dd/MM/yyyy", null);
+                user.Status = appUser.Status;
+                user.DateModified = DateTime.Now;
+                await _userManager.UpdateAsync(user);
             }
             return new OkObjectResult(appUser);
+        }
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return new RedirectResult("/Admin/Login/Index");
+                }
+
+                var result = await _userManager.ChangePasswordAsync(user, viewModel.CurrentPassword, viewModel.NewPassword);
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(String.Empty, error.Description);
+                    }
+
+                    return View();
+                }
+
+                await _signInManager.RefreshSignInAsync(user);
+                return View("ChangePasswordSuccess");
+            }
+
+            return View(viewModel);
         }
 
         [HttpPost]

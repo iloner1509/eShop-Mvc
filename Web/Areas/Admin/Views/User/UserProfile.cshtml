@@ -1,0 +1,109 @@
+﻿@using eShop_Mvc.Extensions
+@model AppUserViewModel
+@{
+    ViewData["Title"] = "UserProfile";
+}
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous"></script>
+
+    <script src="~/app/Controller/User/user-profile.js" asp-append-version="true"></script>
+    <script>
+        var userProfile = new UserProfile();
+        userProfile.initialize();
+    </script>
+
+}
+@section Styles
+{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" />
+
+}
+<div class="page-title">
+    <div class="title_left">
+        <h3>Tài khoản của tôi</h3>
+    </div>
+</div>
+<div class="clearfix"></div>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Hồ sơ của tôi</h2>
+
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <form id="frmEdit" role="form" data-id="@User.GetSpecificClaim("UserId")">
+
+                    <div class="item form-group" style="display: flex">
+                        <label class="col-form-label col-md-3 col-sm-3  label-align">Tên tài khoản</label>
+
+                        <div class="col-md-6 col-sm-6">
+                            <label class="col-form-label">@Model.UserName</label>
+                        </div>
+                    </div>
+                    <div class="item form-group" style="display: flex">
+                        <label for="txtFullName" class="col-form-label col-md-3 col-sm-3  label-align">Tên người dùng</label>
+                        <div class="col-md-6 col-sm-6">
+                            <input type="text" name="txtFullName" class="form-control" id="txtFullName" value="@Model.FullName" />
+                        </div>
+                    </div>
+                    <div class="item form-group" style="display: flex">
+                        <label for="txtBirthDay" class="col-form-label col-md-3 col-sm-3  label-align">Ngày sinh</label>
+                        <div class="col-md-4 col-sm-4">
+                            <input type="text" name="txtBirthDay" value="@Model.BirthDay" id="txtBirthDay" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="item form-group" style="display: flex">
+                        <label for="txtEmail" class="col-form-label col-md-3 col-sm-3  label-align">Email</label>
+                        <div class="col-md-6 col-sm-6">
+                            <input type="email" name="txtEmail" class="form-control" id="txtEmail" value="@Model.Email" />
+                        </div>
+                    </div>
+                    <div class="item form-group" style="display: flex">
+                        <label for="txtPhoneNumber" class="col-form-label col-md-3 col-sm-3  label-align">SĐT</label>
+                        <div class="col-md-6 col-sm-6">
+                            <input type="text" name="txtPhoneNumber" class="form-control" id="txtPhoneNumber" value="@Model.PhoneNumber" />
+                        </div>
+                    </div>
+                    @*<div class="item form-group" style="display: flex">
+                            <label for="txtAddress" class="col-form-label col-md-3 col-sm-3  label-align">Địa chỉ</label>
+                            <div class="col-md-6 col-sm-6">
+                                <input type="password" name="txtAddress" class="form-control" id="txtAddress" @Model.Address />
+                            </div>
+                        </div>*@
+
+                    <div class="item form-group" style="display: flex">
+                        <label for="txtImage" class="col-form-label col-md-3 col-sm-3  label-align">Ảnh đại diện</label>
+
+                        <div class="col-md-6 col-sm-6">
+                            <div class="input-group">
+                                <input type="hidden" name="txtImage" class="form-control" id="txtImage" />
+                                <input type="file" id="fileInputImage" style="display: none" />
+                                <img src="@Model.Avatar?w=150&h=150" alt="User avatar" class="img-circle">
+                                <span class="input-group-btn">
+                                    <input type="button" class="btn btn-primary" id="btnSelectImg" value="Đổi ảnh" />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ln_solid">
+                    </div>
+                    <div class="item form-group">
+                        <div class="col-md-6">
+                            <a href="/Admin/User/ChangePassword" class="btn btn-danger">Đổi mật khẩu</a>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <button type="button" id="btnSave" class="btn btn-primary">Lưu</button>
+
+                            <button type="button" id="btnCancel" class="btn btn-dark" data-dismiss="modal">Trở lại</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

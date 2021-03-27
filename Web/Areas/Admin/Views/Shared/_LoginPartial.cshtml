@@ -10,13 +10,13 @@
         <img src="@User.GetSpecificClaim("Avatar")" alt="">@User.GetSpecificClaim("FullName")
     </a>
     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="javascript:;"> Profile</a>
+        <a class="dropdown-item" href="/Admin/User/UserProfile">Profile</a>
         <a class="dropdown-item" href="javascript:;">
             <span>Settings</span>
         </a>
         <a class="dropdown-item" href="javascript:;">Help</a>
         <form class="navbar-right" action="/Admin/Account/Logout" method="post" id="frmLogout">
-            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            <button type="submit" class="nav-link btn btn-link text-dark">Đăng xuất</button>
         </form>
     </div>
 
@@ -24,8 +24,8 @@
 else
 {
     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="javascript:;">Register</a>
+        <a class="dropdown-item" href="javascript:;">Đăng nhập</a>
 
-        <a class="dropdown-item" href="javascript:;">Login</a>
+        <a class="dropdown-item" href="javascript:;">Đăng ký</a>
     </div>
 }

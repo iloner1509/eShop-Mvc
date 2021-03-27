@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Globalization;
+using AutoMapper;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Models.AccountViewModels;
 using eShop_Mvc.Models.Common;
@@ -14,7 +15,8 @@ namespace eShop_Mvc.Helpers.AutoMapper
             CreateMap<ProductCategory, ProductCategoryViewModel>().ReverseMap();
             CreateMap<Product, ProductViewModel>().ReverseMap();
             CreateMap<Function, FunctionViewModel>().ReverseMap();
-            CreateMap<AppUser, AppUserViewModel>();
+            CreateMap<AppUser, AppUserViewModel>()
+                .AfterMap((src, dest) => dest.BirthDay = src.BirthDay?.ToString("dd/MM/yyyy"));
             CreateMap<AppRole, AppRoleViewModel>().ReverseMap();
             CreateMap<Permission, PermissionViewModel>().ReverseMap();
             CreateMap<Announcement, AnnouncementViewModel>().MaxDepth(2).ReverseMap();
