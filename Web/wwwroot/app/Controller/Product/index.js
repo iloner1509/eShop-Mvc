@@ -193,7 +193,8 @@
     function registerControls() {
         CKEDITOR.replace("txtContent",
             {
-                //filebrowserUploadUrl: "/Admin/Upload/UploadImageForCkEditor"
+                filebrowserUploadUrl: "/Admin/Upload/UploadImageForCkEditor",
+                filebrowserUploadMethod: "form"
             });
         //Fix: cannot click on element ck in modal
         $.fn.modal.Constructor.prototype.enforceFocus = function () {
@@ -358,7 +359,7 @@
                             {
                                 Id: item.Id,
                                 Name: item.Name,
-                                Image: item.Image === null ?  '<img src="/admin-site/images/test.jpg" width="25">':`<img src="${item.Image}" width="25">` ,
+                                Image: item.Image === null ? '<img src="/admin-site/images/test.jpg" width="25">' : `<img src="${item.Image}" width="25">`,
                                 Price: system.formatNumber(item.Price, 0),
                                 CategoryName: item.ProductCategory.Name,
                                 CreatedDate: system.dateTimeFormatJson(item.DateCreated),

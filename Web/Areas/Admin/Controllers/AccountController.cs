@@ -21,6 +21,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
+            HttpContext.Session.Remove("LoginSession");
             return Redirect("/Admin/Login/Index");
         }
     }

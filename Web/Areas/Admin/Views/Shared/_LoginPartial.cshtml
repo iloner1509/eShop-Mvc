@@ -1,16 +1,18 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using eShop_Mvc.Core.Entities
 @using eShop_Mvc.Extensions
+@using System.Net.Http
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {
+    var session = Context.Session.Get<AppUserViewModel>("LoginSession");
     <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-        <img src="@User.GetSpecificClaim("Avatar")" alt="">@User.GetSpecificClaim("FullName")
+        <img src="@session.Avatar" alt="">@session.FullName
     </a>
     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="/Admin/User/UserProfile">Profile</a>
+        <a class="dropdown-item" href="/Admin/User/UserProfile">Tài khoản của tôi</a>
         <a class="dropdown-item" href="javascript:;">
             <span>Settings</span>
         </a>

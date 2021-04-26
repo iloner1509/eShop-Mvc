@@ -90,7 +90,7 @@ namespace eShop_Mvc
             services.AddDistributedMemoryCache();
             services.AddSession(option =>
             {
-                option.IdleTimeout = TimeSpan.FromHours(2);
+                option.IdleTimeout = TimeSpan.FromDays(7);
                 option.Cookie.HttpOnly = true;
                 option.Cookie.IsEssential = true;
             });

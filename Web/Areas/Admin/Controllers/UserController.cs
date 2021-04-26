@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using eShop_Mvc.Authorization;
 using eShop_Mvc.Core.Entities;
+using eShop_Mvc.Extensions;
 using eShop_Mvc.Models.AccountViewModels;
 using eShop_Mvc.SharedKernel;
 using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -92,6 +94,16 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 user.Status = appUser.Status;
                 user.DateModified = DateTime.Now;
                 await _userManager.UpdateAsync(user);
+
+                // update session
+                var session = new AppUserViewModel()
+                {
+                    Id = appUser.Id,
+                    FullName = appUser.FullName,
+                    Avatar = appUser.Avatar,
+                    UserName = appUser.UserName,
+                };
+                HttpContext.Session.Set("LoginSession", session);
             }
             return new OkObjectResult(appUser);
         }

@@ -110,6 +110,7 @@
                         success: function () {
                             system.notify("Cập nhật dữ liệu thành công", "success");
                             loadData();
+                            window.location.reload();
                         },
                         error: function () {
                             system.notify("Có lỗi khi cập nhật dữ liệu !", "error");

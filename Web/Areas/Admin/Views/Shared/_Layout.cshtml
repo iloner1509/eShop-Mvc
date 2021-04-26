@@ -1,4 +1,8 @@
 ﻿@using eShop_Mvc.Extensions
+@{
+    var session = Context.Session.Get<AppUserViewModel>
+        ("LoginSession");
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,11 +44,11 @@
                     <!-- menu profile quick info -->
                     <div class="profile clearfix">
                         <div class="profile_pic">
-                            <img src="@User.GetSpecificClaim("Avatar")" alt="User avatar" class="img-circle profile_img">
+                            <img src="@session.Avatar" alt="User avatar" class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
-                            <h2>@User.GetSpecificClaim("FullName")</h2>
+                            <h2>@session.FullName</h2>
                         </div>
                     </div>
                     <!-- /menu profile quick info -->

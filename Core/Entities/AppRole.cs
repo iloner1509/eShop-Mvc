@@ -6,7 +6,7 @@ namespace eShop_Mvc.Core.Entities
 {
     public class AppRole : IdentityRole<Guid>
     {
-        public AppRole() : base()
+        public AppRole()
         {
         }
 
