@@ -2,13 +2,12 @@
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
 using eShop_Mvc.Models.ProductViewModels;
+using eShop_Mvc.SharedKernel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using eShop_Mvc.Helpers;
-using eShop_Mvc.SharedKernel;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
@@ -51,19 +50,15 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             {
                 return new BadRequestObjectResult(ModelState);
             }
-            else
+
+            if (sourceId == targetId)
             {
-                if (sourceId == targetId)
-                {
-                    return new BadRequestResult();
-                }
-                else
-                {
-                    await _productCategoryService.UpdateParentIdAsync(sourceId, targetId, items);
-                    _productCategoryService.Save();
-                    return new OkResult();
-                }
+                return new BadRequestResult();
             }
+
+            await _productCategoryService.UpdateParentIdAsync(sourceId, targetId, items);
+            _productCategoryService.Save();
+            return new OkResult();
         }
 
         [HttpPost]
@@ -73,19 +68,15 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             {
                 return new BadRequestObjectResult(ModelState);
             }
-            else
+
+            if (sourceId == targetId)
             {
-                if (sourceId == targetId)
-                {
-                    return new BadRequestResult();
-                }
-                else
-                {
-                    await _productCategoryService.ReOrderAsync(sourceId, targetId);
-                    _productCategoryService.Save();
-                    return new OkResult();
-                }
+                return new BadRequestResult();
             }
+
+            await _productCategoryService.ReOrderAsync(sourceId, targetId);
+            _productCategoryService.Save();
+            return new OkResult();
         }
 
         [HttpPost]
@@ -96,20 +87,18 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 return new BadRequestObjectResult(allErrors);
             }
+
+            productCategoryViewModel.SeoAlias = TextHelper.ToUnsignString(productCategoryViewModel.Name);
+            if (productCategoryViewModel.Id == 0)
+            {
+                await _productCategoryService.AddAsync(_mapper.Map<ProductCategoryViewModel, ProductCategory>(productCategoryViewModel));
+            }
             else
             {
-                productCategoryViewModel.SeoAlias = TextHelper.ToUnsignString(productCategoryViewModel.Name);
-                if (productCategoryViewModel.Id == 0)
-                {
-                    await _productCategoryService.AddAsync(_mapper.Map<ProductCategoryViewModel, ProductCategory>(productCategoryViewModel));
-                }
-                else
-                {
-                    await _productCategoryService.UpdateAsync(_mapper.Map<ProductCategoryViewModel, ProductCategory>(productCategoryViewModel));
-                }
-                _productCategoryService.Save();
-                return new OkObjectResult(productCategoryViewModel);
+                await _productCategoryService.UpdateAsync(_mapper.Map<ProductCategoryViewModel, ProductCategory>(productCategoryViewModel));
             }
+            _productCategoryService.Save();
+            return new OkObjectResult(productCategoryViewModel);
         }
 
         [HttpPost]
@@ -119,12 +108,10 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             {
                 return new BadRequestResult();
             }
-            else
-            {
-                await _productCategoryService.DeleteAsync(id);
-                _productCategoryService.Save();
-                return new OkObjectResult(id);
-            }
+
+            await _productCategoryService.DeleteAsync(id);
+            _productCategoryService.Save();
+            return new OkObjectResult(id);
         }
 
         #endregion Get data API

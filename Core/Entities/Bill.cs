@@ -15,8 +15,8 @@ namespace eShop_Mvc.Core.Entities
         {
         }
 
-        public Bill(string customerName, string customerAddress, string customerMobile,
-            string customerMessage, PaymentMethod paymentMethod, BillStatus billStatus, Guid? customerId, Status status)
+        public Bill(string customerName, string customerAddress, string customerMobile, string customerMessage,
+                    PaymentMethod paymentMethod, BillStatus billStatus, Guid? customerId, Status status)
         {
             CustomerName = customerName;
             CustomerAddress = customerAddress;
@@ -25,12 +25,11 @@ namespace eShop_Mvc.Core.Entities
             PaymentMethod = paymentMethod;
             BillStatus = billStatus;
             CustomerId = customerId;
-
             Status = status;
         }
 
-        public Bill(int id, string customerName, string customerAddress, string customerMobile,
-            string customerMessage, PaymentMethod paymentMethod, BillStatus billStatus, Guid? customerId, Status status)
+        public Bill(int id, string customerName, string customerAddress, string customerMobile, string customerMessage,
+                    PaymentMethod paymentMethod, BillStatus billStatus, Guid? customerId, Status status)
         {
             Id = id;
             CustomerName = customerName;
@@ -40,7 +39,6 @@ namespace eShop_Mvc.Core.Entities
             PaymentMethod = paymentMethod;
             BillStatus = billStatus;
             CustomerId = customerId;
-
             Status = status;
         }
 

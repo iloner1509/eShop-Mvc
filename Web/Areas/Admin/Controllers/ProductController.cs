@@ -83,20 +83,18 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 return new BadRequestObjectResult(allErrors);
             }
+
+            productViewModel.SeoAlias = TextHelper.ToUnsignString(productViewModel.Name);
+            if (productViewModel.Id == 0)
+            {
+                await _productService.AddAsync(_mapper.Map<ProductViewModel, Product>(productViewModel));
+            }
             else
             {
-                productViewModel.SeoAlias = TextHelper.ToUnsignString(productViewModel.Name);
-                if (productViewModel.Id == 0)
-                {
-                    await _productService.AddAsync(_mapper.Map<ProductViewModel, Product>(productViewModel));
-                }
-                else
-                {
-                    await _productService.UpdateAsync(_mapper.Map<ProductViewModel, Product>(productViewModel));
-                }
-                _productService.Save();
-                return new OkObjectResult(productViewModel);
+                await _productService.UpdateAsync(_mapper.Map<ProductViewModel, Product>(productViewModel));
             }
+            _productService.Save();
+            return new OkObjectResult(productViewModel);
         }
 
         [HttpPost]
@@ -106,12 +104,10 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             {
                 return new BadRequestObjectResult(ModelState);
             }
-            else
-            {
-                await _productService.DeleteAsync(id);
-                _productService.Save();
-                return new OkObjectResult(id);
-            }
+
+            await _productService.DeleteAsync(id);
+            _productService.Save();
+            return new OkObjectResult(id);
         }
 
         [HttpPost]

@@ -23,7 +23,7 @@ namespace eShop_Mvc.Core.Services
 
         public Task<Function> GetByIdAsync(string id) => _functionRepository.FindByIdAsync(id);
 
-        public async Task<bool> CheckIfExistedId(string id) => (await _functionRepository.FindByIdAsync(id)) != null;
+        public async Task<bool> CheckIfExistedIdAsync(string id) => (await _functionRepository.FindByIdAsync(id)) != null;
 
         public Task AddAsync(Function function) => _functionRepository.AddAsync(function);
 

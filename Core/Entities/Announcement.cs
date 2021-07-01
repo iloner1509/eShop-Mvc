@@ -19,7 +19,6 @@ namespace eShop_Mvc.Core.Entities
             Title = title;
             Content = content;
             UserId = userId;
-
             Status = status;
         }
 

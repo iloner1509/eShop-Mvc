@@ -20,24 +20,22 @@ namespace eShop_Mvc.Core.Services
         private readonly IRepository<Function, string> _functionRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public RoleService(RoleManager<AppRole> roleManager,
-            IRepository<Announcement, string> announcementRepository,
-            IRepository<AnnouncementUser, int> announcementUserRepository,
-            IRepository<Permission, int> permissionRepository,
-            IRepository<Function, string> functionRepository,
-            IUnitOfWork unitOfWork
-            )
+        public RoleService(RoleManager<AppRole> roleManager, IRepository<Announcement, string> announcementRepository,
+                           IRepository<AnnouncementUser, int> announcementUserRepository,
+                           IRepository<Permission, int> permissionRepository,
+                           IRepository<Function, string> functionRepository, IUnitOfWork unitOfWork)
         {
             _roleManager = roleManager;
             _announcementRepository = announcementRepository;
             _announcementUserRepository = announcementUserRepository;
-
             _permissionRepository = permissionRepository;
             _functionRepository = functionRepository;
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> AddAsync(Announcement announcement, List<AnnouncementUser> announcementUsers, AppRole role)
+        public async Task<bool> AddAsync(Announcement announcement,
+                                         List<AnnouncementUser> announcementUsers,
+                                         AppRole role)
         {
             var newRole = new AppRole()
             {

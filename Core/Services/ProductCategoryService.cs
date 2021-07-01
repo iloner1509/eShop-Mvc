@@ -31,19 +31,18 @@ namespace eShop_Mvc.Core.Services
 
         public Task DeleteAsync(int id) => _productCategoryRepository.DeleteAsync(id);
 
-        public async Task<IReadOnlyList<ProductCategory>> GetAllAsync() => await _productCategoryRepository.FindAll().OrderBy(x => x.ParentId).ToListAsync();
+        public async Task<IReadOnlyList<ProductCategory>> GetAllAsync()
+            => await _productCategoryRepository.FindAll().OrderBy(x => x.ParentId).ToListAsync();
 
         public async Task<IReadOnlyList<ProductCategory>> GetAllAsync(string keyword)
         {
             if (!string.IsNullOrEmpty(keyword))
             {
-                return await _productCategoryRepository.FindAll(x => x.Name.Contains(keyword) || x.Description.Contains(keyword)).OrderBy(x => x.ParentId)
+                return await _productCategoryRepository.FindAll(x => x.Name.Contains(keyword) || x.Description.Contains(keyword))
+                    .OrderBy(x => x.ParentId)
                     .ToListAsync();
             }
-            else
-            {
-                return await GetAllAsync();
-            }
+            return await GetAllAsync();
         }
 
         public async Task<IReadOnlyList<ProductCategory>> GetAllByParentIdAsync(int parentId)
@@ -59,8 +58,6 @@ namespace eShop_Mvc.Core.Services
             await _productCategoryRepository.UpdateAsync(sourceCategory);
 
             // get sibling
-            //var sibling = _productCategoryRepository.FindAll(x => items.ContainsKey(x.Id)).ToList();
-
             var sibling = _productCategoryRepository.FindAll(x => items.ContainsKey(x.Id));
             foreach (var child in sibling)
             {

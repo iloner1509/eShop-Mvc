@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using eShop_Mvc.Extensions;
+﻿using eShop_Mvc.Extensions;
 using eShop_Mvc.Models.AccountViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
@@ -24,7 +22,6 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult UploadImage()
         {
-            ;
             var files = Request.Form.Files;
             if (files.Count == 0)
             {
@@ -53,8 +50,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task UploadImageForCkEditor(IList<IFormFile> uploadFiles, string ckEditorFuncNum, string CKEditor,
-            string langCode)
+        public async Task UploadImageForCkEditor(IList<IFormFile> uploadFiles, string ckEditorFuncNum, string CKEditor, string langCode)
         {
             if (uploadFiles.Count == 0)
             {

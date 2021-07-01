@@ -23,9 +23,9 @@ namespace eShop_Mvc.SharedKernel
             Regex regex = new Regex(@"\p{IsCombiningDiacriticalMarks}+");
             string str = input.Normalize(NormalizationForm.FormD);
             string str2 = regex.Replace(str, String.Empty).Replace("đ", "d").Replace("Đ", "D");
-            while (str2.IndexOf("?") >= 0)
+            while (str2.IndexOf("?", StringComparison.Ordinal) >= 0)
             {
-                str2 = str2.Remove(str2.IndexOf("?"), 1);
+                str2 = str2.Remove(str2.IndexOf("?", StringComparison.Ordinal), 1);
             }
             while (str2.Contains("--"))
             {

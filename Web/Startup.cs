@@ -1,9 +1,6 @@
-using System;
-using AutoMapper;
+﻿using AutoMapper;
 using eShop_Mvc.Authorization;
 using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Interfaces;
-using eShop_Mvc.Core.Services;
 using eShop_Mvc.Extensions;
 using eShop_Mvc.Helpers;
 using eShop_Mvc.Helpers.AutoMapper;
@@ -20,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using PaulMiami.AspNetCore.Mvc.Recaptcha;
+using System;
 
 namespace eShop_Mvc
 {
@@ -35,41 +33,19 @@ namespace eShop_Mvc
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Auto Mapper
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlServer(
                     _configuration.GetConnectionString("DefaultConnection"),
                     ob => ob.MigrationsAssembly("eShop_Mvc.Infrastructure"));
-                //options.EnableSensitiveDataLogging();
+                options.EnableSensitiveDataLogging();
             });
-            services.AddDefaultIdentity<AppUser>(options =>
-                {
-                    options.SignIn.RequireConfirmedAccount = false;
 
-                    // Password settings
-                    options.Password.RequireDigit = false;
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequiredLength = 6;
-                    options.Password.RequiredUniqueChars = 0;
+            services.AddIdentityServices();
 
-                    // Lockout setting
-                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
-                    options.Lockout.MaxFailedAccessAttempts = 10;
-
-                    // User settings
-                    options.User.RequireUniqueEmail = true;
-                })
-                .AddRoles<AppRole>()
-                .AddEntityFrameworkStores<AppDbContext>();
-
-            // Auto Mapper
-
-            services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
-            services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
-
+            // Seed data
             services.AddScoped<IDbInitializer, DbInitializer>();
 
             services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
@@ -95,22 +71,20 @@ namespace eShop_Mvc
                 option.Cookie.IsEssential = true;
             });
 
-            // Repository pattern and unit of work
-            services.AddScoped(typeof(IRepository<,>), typeof(EfRepository<,>));
-            services.AddTransient(typeof(IUnitOfWork), typeof(EfUnitOfWork));
-
-            // Services
-            services.AddTransient<IProductCategoryService, ProductCategoryService>();
-            services.AddTransient<IFunctionService, FunctionService>();
-            services.AddTransient<IProductService, ProductService>();
-            services.AddTransient<IRoleService, RoleService>();
-            services.AddTransient<IBillService, BillService>();
+            services.AddApplicationServices();
 
             // Authorization
             services.AddTransient<IAuthorizationHandler, ResourceBasedAuthorizationHandler>();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddRazorPages();
             services.AddApplicationInsightsTelemetry();
+
+            services.Configure<SecurityStampValidatorOptions>(options =>
+            {
+                // Trên 10 giây truy cập lại sẽ nạp lại thông tin User (Role)
+                // SecurityStamp trong bảng User đổi -> nạp lại thông tin Security
+                options.ValidationInterval = TimeSpan.FromSeconds(5);
+            });
 
             // Image resizer
             services.AddImageResizer();

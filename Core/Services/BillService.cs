@@ -19,7 +19,8 @@ namespace eShop_Mvc.Core.Services
         private readonly IRepository<Product, int> _productRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public BillService(IRepository<Bill, int> orderRepository, IRepository<BillDetail, int> orderDetailRepository, IRepository<Product, int> productRepository, IUnitOfWork unitOfWork)
+        public BillService(IRepository<Bill, int> orderRepository, IRepository<BillDetail, int> orderDetailRepository,
+                           IRepository<Product, int> productRepository, IUnitOfWork unitOfWork)
         {
             _orderRepository = orderRepository;
             _orderDetailRepository = orderDetailRepository;
@@ -100,7 +101,7 @@ namespace eShop_Mvc.Core.Services
             await _orderRepository.UpdateAsync(order);
         }
 
-        public async Task<IReadOnlyList<BillDetail>> GetBillDetails(int billId)
+        public async Task<IReadOnlyList<BillDetail>> GetListBillDetailAsync(int billId)
         {
             return await _orderDetailRepository.FindAll(x => x.BillId == billId, o => o.Product).ToListAsync();
         }

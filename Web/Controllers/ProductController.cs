@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
-using eShop_Mvc.Core.Services;
 using eShop_Mvc.Models.Common;
 using eShop_Mvc.Models.ProductViewModels;
 using eShop_Mvc.SharedKernel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eShop_Mvc.Controllers
 {

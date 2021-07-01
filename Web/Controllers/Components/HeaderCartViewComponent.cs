@@ -15,7 +15,7 @@ namespace eShop_Mvc.Controllers.Components
             var cart = new List<CartViewModel>();
             if (session != null)
             {
-                cart = JsonConvert.DeserializeObject<List<CartViewModel>>(session);
+                cart = await Task.FromResult(JsonConvert.DeserializeObject<List<CartViewModel>>(session));
             }
 
             return View(cart);

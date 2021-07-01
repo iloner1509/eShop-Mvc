@@ -15,7 +15,10 @@ namespace eShop_Mvc.Core.Entities
         {
         }
 
-        public Product(string name, string image, int quantity, decimal price, decimal? promotionPrice, int categoryId, decimal originalPrice, string description, string content, bool? homeFlag, bool? hotFlag, int? viewCount, string tags, string unit, Status status, string seoTitle, string seoAlias, string seoKeywords, string seoDescription, DateTime dateCreated, DateTime dateModified)
+        public Product(string name, string image, int quantity, decimal price, decimal? promotionPrice, int categoryId,
+                       decimal originalPrice, string description, string content, bool? homeFlag, bool? hotFlag,
+                       int? viewCount, string tags, string unit, Status status, string seoTitle, string seoAlias,
+                       string seoKeywords, string seoDescription, DateTime dateCreated, DateTime dateModified)
         {
             Name = name;
             Image = image;
@@ -38,12 +41,15 @@ namespace eShop_Mvc.Core.Entities
             SeoDescription = seoDescription;
             DateCreated = dateCreated;
             DateModified = dateModified;
-
             ProductTags = new List<ProductTag>();
             ProductImages = new List<ProductImage>();
         }
 
-        public Product(int id, string name, int quantity, string image, decimal price, decimal? promotionPrice, int categoryId, decimal originalPrice, string description, string content, bool? homeFlag, bool? hotFlag, int? viewCount, string tags, string unit, Status status, string seoTitle, string seoAlias, string seoKeywords, string seoDescription, DateTime dateCreated, DateTime dateModified)
+        public Product(int id, string name, int quantity, string image, decimal price, decimal? promotionPrice,
+                       int categoryId, decimal originalPrice, string description, string content, bool? homeFlag,
+                       bool? hotFlag, int? viewCount, string tags, string unit, Status status, string seoTitle,
+                       string seoAlias, string seoKeywords, string seoDescription, DateTime dateCreated,
+                       DateTime dateModified)
         {
             Id = id;
             Name = name;
@@ -67,7 +73,6 @@ namespace eShop_Mvc.Core.Entities
             SeoDescription = seoDescription;
             DateCreated = dateCreated;
             DateModified = dateModified;
-
             ProductTags = new List<ProductTag>();
             ProductImages = new List<ProductImage>();
         }

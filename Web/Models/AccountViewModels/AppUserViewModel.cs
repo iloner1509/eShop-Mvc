@@ -1,8 +1,6 @@
-﻿using System;
+﻿using eShop_Mvc.SharedKernel.Enums;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using eShop_Mvc.SharedKernel.Enums;
 
 namespace eShop_Mvc.Models.AccountViewModels
 {

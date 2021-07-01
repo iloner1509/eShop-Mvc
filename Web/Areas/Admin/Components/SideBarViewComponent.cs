@@ -33,7 +33,7 @@ namespace eShop_Mvc.Areas.Admin.Components
             }
             else
             {
-                // To do: get by permission
+                // Todo: get by permission
                 functions = _mapper.Map<IReadOnlyList<Function>, List<FunctionViewModel>>(await _functionService.GetAllAsync(String.Empty));
             }
             return View(functions);

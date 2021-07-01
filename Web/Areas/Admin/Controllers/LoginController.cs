@@ -1,15 +1,12 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
-using eShop_Mvc.Core.Entities;
+﻿using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Dtos;
+using eShop_Mvc.Extensions;
 using eShop_Mvc.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using eShop_Mvc.Extensions;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {

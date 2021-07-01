@@ -11,12 +11,13 @@ namespace eShop_Mvc.Core.Entities
     {
         public ProductCategory()
         {
-            this.Products = new List<Product>();
+            Products = new List<Product>();
         }
 
         public ProductCategory(string name, string description, int? parentId, int? homeOrder, string image,
-            bool? homeFlag, string seoTitle, string seoAlias, string seoKeywords, string seoDescription,
-            Status status, int sortOrder, DateTime dateCreated, DateTime dateModified)
+                               bool? homeFlag, string seoTitle, string seoAlias, string seoKeywords,
+                               string seoDescription, Status status, int sortOrder, DateTime dateCreated,
+                               DateTime dateModified)
         {
             Name = name;
             Description = description;

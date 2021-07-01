@@ -5,7 +5,6 @@ using eShop_Mvc.Extensions;
 using eShop_Mvc.Models.AccountViewModels;
 using eShop_Mvc.SharedKernel;
 using Microsoft.AspNetCore.Authorization;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -33,6 +32,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             _signInManager = signInManager;
         }
 
+        [HttpGet]
         public async Task<IActionResult> UserProfile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -130,7 +130,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 {
                     foreach (var error in result.Errors)
                     {
-                        ModelState.AddModelError(String.Empty, error.Description);
+                        ModelState.AddModelError(string.Empty, error.Description);
                     }
 
                     return View();

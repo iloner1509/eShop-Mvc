@@ -1,5 +1,4 @@
-﻿using System;
-using eShop_Mvc.Core.Entities;
+﻿using eShop_Mvc.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
@@ -29,7 +28,7 @@ namespace eShop_Mvc.Helpers
                 new Claim("Roles",string.Join(";",roles)),
                 new Claim(ClaimTypes.NameIdentifier,user.UserName),
                 new Claim("UserId",user.Id.ToString())
-        });
+            });
 
             return principal;
         }

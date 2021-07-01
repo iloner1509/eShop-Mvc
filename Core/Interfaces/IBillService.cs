@@ -20,7 +20,7 @@ namespace eShop_Mvc.Core.Interfaces
 
         Task UpdateStatusAsync(int orderId, BillStatus status);
 
-        Task<IReadOnlyList<BillDetail>> GetBillDetails(int billId);
+        Task<IReadOnlyList<BillDetail>> GetListBillDetailAsync(int billId);
 
         Task<PagedResult<Bill>> GetAllPagingAsync(string startDate, string endDate, string keyword, int page, int pageSize);
 

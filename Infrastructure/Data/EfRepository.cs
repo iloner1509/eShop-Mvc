@@ -34,7 +34,6 @@ namespace eShop_Mvc.Infrastructure.Data
                     items = items.Include(includeProperty);
                 }
             }
-
             return items;
         }
 
@@ -48,7 +47,6 @@ namespace eShop_Mvc.Infrastructure.Data
                     items = items.Include(includeProperty);
                 }
             }
-
             return items.AsQueryable().Where(predicate);
         }
 

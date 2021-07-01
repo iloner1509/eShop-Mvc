@@ -1,15 +1,12 @@
-﻿using System;
+﻿using AutoMapper;
+using eShop_Mvc.Core.Entities;
+using eShop_Mvc.Core.Interfaces;
+using eShop_Mvc.Models.System;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Interfaces;
-using eShop_Mvc.Models.ProductViewModels;
-using eShop_Mvc.Models.System;
-using eShop_Mvc.SharedKernel;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
@@ -66,19 +63,17 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 return new BadRequestObjectResult(allErrors);
             }
+
+            if (string.IsNullOrEmpty(functionViewModel.Id))
+            {
+                await _functionService.AddAsync(_mapper.Map<FunctionViewModel, Function>(functionViewModel));
+            }
             else
             {
-                if (string.IsNullOrEmpty(functionViewModel.Id))
-                {
-                    await _functionService.AddAsync(_mapper.Map<FunctionViewModel, Function>(functionViewModel));
-                }
-                else
-                {
-                    await _functionService.UpdateAsync(_mapper.Map<FunctionViewModel, Function>(functionViewModel));
-                }
-                _functionService.Save();
-                return new OkObjectResult(functionViewModel);
+                await _functionService.UpdateAsync(_mapper.Map<FunctionViewModel, Function>(functionViewModel));
             }
+            _functionService.Save();
+            return new OkObjectResult(functionViewModel);
         }
 
         [HttpPost]
@@ -88,19 +83,15 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             {
                 return new BadRequestObjectResult(ModelState);
             }
-            else
+
+            if (sourceId == targetId)
             {
-                if (sourceId == targetId)
-                {
-                    return new BadRequestResult();
-                }
-                else
-                {
-                    await _functionService.UpdateParentIdAsync(sourceId, targetId, items);
-                    _functionService.Save();
-                    return new OkResult();
-                }
+                return new BadRequestResult();
             }
+
+            await _functionService.UpdateParentIdAsync(sourceId, targetId, items);
+            _functionService.Save();
+            return new OkResult();
         }
 
         [HttpPost]
@@ -110,19 +101,15 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             {
                 return new BadRequestObjectResult(ModelState);
             }
-            else
+
+            if (sourceId == targetId)
             {
-                if (sourceId == targetId)
-                {
-                    return new BadRequestResult();
-                }
-                else
-                {
-                    await _functionService.ReOrderAsync(sourceId, targetId);
-                    _functionService.Save();
-                    return new OkResult();
-                }
+                return new BadRequestResult();
             }
+
+            await _functionService.ReOrderAsync(sourceId, targetId);
+            _functionService.Save();
+            return new OkResult();
         }
 
         [HttpPost]
@@ -132,18 +119,15 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             {
                 return new BadRequestResult();
             }
-            else
-            {
-                await _functionService.DeleteAsync(id);
-                _functionService.Save();
-                return new OkObjectResult(id);
-            }
+
+            await _functionService.DeleteAsync(id);
+            _functionService.Save();
+            return new OkObjectResult(id);
         }
 
         #region private function
 
-        private void GetByParentId(IEnumerable<FunctionViewModel> allFunctions, FunctionViewModel parent,
-            IList<FunctionViewModel> items)
+        private void GetByParentId(IEnumerable<FunctionViewModel> allFunctions, FunctionViewModel parent, IList<FunctionViewModel> items)
         {
             var functionEntities = allFunctions as FunctionViewModel[] ?? allFunctions.ToArray();
             var subFunction = functionEntities.Where(f => f.ParentId == parent.Id);

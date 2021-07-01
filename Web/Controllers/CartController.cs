@@ -16,14 +16,12 @@ namespace eShop_Mvc.Controllers
     public class CartController : Controller
     {
         private readonly IProductService _productService;
-
         private readonly IMapper _mapper;
         private readonly IBillService _billService;
 
         public CartController(IProductService productService, IMapper mapper, IBillService billService)
         {
             _productService = productService;
-
             _mapper = mapper;
             _billService = billService;
         }

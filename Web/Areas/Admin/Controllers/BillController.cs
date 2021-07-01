@@ -44,7 +44,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             return new OkObjectResult(await _billService.GetAllPagingAsync(startDate, endDate, keyword, page, pageSize));
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> UpdateStatus(int billId, BillStatus status)
         {
             await _billService.UpdateStatusAsync(billId, status);
@@ -59,19 +59,17 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
                 return new BadRequestObjectResult(allErrors);
             }
+
+            if (billViewModel.Id == 0)
+            {
+                await _billService.CreateAsync(_mapper.Map<BillViewModel, Bill>(billViewModel));
+            }
             else
             {
-                if (billViewModel.Id == 0)
-                {
-                    await _billService.CreateAsync(_mapper.Map<BillViewModel, Bill>(billViewModel));
-                }
-                else
-                {
-                    await _billService.UpdateAsync(_mapper.Map<BillViewModel, Bill>(billViewModel));
-                }
-                _billService.Save();
-                return new OkObjectResult(billViewModel);
+                await _billService.UpdateAsync(_mapper.Map<BillViewModel, Bill>(billViewModel));
             }
+            _billService.Save();
+            return new OkObjectResult(billViewModel);
         }
 
         [HttpGet]
@@ -130,7 +128,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                     int rowIndex = 9;
 
                     // get order details
-                    var orderDetails = await _billService.GetBillDetails(billId);
+                    var orderDetails = await _billService.GetListBillDetailAsync(billId);
                     int count = 1;
                     foreach (var detail in orderDetails)
                     {
@@ -149,7 +147,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                         count++;
                     }
 
-                    decimal total = (decimal)(orderDetails.Sum(x => x.Quantity * x.Price));
+                    decimal total = orderDetails.Sum(x => x.Quantity * x.Price);
                     //worksheet.Cells[rowIndex + orderDetails.Count + 1, 5].Value = total.ToString("N0");
                     worksheet.Cells[24, 5].Value = total.ToString("N0");
                     var numberWord = "Tổng tiền bằng chữ : " + TextHelper.ToString(total);

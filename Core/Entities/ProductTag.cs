@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using eShop_Mvc.SharedKernel;
+﻿using eShop_Mvc.SharedKernel;
 
 namespace eShop_Mvc.Core.Entities
 {

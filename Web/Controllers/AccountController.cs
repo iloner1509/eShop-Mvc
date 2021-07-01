@@ -55,11 +55,9 @@ namespace eShop_Mvc.Controllers
                     _logger.LogWarning("User locked out");
                     return RedirectToAction(nameof(Logout));
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt");
-                    return View(model);
-                }
+
+                ModelState.AddModelError(string.Empty, "Invalid login attempt");
+                return View(model);
             }
 
             return View(model);

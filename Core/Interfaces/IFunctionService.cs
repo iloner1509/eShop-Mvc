@@ -13,7 +13,7 @@ namespace eShop_Mvc.Core.Interfaces
 
         Task<Function> GetByIdAsync(string id);
 
-        Task<bool> CheckIfExistedId(string id);
+        Task<bool> CheckIfExistedIdAsync(string id);
 
         Task AddAsync(Function function);
 

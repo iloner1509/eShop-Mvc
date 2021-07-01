@@ -1,6 +1,7 @@
 ﻿using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
 using eShop_Mvc.SharedKernel;
+using eShop_Mvc.SharedKernel.Enums;
 using eShop_Mvc.SharedKernel.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
@@ -9,8 +10,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using eShop_Mvc.SharedKernel.Enums;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace eShop_Mvc.Core.Services
 {
@@ -23,8 +22,10 @@ namespace eShop_Mvc.Core.Services
         private readonly IRepository<WholePrice, int> _wholePriceRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public ProductService(IRepository<Product, int> productRepository, IRepository<Tag, string> tagRepository, IRepository<ProductTag, int> productTagRepository,
-            IRepository<ProductImage, int> productImageRepository, IRepository<WholePrice, int> wholePriceRepository, IUnitOfWork unitOfWork)
+        public ProductService(IRepository<Product, int> productRepository, IRepository<Tag, string> tagRepository,
+                              IRepository<ProductTag, int> productTagRepository,
+                              IRepository<ProductImage, int> productImageRepository,
+                              IRepository<WholePrice, int> wholePriceRepository, IUnitOfWork unitOfWork)
         {
             _productRepository = productRepository;
             _tagRepository = tagRepository;

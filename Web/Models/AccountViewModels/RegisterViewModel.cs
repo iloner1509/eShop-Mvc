@@ -8,13 +8,13 @@ namespace eShop_Mvc.Models.AccountViewModels
         [Required(AllowEmptyStrings = false)]
         public string FullName { get; set; }
 
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         public string Username { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
 
         [EmailAddress]
-        [Required]
+        [Required(AllowEmptyStrings = false)]
         public string Email { get; set; }
 
         [Required]
