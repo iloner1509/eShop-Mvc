@@ -45,6 +45,25 @@ namespace eShop_Mvc
 
             services.AddIdentityServices();
 
+            // External login
+            services.AddAuthentication()
+                .AddGoogle(options =>
+                    {
+                        IConfigurationSection googleAuthConfigurationSection =
+                            _configuration.GetSection("Authentication:Google");
+                        options.ClientId = googleAuthConfigurationSection["ClientId"];
+                        options.ClientSecret = googleAuthConfigurationSection["ClientSecret"];
+                        options.SignInScheme = IdentityConstants.ExternalScheme;
+                    }
+                )
+                .AddFacebook(options =>
+                {
+                    IConfigurationSection facebookAuthConfigurationSection =
+                        _configuration.GetSection("Authentication:Facebook");
+                    options.AppId = facebookAuthConfigurationSection["AppId"];
+                    options.AppSecret = facebookAuthConfigurationSection["AppSecret"];
+                });
+
             // Seed data
             services.AddScoped<IDbInitializer, DbInitializer>();
 

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Authentication;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace eShop_Mvc.Models.AccountViewModels
 {
@@ -15,5 +17,8 @@ namespace eShop_Mvc.Models.AccountViewModels
 
         [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }
+
+        public ICollection<AuthenticationScheme> ExternalLogins { get; set; }
+        public string ReturnUrl { get; set; }
     }
 }

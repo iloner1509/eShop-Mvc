@@ -1,4 +1,7 @@
-﻿using eShop_Mvc.Core.Entities;
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Models.AccountViewModels;
 using eShop_Mvc.SharedKernel.Enums;
 using Microsoft.AspNetCore.Authentication;
@@ -29,31 +32,42 @@ namespace eShop_Mvc.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Login(string returnUrl = null)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            return View();
+            LoginViewModel model = new LoginViewModel()
+            {
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList(),
+                ReturnUrl = returnUrl
+            };
+            return View(model);
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe,
-                    lockoutOnFailure: true);
-                if (result.Succeeded)
+                var user = await _userManager.FindByNameAsync(model.Username);
+                if (user != null)
                 {
-                    _logger.LogInformation("User logged in");
-                    return RedirectToLocal(returnUrl);
-                }
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User locked out");
-                    return RedirectToAction(nameof(Logout));
+                    var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe,
+                        lockoutOnFailure: true);
+                    if (result.Succeeded)
+                    {
+                        _logger.LogInformation($"User {model.Username} logged in");
+                        if (string.IsNullOrEmpty(model.ReturnUrl))
+                        {
+                            return RedirectToAction(nameof(HomeController.Index), "Home");
+                        }
+                        return LocalRedirect(model.ReturnUrl);
+                    }
+                    if (result.IsLockedOut)
+                    {
+                        _logger.LogWarning("User locked out");
+                        return RedirectToAction(nameof(Login));
+                    }
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid login attempt");
@@ -61,6 +75,76 @@ namespace eShop_Mvc.Controllers
             }
 
             return View(model);
+        }
+
+        [AllowAnonymous]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            string redirectUrl = Url.Action("ExternalLoginCallBack", "Account", new { ReturnUrl = returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return new ChallengeResult(provider, properties);
+        }
+
+        [AllowAnonymous]
+        public async Task<IActionResult> ExternalLoginCallBack(string returnUrl = null, string serviceError = null)
+        {
+            returnUrl ??= Url.Content("~/");
+            LoginViewModel loginViewModel = new LoginViewModel()
+            {
+                ReturnUrl = returnUrl,
+                ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
+            };
+            if (serviceError != null)
+            {
+                ModelState.AddModelError(string.Empty, $"Error from external provider: {serviceError}");
+                return View(nameof(Login), loginViewModel);
+            }
+            ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToAction(nameof(Login));
+            }
+
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            string[] userInfo =
+                {info.Principal.FindFirst(ClaimTypes.Name).Value, info.Principal.FindFirst(ClaimTypes.Email).Value};
+            if (result.Succeeded)
+            {
+                _logger.LogInformation($"User {userInfo[0]} has logged in via Google");
+                if (string.IsNullOrEmpty(returnUrl))
+                {
+                    return RedirectToAction(nameof(HomeController.Index), "Home");
+                }
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                AppUser user = new AppUser()
+                {
+                    UserName = userInfo[1],
+                    Email = userInfo[1],
+                    FullName = userInfo[0],
+                    Status = Status.Active,
+                    Avatar = String.Empty
+                };
+                var createUserResult = await _userManager.CreateAsync(user);
+                if (createUserResult.Succeeded)
+                {
+                    var identityResult = await _userManager.AddLoginAsync(user, info);
+                    if (identityResult.Succeeded)
+                    {
+                        _logger.LogInformation($"User {user.UserName} was successfully created !");
+                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        if (string.IsNullOrEmpty(returnUrl))
+                        {
+                            return RedirectToAction(nameof(HomeController.Index), "Home");
+                        }
+                        return LocalRedirect(returnUrl);
+                    }
+                }
+
+                return RedirectToAction(nameof(Login));
+            }
         }
 
         [HttpPost]
