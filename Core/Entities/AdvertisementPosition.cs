@@ -1,10 +1,12 @@
-﻿using eShop_Mvc.SharedKernel;
+﻿using System;
+using eShop_Mvc.SharedKernel;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using eShop_Mvc.SharedKernel.Interfaces;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class AdvertisementPosition : BaseEntity<string>
+    public class AdvertisementPosition : BaseEntity<string>, IAuditable
     {
         public string PageId { get; set; }
 
@@ -14,5 +16,9 @@ namespace eShop_Mvc.Core.Entities
         public virtual AdvertisementPage AdvertisementPage { get; set; }
 
         public virtual IList<Advertisement> Advertisements { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime DateCreated { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DateModified { get; set; }
     }
 }

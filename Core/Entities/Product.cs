@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Product : BaseEntity<int>, ISwitchable, IHasSeoMetaData, IDateTracking
+    public class Product : BaseEntity<int>, ISwitchable, IHasSeoMetaData, IAuditable
     {
         public Product()
         {
@@ -18,7 +18,7 @@ namespace eShop_Mvc.Core.Entities
         public Product(string name, string image, int quantity, decimal price, decimal? promotionPrice, int categoryId,
                        decimal originalPrice, string description, string content, bool? homeFlag, bool? hotFlag,
                        int? viewCount, string tags, string unit, Status status, string seoTitle, string seoAlias,
-                       string seoKeywords, string seoDescription, DateTime dateCreated, DateTime dateModified)
+                       string seoKeywords, string seoDescription, DateTime dateCreated)
         {
             Name = name;
             Image = image;
@@ -40,7 +40,6 @@ namespace eShop_Mvc.Core.Entities
             SeoKeywords = seoKeywords;
             SeoDescription = seoDescription;
             DateCreated = dateCreated;
-            DateModified = dateModified;
             ProductTags = new List<ProductTag>();
             ProductImages = new List<ProductImage>();
         }
@@ -48,8 +47,7 @@ namespace eShop_Mvc.Core.Entities
         public Product(int id, string name, int quantity, string image, decimal price, decimal? promotionPrice,
                        int categoryId, decimal originalPrice, string description, string content, bool? homeFlag,
                        bool? hotFlag, int? viewCount, string tags, string unit, Status status, string seoTitle,
-                       string seoAlias, string seoKeywords, string seoDescription, DateTime dateCreated,
-                       DateTime dateModified)
+                       string seoAlias, string seoKeywords, string seoDescription, DateTime dateCreated)
         {
             Id = id;
             Name = name;
@@ -72,7 +70,6 @@ namespace eShop_Mvc.Core.Entities
             SeoKeywords = seoKeywords;
             SeoDescription = seoDescription;
             DateCreated = dateCreated;
-            DateModified = dateModified;
             ProductTags = new List<ProductTag>();
             ProductImages = new List<ProductImage>();
         }
@@ -132,10 +129,14 @@ namespace eShop_Mvc.Core.Entities
         [StringLength(250)]
         public string SeoDescription { get; set; }
 
+        public string CreatedBy { get; set; }
+
         [Required]
         public DateTime DateCreated { get; set; }
 
-        public DateTime DateModified { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DateModified { get; set; }
+
         public virtual ProductCategory ProductCategory { get; set; }
         public virtual ICollection<ProductTag> ProductTags { get; set; }
         public virtual ICollection<BillDetail> BillDetails { get; set; }

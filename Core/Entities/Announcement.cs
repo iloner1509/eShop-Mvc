@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Announcement : BaseEntity<string>, ISwitchable, IDateTracking
+    public class Announcement : BaseEntity<string>, ISwitchable, IAuditable
     {
         public Announcement()
         {
@@ -37,9 +37,12 @@ namespace eShop_Mvc.Core.Entities
         [Required]
         public Status Status { get; set; }
 
+        public string CreatedBy { get; set; }
+
         [Required]
         public DateTime DateCreated { get; set; }
 
-        public DateTime DateModified { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DateModified { get; set; }
     }
 }

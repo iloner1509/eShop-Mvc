@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Feedback : BaseEntity<int>, ISwitchable, IDateTracking
+    public class Feedback : BaseEntity<int>, ISwitchable, IAuditable
     {
         public Feedback()
         {
@@ -36,9 +36,12 @@ namespace eShop_Mvc.Core.Entities
         [Required]
         public Status Status { get; set; }
 
+        public string CreatedBy { get; set; }
+
         [Required]
         public DateTime DateCreated { get; set; }
 
-        public DateTime DateModified { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DateModified { get; set; }
     }
 }

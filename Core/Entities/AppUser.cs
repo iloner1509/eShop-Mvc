@@ -8,13 +8,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class AppUser : IdentityUser<Guid>, IDateTracking, ISwitchable
+    public class AppUser : IdentityUser<Guid>, IAuditable, ISwitchable
     {
         public AppUser()
         {
         }
 
-        public AppUser(Guid id, string fullName, DateTime? birthDay, decimal balance, string avatar, DateTime dateCreated, DateTime dateModified, Status status)
+        public AppUser(Guid id, string fullName, DateTime? birthDay, decimal balance, string avatar, DateTime dateCreated, Status status)
         {
             Id = id;
             FullName = fullName;
@@ -22,7 +22,6 @@ namespace eShop_Mvc.Core.Entities
             Balance = balance;
             Avatar = avatar;
             DateCreated = dateCreated;
-            DateModified = dateModified;
             Status = status;
         }
 
@@ -37,10 +36,13 @@ namespace eShop_Mvc.Core.Entities
 
         public string Avatar { get; set; }
 
+        public string CreatedBy { get; set; }
+
         [Required]
         public DateTime DateCreated { get; set; }
 
-        public DateTime DateModified { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DateModified { get; set; }
 
         [Required]
         public Status Status { get; set; }

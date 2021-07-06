@@ -7,13 +7,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Blog : BaseEntity<int>, ISwitchable, IDateTracking, IHasSeoMetaData
+    public class Blog : BaseEntity<int>, ISwitchable, IAuditable, IHasSeoMetaData
     {
         public Blog()
         {
         }
 
-        public Blog(string name, string image, string description, string content, bool? homeFlag, bool hotFlag, int? viewCount, string tags, Status status, DateTime dateCreated, DateTime dateModified, string seoTitle, string seoAlias, string seoKeywords, string seoDescription)
+        public Blog(string name, string image, string description, string content, bool? homeFlag, bool hotFlag,
+                    int? viewCount, string tags, Status status, DateTime dateCreated,
+                    string seoTitle, string seoAlias, string seoKeywords, string seoDescription)
         {
             Name = name;
             Image = image;
@@ -23,17 +25,17 @@ namespace eShop_Mvc.Core.Entities
             HotFlag = hotFlag;
             ViewCount = viewCount;
             Tags = tags;
-
             Status = status;
             DateCreated = dateCreated;
-            DateModified = dateModified;
             SeoTitle = seoTitle;
             SeoAlias = seoAlias;
             SeoKeywords = seoKeywords;
             SeoDescription = seoDescription;
         }
 
-        public Blog(int id, string name, string image, string description, string content, bool? homeFlag, bool hotFlag, int? viewCount, string tags, Status status, DateTime dateCreated, DateTime dateModified, string seoTitle, string seoAlias, string seoKeywords, string seoDescription)
+        public Blog(int id, string name, string image, string description, string content, bool? homeFlag, bool hotFlag,
+                    int? viewCount, string tags, Status status, DateTime dateCreated, string seoTitle, string seoAlias,
+                    string seoKeywords, string seoDescription)
         {
             Id = id;
             Name = name;
@@ -44,10 +46,8 @@ namespace eShop_Mvc.Core.Entities
             HotFlag = hotFlag;
             ViewCount = viewCount;
             Tags = tags;
-
             Status = status;
             DateCreated = dateCreated;
-            DateModified = dateModified;
             SeoTitle = seoTitle;
             SeoAlias = seoAlias;
             SeoKeywords = seoKeywords;
@@ -74,10 +74,14 @@ namespace eShop_Mvc.Core.Entities
         [Required]
         public Status Status { get; set; }
 
+        public string CreatedBy { get; set; }
+
         [Required]
         public DateTime DateCreated { get; set; }
 
-        public DateTime DateModified { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DateModified { get; set; }
+
         public string SeoTitle { get; set; }
         public string SeoAlias { get; set; }
         public string SeoKeywords { get; set; }

@@ -12,4 +12,9 @@
   <ItemGroup>
     <ProjectReference Include="..\SharedKernel\eShop_Mvc.SharedKernel.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Command\" />
+    <Folder Include="Services\Query\" />
+  </ItemGroup>
 </Project>

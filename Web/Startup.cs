@@ -18,6 +18,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using PaulMiami.AspNetCore.Mvc.Recaptcha;
 using System;
+using System.Reflection;
+using MediatR;
 
 namespace eShop_Mvc
 {
@@ -104,6 +106,8 @@ namespace eShop_Mvc
                 // SecurityStamp trong bảng User đổi -> nạp lại thông tin Security
                 options.ValidationInterval = TimeSpan.FromSeconds(5);
             });
+
+            services.AddMediatR(Assembly.GetExecutingAssembly());
 
             // Image resizer
             services.AddImageResizer();

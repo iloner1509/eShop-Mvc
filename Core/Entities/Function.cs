@@ -1,11 +1,12 @@
-﻿using eShop_Mvc.SharedKernel;
+﻿using System;
+using eShop_Mvc.SharedKernel;
 using eShop_Mvc.SharedKernel.Enums;
 using eShop_Mvc.SharedKernel.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Function : BaseEntity<string>, ISwitchable, ISortable
+    public class Function : BaseEntity<string>, ISwitchable, ISortable, IAuditable
     {
         public Function()
         {
@@ -36,5 +37,9 @@ namespace eShop_Mvc.Core.Entities
         public Status Status { get; set; }
 
         public int SortOrder { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime DateCreated { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DateModified { get; set; }
     }
 }

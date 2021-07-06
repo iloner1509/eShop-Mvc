@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Advertisement : BaseEntity<int>, ISwitchable, ISortable, IDateTracking
+    public class Advertisement : BaseEntity<int>, ISwitchable, ISortable, IAuditable
     {
         [StringLength(100)]
         public string Name { get; set; }
@@ -30,7 +30,10 @@ namespace eShop_Mvc.Core.Entities
         [Required]
         public DateTime DateCreated { get; set; }
 
-        public DateTime DateModified { get; set; }
+        public string CreatedBy { get; set; }
+        public string ModifiedBy { get; set; }
+
+        public DateTime? DateModified { get; set; }
 
         public virtual AdvertisementPosition AdvertisementPosition { get; set; }
     }

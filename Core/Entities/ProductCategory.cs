@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class ProductCategory : BaseEntity<int>, IHasSeoMetaData, ISwitchable, ISortable, IDateTracking
+    public class ProductCategory : BaseEntity<int>, IHasSeoMetaData, ISwitchable, ISortable, IAuditable
     {
         public ProductCategory()
         {
@@ -32,7 +32,6 @@ namespace eShop_Mvc.Core.Entities
             Status = status;
             SortOrder = sortOrder;
             DateCreated = dateCreated;
-            DateModified = dateModified;
         }
 
         [StringLength(100)]
@@ -56,10 +55,14 @@ namespace eShop_Mvc.Core.Entities
 
         public int SortOrder { get; set; }
 
+        public string CreatedBy { get; set; }
+
         [Required]
         public DateTime DateCreated { get; set; }
 
-        public DateTime DateModified { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DateModified { get; set; }
+
         public virtual ICollection<Product> Products { get; set; }
     }
 }

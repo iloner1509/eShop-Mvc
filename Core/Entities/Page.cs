@@ -1,11 +1,12 @@
-﻿using eShop_Mvc.SharedKernel;
+﻿using System;
+using eShop_Mvc.SharedKernel;
 using eShop_Mvc.SharedKernel.Enums;
 using eShop_Mvc.SharedKernel.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Page : BaseEntity<int>, ISwitchable
+    public class Page : BaseEntity<int>, ISwitchable, IAuditable
     {
         public Page()
         {
@@ -32,5 +33,10 @@ namespace eShop_Mvc.Core.Entities
 
         [Required]
         public Status Status { get; set; }
+
+        public string CreatedBy { get; set; }
+        public DateTime DateCreated { get; set; }
+        public string ModifiedBy { get; set; }
+        public DateTime? DateModified { get; set; }
     }
 }

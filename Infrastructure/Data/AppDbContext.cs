@@ -52,8 +52,7 @@ namespace eShop_Mvc.Infrastructure.Data
             var modified = ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
             foreach (EntityEntry item in modified)
             {
-                var changedOrAddedItem = item.Entity as IDateTracking;
-                if (changedOrAddedItem != null)
+                if (item.Entity is IAuditable changedOrAddedItem)
                 {
                     if (item.State == EntityState.Added)
                     {
