@@ -14,12 +14,13 @@ namespace eShop_Mvc.Core.Entities
             AnnouncementUsers = new List<AnnouncementUser>();
         }
 
-        public Announcement(string title, string content, Guid userId, Status status)
+        public Announcement(string title, string content, Guid userId, Status status, DateTime dateCreated)
         {
             Title = title;
             Content = content;
             UserId = userId;
             Status = status;
+            DateCreated = dateCreated;
         }
 
         [StringLength(250)]

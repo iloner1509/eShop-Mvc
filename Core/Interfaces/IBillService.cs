@@ -24,6 +24,8 @@ namespace eShop_Mvc.Core.Interfaces
 
         Task<PagedResult<Bill>> GetAllPagingAsync(string startDate, string endDate, string keyword, int page, int pageSize);
 
+        Task<string> ExportExcel(int billId);
+
         void Save();
     }
 }

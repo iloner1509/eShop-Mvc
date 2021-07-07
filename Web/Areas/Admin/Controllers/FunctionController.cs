@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
+using eShop_Mvc.Core.Services.Query;
 using eShop_Mvc.Models.System;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
@@ -14,11 +16,13 @@ namespace eShop_Mvc.Areas.Admin.Controllers
     {
         private readonly IFunctionService _functionService;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public FunctionController(IFunctionService functionService, IMapper mapper)
+        public FunctionController(IFunctionService functionService, IMapper mapper, IMediator mediator)
         {
             _functionService = functionService;
             _mapper = mapper;
+            _mediator = mediator;
         }
 
         public IActionResult Index()
@@ -29,13 +33,21 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllFilter(string filter)
         {
-            var model = await _functionService.GetAllAsync(filter);
+            //var model = await _functionService.GetAllAsync(filter);
+            var model = await _mediator.Send(new GetAllFunctionWithFilterQuery()
+            {
+                Filter = filter
+            });
             return new OkObjectResult(_mapper.Map<IReadOnlyList<Function>, IReadOnlyList<FunctionViewModel>>(model));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
+            //var model = _mapper.Map<IReadOnlyList<Function>, IReadOnlyList<FunctionViewModel>>(await _mediator.Send(new GetAllFunctionWithFilterQuery()
+            //{
+            //    Filter = string.Empty
+            //}));
             var model = _mapper.Map<IReadOnlyList<Function>, IReadOnlyList<FunctionViewModel>>(await _functionService.GetAllAsync(string.Empty));
             var rootFunction = model.Where(f => f.ParentId == null);
             var items = new List<FunctionViewModel>();

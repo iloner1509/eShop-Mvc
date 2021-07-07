@@ -61,7 +61,7 @@
                     type: "GET",
                     url: "/Admin/Bill/GetById",
                     data: {
-                        id: billId
+                        billId: billId
                     },
 
                     success: function (res) {
@@ -133,7 +133,7 @@
                             Status: 1
                         },
                         dataType: "json",
-                        success: function (res) {
+                        success: function () {
                             system.notify("Cập nhật đơn hàng thành công", "success");
                             $("#modal-detail").modal("hide");
                             resetForm();
@@ -264,7 +264,7 @@
 
     function getPaymentMethodName(paymentMethod) {
         var method = $.grep(cachedObject.paymentMethods,
-            function (e, i) {
+            function (e) {
                 return e.Value === paymentMethod;
             });
         if (method.length > 0) {
@@ -275,7 +275,7 @@
     }
     function getBillStatusName(billStatus) {
         var status = $.grep(cachedObject.billStatuses,
-            function (e, i) {
+            function (e) {
                 return e.Value === billStatus;
             });
         if (status.length > 0) {
@@ -311,7 +311,7 @@
                                     Id: item.Id,
                                     PaymentMethod: getPaymentMethodName(item.PaymentMethod),
                                     BillStatus: getBillStatusName(item.BillStatus),
-                                    CreatedDate: system.dateTimeFormatJson(item.DateCreated),
+                                    CreatedDate: system.dateTimeFormatJson(item.DateCreated)
                                 });
                             $("#lbl-total-records").text(res.RowCount);
                             if (render !== "") {

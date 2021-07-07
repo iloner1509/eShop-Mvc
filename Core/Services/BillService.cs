@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
+using eShop_Mvc.Core.Services.Query;
 using eShop_Mvc.SharedKernel;
 using eShop_Mvc.SharedKernel.Enums;
 using eShop_Mvc.SharedKernel.Interfaces;
+using MediatR;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
 
 namespace eShop_Mvc.Core.Services
 {
@@ -16,16 +22,22 @@ namespace eShop_Mvc.Core.Services
     {
         private readonly IRepository<Bill, int> _orderRepository;
         private readonly IRepository<BillDetail, int> _orderDetailRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRepository<Product, int> _productRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IMediator _mediator;
 
-        public BillService(IRepository<Bill, int> orderRepository, IRepository<BillDetail, int> orderDetailRepository,
-                           IRepository<Product, int> productRepository, IUnitOfWork unitOfWork)
+        public BillService(IRepository<Bill, int> orderRepository, IRepository<BillDetail, int> orderDetailRepository, IHttpContextAccessor httpContextAccessor,
+                           IRepository<Product, int> productRepository, IUnitOfWork unitOfWork, IHostingEnvironment hostingEnvironment, IMediator mediator)
         {
             _orderRepository = orderRepository;
             _orderDetailRepository = orderDetailRepository;
+            _httpContextAccessor = httpContextAccessor;
             _productRepository = productRepository;
             _unitOfWork = unitOfWork;
+            _hostingEnvironment = hostingEnvironment;
+            _mediator = mediator;
         }
 
         public async Task CreateAsync(Bill bill)
@@ -143,6 +155,78 @@ namespace eShop_Mvc.Core.Services
         public void Save()
         {
             _unitOfWork.Commit();
+        }
+
+        public async Task<string> ExportExcel(int billId)
+        {
+            string webRootFolder = _hostingEnvironment.WebRootPath;
+            string fileName = $"Bill_{billId}.xlsx";
+
+            // template
+            string templateDoc = Path.Combine(webRootFolder, "template", "BillTemplate.xlsx");
+            string url = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}/export-files/{fileName}";
+            FileInfo file = new FileInfo(Path.Combine(webRootFolder, "export-files", fileName));
+            if (file.Exists)
+            {
+                file.Delete();
+                file = new FileInfo(Path.Combine(webRootFolder, fileName));
+            }
+
+            await using (FileStream templateDocumentStream = File.OpenRead(templateDoc))
+            {
+                using (ExcelPackage package = new ExcelPackage(templateDocumentStream))
+                {
+                    // add new worksheet
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets["Order"];
+
+                    // load order header
+                    var billDetail = await _mediator.Send(new GetBillDetailByIdQuery()
+                    {
+                        BillId = billId
+                    });
+
+                    // insert customer data into template
+                    worksheet.Cells[4, 1].Value = "Tên khách hàng: " + billDetail.CustomerName;
+                    worksheet.Cells[5, 1].Value = "Địa chỉ: " + billDetail.CustomerAddress;
+                    worksheet.Cells[6, 1].Value = "SĐT: " + billDetail.CustomerMobile;
+
+                    int rowIndex = 9;
+
+                    // get order details
+                    var orderDetails = await _mediator.Send(new GetListBillDetailByIdQuery()
+                    {
+                        BillId = billId
+                    });
+                    int count = 1;
+                    foreach (var detail in orderDetails)
+                    {
+                        // cell 1: stt
+                        worksheet.Cells[rowIndex, 1].Value = count.ToString();
+                        // cell 2: tên sp
+                        worksheet.Cells[rowIndex, 2].Value = detail.Product.Name;
+                        // cell 3: số lượng
+                        worksheet.Cells[rowIndex, 3].Value = detail.Quantity.ToString();
+                        // cell 4: giá
+                        worksheet.Cells[rowIndex, 4].Value = detail.Price.ToString("N0");
+                        // cell 5: tổng giá
+                        worksheet.Cells[rowIndex, 5].Value = (detail.Price * detail.Quantity).ToString("N0");
+
+                        rowIndex++;
+                        count++;
+                    }
+
+                    decimal total = orderDetails.Sum(x => x.Quantity * x.Price);
+                    //worksheet.Cells[rowIndex + orderDetails.Count + 1, 5].Value = total.ToString("N0");
+                    worksheet.Cells[24, 5].Value = total.ToString("N0");
+                    var numberWord = "Tổng tiền bằng chữ : " + TextHelper.ToString(total);
+                    worksheet.Cells[26, 1].Value = numberWord;
+                    worksheet.Cells[28, 3].Value = billDetail.DateCreated.Day + "," + billDetail.DateCreated.Month +
+                                                   "," + billDetail.DateCreated.Year;
+                    await package.SaveAsAsync(file);
+                }
+            }
+
+            return url;
         }
     }
 }
