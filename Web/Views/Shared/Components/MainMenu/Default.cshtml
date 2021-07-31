@@ -3,31 +3,31 @@
     <ul class="hidden-xs">
         <li class="mt-root demo_custom_link_cms">
             <div class="mt-root-item">
-                <a href="/Home">
+                <a asp-action="Index" asp-controller="Home">
                     <div class="title title_font"><span class="title-text">TRANG CHỦ</span></div>
                 </a>
             </div>
         </li>
         <li class="mt-root">
             <div class="mt-root-item">
-                <a href="#">
+                <a asp-action="Index" asp-controller="Product">
                     <div class="title title_font"><span class="title-text">DANH MỤC SẢN PHẨM</span></div>
                 </a>
             </div>
             <ul class="menu-items col-xs-12">
                 @foreach (var item in Model.Where(x => x.ParentId == null))
                 {
-                    <li class="menu-item depth-1 menucol-1-3 ">
-                        <div class="title title_font"> <a href="/Product/Catalog/@item.Id">@item.Name</a></div>
-                        <ul class="submenu">
-                            @foreach (var subItem in Model.Where(x => x.ParentId == item.Id))
-                            {
-                                <li class="menu-item">
-                                    <div class="title"><a href="/Product/Catalog/@subItem.Id">@subItem.Name</a></div>
-                                </li>
-                            }
-                        </ul>
-                    </li>
+                <li class="menu-item depth-1 menucol-1-3 ">
+                    <div class="title title_font"> <a asp-controller="Product" asp-action="Catalog" asp-route-id="@item.Id">@item.Name</a></div>
+                    <ul class="submenu">
+                        @foreach (var subItem in Model.Where(x => x.ParentId == item.Id))
+                        {
+                        <li class="menu-item">
+                            <div class="title"><a asp-controller="Product" asp-action="Catalog" asp-route-id="@subItem.Id">@subItem.Name</a></div>
+                        </li>
+                        }
+                    </ul>
+                </li>
                 }
             </ul>
         </li>

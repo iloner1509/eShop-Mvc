@@ -38,9 +38,7 @@ namespace eShop_Mvc.Core.Services
         {
             if (!string.IsNullOrEmpty(keyword))
             {
-                return await _productCategoryRepository.FindAll(x => x.Name.Contains(keyword) || x.Description.Contains(keyword))
-                    .OrderBy(x => x.ParentId)
-                    .ToListAsync();
+                return await _productCategoryRepository.FindAll(x => x.Name.Contains(keyword)).OrderBy(x => x.ParentId).ToListAsync();
             }
             return await GetAllAsync();
         }

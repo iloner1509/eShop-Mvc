@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using eShop_Mvc.Core.Entities;
+﻿using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
-using eShop_Mvc.Core.Services.Query;
+using eShop_Mvc.Core.Services.Query.BillQuery;
 using eShop_Mvc.SharedKernel;
 using eShop_Mvc.SharedKernel.Enums;
 using eShop_Mvc.SharedKernel.Interfaces;
@@ -15,6 +9,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using OfficeOpenXml;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace eShop_Mvc.Core.Services
 {

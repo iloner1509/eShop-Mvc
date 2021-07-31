@@ -6,7 +6,7 @@ using eShop_Mvc.SharedKernel.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace eShop_Mvc.Core.Services.Query
+namespace eShop_Mvc.Core.Services.Query.BillQuery
 {
     public class GetListBillDetailByIdQueryHandler : IRequestHandler<GetListBillDetailByIdQuery, IReadOnlyList<BillDetail>>
     {

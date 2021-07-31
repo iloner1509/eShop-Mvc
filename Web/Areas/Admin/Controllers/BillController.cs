@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
-using eShop_Mvc.Core.Services.Command;
-using eShop_Mvc.Core.Services.Query;
+using eShop_Mvc.Core.Services.Command.BillCommand;
+using eShop_Mvc.Core.Services.Query.BillQuery;
 using eShop_Mvc.Models.Common;
 using eShop_Mvc.Models.ProductViewModels;
 using eShop_Mvc.SharedKernel.Enums;
 using MediatR;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Logging;

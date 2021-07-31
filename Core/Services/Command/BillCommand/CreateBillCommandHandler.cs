@@ -1,10 +1,10 @@
-﻿using MediatR;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.SharedKernel.Interfaces;
+using MediatR;
 
-namespace eShop_Mvc.Core.Services.Command
+namespace eShop_Mvc.Core.Services.Command.BillCommand
 {
     public class CreateBillCommandHandler : IRequestHandler<CreateBillCommand>
     {

@@ -1,15 +1,18 @@
-﻿using System.Collections.Generic;
-using eShop_Mvc.Core.Entities;
+﻿using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
 using eShop_Mvc.Core.Services;
-using eShop_Mvc.Core.Services.Command;
-using eShop_Mvc.Core.Services.Query;
+using eShop_Mvc.Core.Services.Command.BillCommand;
 using eShop_Mvc.Infrastructure.Data;
 using eShop_Mvc.SharedKernel;
 using eShop_Mvc.SharedKernel.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
+using eShop_Mvc.Core.Services.Query.BillQuery;
+using eShop_Mvc.Core.Services.Query.CategoryQuery;
+using eShop_Mvc.Core.Services.Query.FunctionQuery;
+using eShop_Mvc.Core.Services.Query.TagQuery;
 
 namespace eShop_Mvc.Extensions
 {
@@ -32,9 +35,11 @@ namespace eShop_Mvc.Extensions
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             // CQRS
+            // Command
             services.AddTransient<IRequestHandler<CreateBillCommand>, CreateBillCommandHandler>();
             services.AddTransient<IRequestHandler<UpdateBillCommand>, UpdateBillCommandHandler>();
             services.AddTransient<IRequestHandler<UpdateBillStatusCommand>, UpdateBillStatusCommandHandler>();
+            // Query
             services
                 .AddTransient<IRequestHandler<GetAllBillPagingQuery, PagedResult<Bill>>, GetAllBillPagingQueryHandler
                 >();
@@ -45,6 +50,10 @@ namespace eShop_Mvc.Extensions
             services
                 .AddTransient<IRequestHandler<GetAllFunctionWithFilterQuery, IReadOnlyList<Function>>,
                     GetAllFunctionWithFilterQueryHandler>();
+            services.AddTransient<IRequestHandler<GetAllProductTagNameQuery, List<string>>, GetAllProductTagNameQueryHandler>();
+            services
+                .AddTransient<IRequestHandler<GetAllCategoryQuery, IReadOnlyList<ProductCategory>>,
+                    GetAllCategoryQueryHandler>();
             return services;
         }
     }

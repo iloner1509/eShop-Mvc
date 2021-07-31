@@ -7,7 +7,10 @@ using eShop_Mvc.SharedKernel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using eShop_Mvc.Core.Services.Query.CategoryQuery;
+using MediatR;
 
 namespace eShop_Mvc.Controllers
 {
@@ -15,23 +18,24 @@ namespace eShop_Mvc.Controllers
     {
         private readonly IProductService _productService;
         private readonly IProductCategoryService _productCategoryService;
-        private readonly IBillService _billService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
+        private readonly IMediator _mediator;
 
-        public ProductController(IProductService productService, IProductCategoryService productCategoryService, IBillService billService, IMapper mapper, IConfiguration configuration)
+        public ProductController(IProductService productService, IProductCategoryService productCategoryService, IMapper mapper, IConfiguration configuration, IMediator mediator)
         {
             _productService = productService;
             _productCategoryService = productCategoryService;
-            _billService = billService;
             _mapper = mapper;
             _configuration = configuration;
+            _mediator = mediator;
         }
 
         public async Task<IActionResult> Index()
         {
-            var categories = _mapper.Map<IReadOnlyList<ProductCategory>, IReadOnlyList<ProductCategoryViewModel>>(await _productCategoryService.GetAllAsync());
-            return View(categories);
+            var categories = await _mediator.Send(new GetAllCategoryQuery());
+            var model = _mapper.Map<IReadOnlyList<ProductCategory>, IReadOnlyList<ProductCategoryViewModel>>(categories);
+            return View(model);
         }
 
         public async Task<IActionResult> Catalog(int id, int? pageSize, string sortBy, int page = 1)
@@ -39,6 +43,7 @@ namespace eShop_Mvc.Controllers
             ViewData["BodyClass"] = "shop_list_page";
             pageSize ??= _configuration.GetValue<int>("PageSize");
             var result = await _productService.GetAllPagingAsync(id, string.Empty, page, pageSize.Value);
+            var listCategory = await _productCategoryService.GetAllAsync();
             var catalog = new CatalogViewModel
             {
                 PageSize = pageSize,
@@ -50,7 +55,8 @@ namespace eShop_Mvc.Controllers
                     PageSize = result.PageSize,
                     Results = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(result.Results)
                 },
-                Category = _mapper.Map<ProductCategory, ProductCategoryViewModel>(await _productCategoryService.GetByIdAsync(id))
+                Category = _mapper.Map<ProductCategory, ProductCategoryViewModel>(await _productCategoryService.GetByIdAsync(id)),
+                ListCategory = listCategory.Select(x => x.Name).ToList(),
             };
 
             return View(catalog);

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using eShop_Mvc.Core.Entities;
-using eShop_Mvc.SharedKernel;
-using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using eShop_Mvc.Core.Entities;
+using eShop_Mvc.SharedKernel;
 using eShop_Mvc.SharedKernel.Interfaces;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace eShop_Mvc.Core.Services.Query
+namespace eShop_Mvc.Core.Services.Query.BillQuery
 {
     public class GetAllBillPagingQueryHandler : IRequestHandler<GetAllBillPagingQuery, PagedResult<Bill>>
     {

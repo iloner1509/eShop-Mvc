@@ -25,5 +25,7 @@ namespace eShop_Mvc.SharedKernel.Interfaces
         Task DeleteAsync(TId id);
 
         void DeleteMultipleAsync(IEnumerable<T> entities);
+
+        IQueryable<T> ApplySpecification(ISpecification<T> specification = null);
     }
 }

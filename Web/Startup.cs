@@ -114,6 +114,7 @@ namespace eShop_Mvc
 
             // Caching
             services.AddMemoryCache();
+            services.AddResponseCaching();
 
             // Min response
             services.AddMinResponse();
@@ -124,6 +125,7 @@ namespace eShop_Mvc
         {
             if (env.IsDevelopment())
             {
+                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
             }
@@ -154,6 +156,8 @@ namespace eShop_Mvc
 
                 endpoints.MapRazorPages();
             });
+
+            // seed data
             using var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var dbInitializer = scope.ServiceProvider.GetService<IDbInitializer>();
             dbInitializer.Initialize().Wait();

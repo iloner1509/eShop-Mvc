@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
-using eShop_Mvc.Core.Services.Query;
+using eShop_Mvc.Core.Services.Query.FunctionQuery;
 using eShop_Mvc.Models.System;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

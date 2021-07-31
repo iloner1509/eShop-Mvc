@@ -24,5 +24,8 @@ namespace eShop_Mvc.Models.ProductViewModels
             new SelectListItem(){Value = "16",Text = "16"},
             new SelectListItem(){Value = "30",Text = "30"}
         };
+
+        public List<string> ListCategory { get; set; }
+        public List<string> ListTag { get; set; }
     }
 }

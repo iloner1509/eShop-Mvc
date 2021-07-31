@@ -1,7 +1,7 @@
 ﻿using eShop_Mvc.SharedKernel.Enums;
 using MediatR;
 
-namespace eShop_Mvc.Core.Services.Command
+namespace eShop_Mvc.Core.Services.Command.BillCommand
 {
     public class UpdateBillStatusCommand : IRequest
     {

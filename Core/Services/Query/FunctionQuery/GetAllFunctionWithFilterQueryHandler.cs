@@ -8,7 +8,7 @@ using eShop_Mvc.SharedKernel.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace eShop_Mvc.Core.Services.Query
+namespace eShop_Mvc.Core.Services.Query.FunctionQuery
 {
     public class GetAllFunctionWithFilterQueryHandler : IRequestHandler<GetAllFunctionWithFilterQuery, IReadOnlyList<Function>>
     {

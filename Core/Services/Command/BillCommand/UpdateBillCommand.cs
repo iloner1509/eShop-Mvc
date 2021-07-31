@@ -1,9 +1,9 @@
 ﻿using eShop_Mvc.Core.Entities;
 using MediatR;
 
-namespace eShop_Mvc.Core.Services.Command
+namespace eShop_Mvc.Core.Services.Command.BillCommand
 {
-    public class CreateBillCommand : IRequest
+    public class UpdateBillCommand : IRequest
     {
         public Bill Bill { get; set; }
     }

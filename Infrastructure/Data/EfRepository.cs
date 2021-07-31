@@ -83,5 +83,10 @@ namespace eShop_Mvc.Infrastructure.Data
         {
             _context?.Dispose();
         }
+
+        public IQueryable<T> ApplySpecification(ISpecification<T> specification = null)
+        {
+            return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), specification);
+        }
     }
 }
