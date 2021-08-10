@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
+using eShop_Mvc.Core.Services.Command.FunctionCommand;
 using eShop_Mvc.Core.Services.Query.FunctionQuery;
 using eShop_Mvc.Models.System;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
@@ -17,12 +20,14 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         private readonly IFunctionService _functionService;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
+        private readonly ILogger<FunctionController> _logger;
 
-        public FunctionController(IFunctionService functionService, IMapper mapper, IMediator mediator)
+        public FunctionController(IFunctionService functionService, IMapper mapper, IMediator mediator, ILogger<FunctionController> logger)
         {
             _functionService = functionService;
             _mapper = mapper;
             _mediator = mediator;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -36,7 +41,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             //var model = await _functionService.GetAllAsync(filter);
             var model = await _mediator.Send(new GetAllFunctionWithFilterQuery()
             {
-                Filter = filter
+                Keyword = filter
             });
             return new OkObjectResult(_mapper.Map<IReadOnlyList<Function>, IReadOnlyList<FunctionViewModel>>(model));
         }
@@ -48,13 +53,13 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             //{
             //    Filter = string.Empty
             //}));
-            var model = _mapper.Map<IReadOnlyList<Function>, IReadOnlyList<FunctionViewModel>>(await _functionService.GetAllAsync(string.Empty));
+            var model = _mapper.Map<IReadOnlyList<Function>, IReadOnlyList<FunctionViewModel>>(await _mediator.Send(new GetAllFunctionWithFilterQuery()));
             var rootFunction = model.Where(f => f.ParentId == null);
             var items = new List<FunctionViewModel>();
             foreach (var function in rootFunction)
             {
                 items.Add(function);
-                GetByParentId(model.ToList(), function, items);
+                GetByParentId(model, function, items);
             }
 
             return new OkObjectResult(items);
@@ -63,7 +68,10 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> GetById(string id)
         {
-            var model = _mapper.Map<Function, FunctionViewModel>(await _functionService.GetByIdAsync(id));
+            var model = _mapper.Map<Function, FunctionViewModel>(await _mediator.Send(new GetFunctionByIdQuery()
+            {
+                FunctionId = id
+            }));
             return new OkObjectResult(model);
         }
 
@@ -76,15 +84,26 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 return new BadRequestObjectResult(allErrors);
             }
 
+            var function = _mapper.Map<FunctionViewModel, Function>(functionViewModel);
+
             if (string.IsNullOrEmpty(functionViewModel.Id))
             {
-                await _functionService.AddAsync(_mapper.Map<FunctionViewModel, Function>(functionViewModel));
+                function.CreatedBy = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                await _mediator.Send(new CreateFunctionCommand()
+                {
+                    Function = function
+                });
+                _logger.LogInformation("New function is created successfully !");
             }
             else
             {
-                await _functionService.UpdateAsync(_mapper.Map<FunctionViewModel, Function>(functionViewModel));
+                function.ModifiedBy = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                await _mediator.Send(new UpdateFunctionCommand()
+                {
+                    Function = function
+                });
+                _logger.LogInformation($"function {functionViewModel.Id} had been modified.");
             }
-            _functionService.Save();
             return new OkObjectResult(functionViewModel);
         }
 
@@ -101,8 +120,13 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 return new BadRequestResult();
             }
 
-            await _functionService.UpdateParentIdAsync(sourceId, targetId, items);
-            _functionService.Save();
+            await _mediator.Send(new UpdateFunctionParentIdCommand()
+            {
+                SourceId = sourceId,
+                TargetId = targetId,
+                SubFunctionData = items
+            });
+
             return new OkResult();
         }
 
@@ -119,8 +143,11 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 return new BadRequestResult();
             }
 
-            await _functionService.ReOrderAsync(sourceId, targetId);
-            _functionService.Save();
+            await _mediator.Send(new UpdateFunctionOrderCommand()
+            {
+                SourceId = sourceId,
+                TargetId = targetId
+            });
             return new OkResult();
         }
 
@@ -132,8 +159,11 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 return new BadRequestResult();
             }
 
-            await _functionService.DeleteAsync(id);
-            _functionService.Save();
+            await _mediator.Send(new DeleteFunctionCommand()
+            {
+                FunctionId = id
+            });
+
             return new OkObjectResult(id);
         }
 

@@ -27,7 +27,7 @@
 
     <!-- Custom Theme Style -->
     <link href="~/admin-site/css/custom.min.css" rel="stylesheet" />
-    @RenderSection("Styles", required: false)
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 
 <body class="nav-md">
@@ -69,7 +69,7 @@
                         <a data-toggle="tooltip" data-placement="top" title="Lock">
                             <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
                         </a>
-                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+                        <a data-toggle="tooltip" data-placement="top" title="Logout" href="#">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>
                     </div>
@@ -89,70 +89,7 @@
                                 @await Html.PartialAsync("_LoginPartial")
                             </li>
 
-                            <li role="presentation" class="nav-item dropdown open">
-                                <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
-                                    <i class="fas fa-envelope"></i>
-                                    <span class="badge bg-green">6</span>
-                                </a>
-                                <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item">
-                                            <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                                            <span>
-                                                <span>John Smith</span>
-                                                <span class="time">3 mins ago</span>
-                                            </span>
-                                            <span class="message">
-                                                Film festivals used to be do-or-die moments for movie makers. They were where...
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <div class="text-center">
-                                            <a class="dropdown-item">
-                                                <strong>See All Alerts</strong>
-                                                <i class="fas fa-angle-right"></i>
-                                            </a>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
+                            @await Html.PartialAsync("_AnnouncementPartial");
                         </ul>
                     </nav>
                 </div>
@@ -220,11 +157,17 @@
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/jquery-validation/localization/messages_vi.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.16.0/ckeditor.js" integrity="sha512-7My1gsUz5JUQgT8+P0sHKaPel/77X3zjGZsXbTS8Y7MhDEJ+f9xg9H+pPzONFL5djye0zWLlxFLApGsWQ1gdfA==" crossorigin="anonymous"></script>
-
-    <script src="~/app/Shared/system.js"></script>
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
 
     <!-- Custom Theme Scripts -->
     <script src="~/admin-site/js/custom.min.js"></script>
-    @RenderSection("Scripts", required: false)
+    <environment names="Development">
+        <script src="~/app/Shared/system.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/bundled/site-admin.min.js"></script>
+    </environment>
+    <script src="~/app/Shared/signalr.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

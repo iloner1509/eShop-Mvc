@@ -83,7 +83,7 @@ namespace eShop_Mvc.Controllers
                     catch (Exception e)
                     {
                         ViewData["Success"] = false;
-                        ModelState.AddModelError("", e.Message);
+                        ModelState.AddModelError("CheckOut error", e.Message);
                     }
                 }
             }

@@ -19,6 +19,7 @@ using Newtonsoft.Json.Serialization;
 using PaulMiami.AspNetCore.Mvc.Recaptcha;
 using System;
 using System.Reflection;
+using eShop_Mvc.SignalR.Hubs;
 using MediatR;
 
 namespace eShop_Mvc
@@ -76,6 +77,15 @@ namespace eShop_Mvc
                 o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             }).AddSessionStateTempDataProvider();
 
+            // SignalR
+            services.AddSignalR();
+
+            // CORS
+            services.AddCors(op => op.AddPolicy("CorsPolicy", builder =>
+              {
+                  builder.AllowAnyMethod().AllowAnyHeader().WithOrigins(_configuration["AllowOrigins"])
+                      .AllowCredentials();
+              }));
             // recaptcha
             services.AddRecaptcha(new RecaptchaOptions()
             {
@@ -144,6 +154,7 @@ namespace eShop_Mvc
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
+            app.UseCors("CorsPolicy");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapAreaControllerRoute(
@@ -155,6 +166,7 @@ namespace eShop_Mvc
                     pattern: "{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapRazorPages();
+                endpoints.MapHub<AnnoucementHub>("/announcementHub");
             });
 
             // seed data

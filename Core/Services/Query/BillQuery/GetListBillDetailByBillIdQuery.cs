@@ -4,7 +4,7 @@ using MediatR;
 
 namespace eShop_Mvc.Core.Services.Query.BillQuery
 {
-    public class GetListBillDetailByIdQuery : IRequest<IReadOnlyList<BillDetail>>
+    public class GetListBillDetailByBillIdQuery : IRequest<IReadOnlyList<BillDetail>>
     {
         public int BillId { get; set; }
     }

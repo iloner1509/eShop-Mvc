@@ -3,7 +3,7 @@ using MediatR;
 
 namespace eShop_Mvc.Core.Services.Query.BillQuery
 {
-    public class GetBillDetailByIdQuery : IRequest<Bill>
+    public class GetBillWithDetailByIdQuery : IRequest<Bill>
     {
         public int BillId { get; set; }
     }

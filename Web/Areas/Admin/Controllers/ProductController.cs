@@ -11,8 +11,10 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using OfficeOpenXml;
 using OfficeOpenXml.Table;
 
@@ -24,13 +26,19 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         private readonly IProductCategoryService _productCategoryService;
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IMediator _mediator;
+        private readonly ILogger<ProductController> _logger;
 
-        public ProductController(IProductService productService, IProductCategoryService productCategoryService, IMapper mapper, IWebHostEnvironment hostEnvironment)
+        public ProductController(IProductService productService, IProductCategoryService productCategoryService,
+                                 IMapper mapper, IWebHostEnvironment hostEnvironment, IMediator mediator,
+                                 ILogger<ProductController> logger)
         {
             _productService = productService;
             _productCategoryService = productCategoryService;
             _mapper = mapper;
             _hostEnvironment = hostEnvironment;
+            _mediator = mediator;
+            _logger = logger;
         }
 
         public IActionResult Index()

@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using eShop_Mvc.Core.Specifications;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
@@ -39,25 +40,20 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             //var model = await _billService.GetDetailAsync(billId);
 
             // using CQRS with mediator
-            var model = await _mediator.Send(new GetBillDetailByIdQuery()
+            var model = await _mediator.Send(new GetBillWithDetailByIdQuery()
             {
                 BillId = billId
             });
-            return new OkObjectResult(model);
+            return new OkObjectResult(_mapper.Map<Bill, BillViewModel>(model));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllPaging(string startDate, string endDate, string keyword, int page,
-            int pageSize)
+        public async Task<IActionResult> GetAllPaging(PagingParams pagingParams)
         {
             //return new OkObjectResult(await _billService.GetAllPagingAsync(startDate, endDate, keyword, page, pageSize));
             return new OkObjectResult(await _mediator.Send(new GetAllBillPagingQuery()
             {
-                StartDate = startDate,
-                EndDate = endDate,
-                Keyword = keyword,
-                Page = page,
-                PageSize = pageSize
+                PagingParams = pagingParams
             }));
         }
 

@@ -1,57 +1,34 @@
-﻿using System;
-using System.Globalization;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using eShop_Mvc.Core.Entities;
+﻿using eShop_Mvc.Core.Entities;
+using eShop_Mvc.Core.Specifications;
 using eShop_Mvc.SharedKernel;
 using eShop_Mvc.SharedKernel.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace eShop_Mvc.Core.Services.Query.BillQuery
 {
     public class GetAllBillPagingQueryHandler : IRequestHandler<GetAllBillPagingQuery, PagedResult<Bill>>
     {
-        private readonly IRepository<Bill, int> _orderRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetAllBillPagingQueryHandler(IRepository<Bill, int> orderRepository)
+        public GetAllBillPagingQueryHandler(IUnitOfWork unitOfWork)
         {
-            _orderRepository = orderRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<PagedResult<Bill>> Handle(GetAllBillPagingQuery request, CancellationToken cancellationToken)
         {
-            var query = _orderRepository.FindAll();
-            if (!string.IsNullOrEmpty(request.StartDate))
-            {
-                DateTime start = DateTime.ParseExact(request.StartDate, "dd/MM/yyyy", CultureInfo.GetCultureInfo("vi-VN"));
-                query = query.Where(b => b.DateCreated >= start);
-            }
-
-            if (!string.IsNullOrEmpty(request.EndDate))
-            {
-                DateTime end = DateTime.ParseExact(request.EndDate, "dd/MM/yyyy", CultureInfo.GetCultureInfo("vi-VN"));
-                query = query.Where(b => b.DateCreated <= end);
-            }
-
-            if (!string.IsNullOrEmpty(request.Keyword))
-            {
-                query = query.Where(b => b.CustomerName.Contains(request.Keyword) || b.CustomerMobile.Contains(request.Keyword) || b.CustomerAddress.Contains(request.Keyword));
-            }
-
-            var totalRow = query.Count();
-            var data = await query
-                .OrderByDescending(b => b.DateCreated)
-                .Skip((request.Page - 1) * request.PageSize)
-                .Take(request.PageSize)
-                .ToListAsync(cancellationToken);
+            var specification = new BillWithFilterSpecification(request.PagingParams);
+            var totalRow = await _unitOfWork.Repository<Bill, int>().CountAsync(cancellationToken, specification);
+            var data = await _unitOfWork.Repository<Bill, int>().FindAllAsync(cancellationToken, specification);
             return new PagedResult<Bill>()
             {
-                CurrentPage = request.Page,
+                CurrentPage = request.PagingParams.PageIndex,
                 RowCount = totalRow,
                 Results = data,
-                PageSize = request.PageSize
+                PageSize = request.PagingParams.PageSize,
+                PageCount = (totalRow / request.PagingParams.PageSize) + 1
             };
         }
     }

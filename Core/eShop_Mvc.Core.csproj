@@ -16,4 +16,8 @@
   <ItemGroup>
     <ProjectReference Include="..\SharedKernel\eShop_Mvc.SharedKernel.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Specifications\BillSpecification\" />
+  </ItemGroup>
 </Project>

@@ -6,6 +6,6 @@ namespace eShop_Mvc.Core.Services.Query.FunctionQuery
 {
     public class GetAllFunctionWithFilterQuery : IRequest<IReadOnlyList<Function>>
     {
-        public string Filter { get; set; }
+        public string Keyword { get; set; }
     }
 }

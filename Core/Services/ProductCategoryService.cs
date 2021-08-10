@@ -86,11 +86,6 @@ namespace eShop_Mvc.Core.Services
             return categories;
         }
 
-        public void Save()
-        {
-            _unitOfWork.Commit();
-        }
-
         public void Dispose()
         {
             GC.SuppressFinalize(this);

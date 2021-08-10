@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using eShop_Mvc.SharedKernel;
 using eShop_Mvc.SharedKernel.Interfaces;
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eShop_Mvc.Infrastructure.Data
 {
-    public class EfRepository<T, TId> : IRepository<T, TId>, IDisposable where T : BaseEntity<TId>
+    public class EfRepository<T, TId> : IRepository<T, TId> where T : BaseEntity<TId>
     {
         private readonly AppDbContext _context;
 
@@ -18,71 +19,66 @@ namespace eShop_Mvc.Infrastructure.Data
             _context = context;
         }
 
-        public async Task<T> FindByIdAsync(TId id, params Expression<Func<T, object>>[] includeProperties)
-            => await FindAll(includeProperties).AsNoTracking().SingleOrDefaultAsync(x => x.Id.Equals(id));
+        public async Task<T> FindByIdAsync(TId id)
+            => await _context.Set<T>().FindAsync(id);
 
-        public async Task<T> FindSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
-            => await FindAll(includeProperties).AsNoTracking().SingleOrDefaultAsync(predicate);
+        public async Task<IReadOnlyList<T>> ListAllAsync(CancellationToken cancellationToken)
+            => await _context.Set<T>().ToListAsync(cancellationToken);
 
-        public IQueryable<T> FindAll(params Expression<Func<T, object>>[] includeProperties)
+        public async Task AddAsync(T entity, CancellationToken cancellationToken)
         {
-            IQueryable<T> items = _context.Set<T>();
-            if (includeProperties != null)
-            {
-                foreach (var includeProperty in includeProperties)
-                {
-                    items = items.Include(includeProperty);
-                }
-            }
-            return items;
+            await _context.Set<T>().AddAsync(entity, cancellationToken);
+            //await _context.SaveChangesAsync();
         }
 
-        public IQueryable<T> FindAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public async Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken)
         {
-            IQueryable<T> items = _context.Set<T>();
-            if (includeProperties != null)
-            {
-                foreach (var includeProperty in includeProperties)
-                {
-                    items = items.Include(includeProperty);
-                }
-            }
-            return items.AsQueryable().Where(predicate);
+            await _context.Set<T>().AddRangeAsync(entities, cancellationToken);
         }
 
-        public async Task AddAsync(T entity)
+        public void Update(T entity)
         {
-            await _context.Set<T>().AddAsync(entity);
-            await _context.SaveChangesAsync();
+            _context.Set<T>().Attach(entity);
+            _context.Entry(entity).State = EntityState.Modified;
+            //return _context.SaveChangesAsync();
         }
 
-        public Task UpdateAsync(T entity)
-        {
-            _context.Set<T>().Update(entity);
-            return _context.SaveChangesAsync();
-        }
-
-        public Task DeleteAsync(T entity)
+        public void Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            return _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(TId id)
+        public async Task DeleteByIdAsync(TId id)
         {
             var entity = await FindByIdAsync(id);
-            await DeleteAsync(entity);
+            Delete(entity);
         }
 
-        public void DeleteMultipleAsync(IEnumerable<T> entities)
+        public void DeleteRange(IEnumerable<T> entities)
         {
             _context.Set<T>().RemoveRange(entities);
         }
 
-        public void Dispose()
-        {
-            _context?.Dispose();
-        }
+        public async Task<T> FindSingleAsync(CancellationToken cancellationToken, ISpecification<T> specification = null)
+            => await ApplySpecification(specification).SingleOrDefaultAsync(cancellationToken);
+
+        public async Task<T> FindFirstAsync(CancellationToken cancellationToken, ISpecification<T> specification = null)
+           => await ApplySpecification(specification).FirstOrDefaultAsync(cancellationToken);
+
+        public async Task<IReadOnlyList<T>> FindAllAsync(CancellationToken cancellationToken, ISpecification<T> specification = null)
+            => await ApplySpecification(specification).ToListAsync(cancellationToken);
+
+        public async Task<bool> ContainsAsync(CancellationToken cancellationToken, ISpecification<T> specification = null)
+            => await CountAsync(cancellationToken, specification) > 0;
+
+        public async Task<bool> ContainsAsync(CancellationToken cancellationToken, Expression<Func<T, bool>> predicate)
+            => await CountAsync(cancellationToken, predicate) > 0;
+
+        public async Task<int> CountAsync(CancellationToken cancellationToken, ISpecification<T> specification = null)
+            => await ApplySpecification(specification).CountAsync(cancellationToken);
+
+        public async Task<int> CountAsync(CancellationToken cancellationToken, Expression<Func<T, bool>> predicate)
+            => await _context.Set<T>().Where(predicate).CountAsync(cancellationToken);
 
         public IQueryable<T> ApplySpecification(ISpecification<T> specification = null)
         {

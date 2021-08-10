@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using eShop_Mvc.Areas.Admin.Models;
 using eShop_Mvc.Core.Entities;
 using eShop_Mvc.Core.Interfaces;
 using eShop_Mvc.Extensions;
@@ -70,10 +72,11 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 var announcement = new AnnouncementViewModel()
                 {
                     Title = "Tạo mới role",
-                    DateCreated = DateTime.Now,
+                    TimeStamp = DateTime.Now.ToString(CultureInfo.InvariantCulture),
                     Content = $"Role {roleViewModel.Name} đã được thêm mới !",
                     Id = announcementId,
-                    UserId = User.GetUserId()
+                    UserId = User.GetUserId(),
+                    CreatedBy = User.GetSpecificClaim("FullName")
                 };
                 var announcementUser = new List<AnnouncementUserViewModel>()
                 {

@@ -2,6 +2,9 @@
   "version": "1.0.0",
   "name": "asp.net",
   "private": true,
+  "dependencies": {
+    "@microsoft/signalr": "3.1.17"
+  },
   "devDependencies": {
     "gulp": "3.9.1",
     "gulp-concat": "2.6.1",

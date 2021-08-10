@@ -2,29 +2,42 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace eShop_Mvc.SharedKernel.Interfaces
 {
     public interface IRepository<T, TId> where T : BaseEntity<TId>
     {
-        Task<T> FindByIdAsync(TId id, params Expression<Func<T, object>>[] includeProperties);
+        Task<T> FindByIdAsync(TId id);
 
-        Task<T> FindSingleAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
+        Task AddAsync(T entity, CancellationToken cancellationToken);
 
-        IQueryable<T> FindAll(params Expression<Func<T, object>>[] includeProperties);
+        Task AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken);
 
-        IQueryable<T> FindAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
+        void Update(T entity);
 
-        Task AddAsync(T entity);
+        void Delete(T entity);
 
-        Task UpdateAsync(T entity);
+        Task DeleteByIdAsync(TId id);
 
-        Task DeleteAsync(T entity);
+        void DeleteRange(IEnumerable<T> entities);
 
-        Task DeleteAsync(TId id);
+        Task<T> FindSingleAsync(CancellationToken cancellationToken, ISpecification<T> specification = null);
 
-        void DeleteMultipleAsync(IEnumerable<T> entities);
+        Task<T> FindFirstAsync(CancellationToken cancellationToken, ISpecification<T> specification = null);
+
+        Task<IReadOnlyList<T>> FindAllAsync(CancellationToken cancellationToken, ISpecification<T> specification = null);
+
+        Task<IReadOnlyList<T>> ListAllAsync(CancellationToken cancellationToken);
+
+        Task<bool> ContainsAsync(CancellationToken cancellationToken, ISpecification<T> specification = null);
+
+        Task<bool> ContainsAsync(CancellationToken cancellationToken, Expression<Func<T, bool>> predicate);
+
+        Task<int> CountAsync(CancellationToken cancellationToken, ISpecification<T> specification = null);
+
+        Task<int> CountAsync(CancellationToken cancellationToken, Expression<Func<T, bool>> predicate);
 
         IQueryable<T> ApplySpecification(ISpecification<T> specification = null);
     }

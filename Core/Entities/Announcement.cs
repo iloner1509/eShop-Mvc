@@ -1,5 +1,4 @@
 ﻿using eShop_Mvc.SharedKernel;
-using eShop_Mvc.SharedKernel.Enums;
 using eShop_Mvc.SharedKernel.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -7,19 +6,19 @@ using System.ComponentModel.DataAnnotations;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Announcement : BaseEntity<string>, ISwitchable, IAuditable
+    public class Announcement : BaseEntity<string>, IAuditable
     {
         public Announcement()
         {
             AnnouncementUsers = new List<AnnouncementUser>();
         }
 
-        public Announcement(string title, string content, Guid userId, Status status, DateTime dateCreated)
+        public Announcement(string title, string content, Guid userId, string createdBy, DateTime dateCreated)
         {
             Title = title;
             Content = content;
             UserId = userId;
-            Status = status;
+            CreatedBy = createdBy;
             DateCreated = dateCreated;
         }
 
@@ -35,9 +34,8 @@ namespace eShop_Mvc.Core.Entities
         public virtual AppUser User { get; set; }
         public virtual ICollection<AnnouncementUser> AnnouncementUsers { get; set; }
 
+        [StringLength(250)]
         [Required]
-        public Status Status { get; set; }
-
         public string CreatedBy { get; set; }
 
         [Required]

@@ -11,17 +11,18 @@ namespace eShop_Mvc.Core.Services.Query.CategoryQuery
 {
     public class GetAllCategoryQueryHandler : IRequestHandler<GetAllCategoryQuery, IReadOnlyList<ProductCategory>>
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<ProductCategory, int> _categoryRepository;
 
-        public GetAllCategoryQueryHandler(IRepository<ProductCategory, int> categoryRepository)
+        public GetAllCategoryQueryHandler(IUnitOfWork unitOfWork)
         {
-            _categoryRepository = categoryRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<IReadOnlyList<ProductCategory>> Handle(GetAllCategoryQuery request, CancellationToken cancellationToken)
         {
             var specification = new ProductCategoryWithFilterSpecification(keyword: request.Keyword);
-            return await _categoryRepository.ApplySpecification(specification).ToListAsync(cancellationToken);
+            return await _unitOfWork.Repository<ProductCategory, int>().FindAllAsync(cancellationToken, specification);
         }
     }
 }

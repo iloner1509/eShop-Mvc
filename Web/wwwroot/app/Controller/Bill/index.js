@@ -307,7 +307,6 @@
                             render += Mustache.render(template,
                                 {
                                     CustomerName: item.CustomerName,
-
                                     Id: item.Id,
                                     PaymentMethod: getPaymentMethodName(item.PaymentMethod),
                                     BillStatus: getBillStatusName(item.BillStatus),

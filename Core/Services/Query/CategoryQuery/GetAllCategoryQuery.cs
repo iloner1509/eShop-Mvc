@@ -6,6 +6,6 @@ namespace eShop_Mvc.Core.Services.Query.CategoryQuery
 {
     public class GetAllCategoryQuery : IRequest<IReadOnlyList<ProductCategory>>
     {
-        public string? Keyword { get; set; }
+        public string Keyword { get; set; }
     }
 }

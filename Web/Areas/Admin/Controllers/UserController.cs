@@ -11,9 +11,15 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using eShop_Mvc.Areas.Admin.Models;
+using eShop_Mvc.Models.System;
+using eShop_Mvc.SignalR.Hubs;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
@@ -23,13 +29,19 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         private readonly IMapper _mapper;
         private readonly IAuthorizationService _authorizationService;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly ILogger<UserController> _logger;
+        private readonly IHubContext<AnnoucementHub, IAnnouncementHub> _announcementHubContext;
 
-        public UserController(UserManager<AppUser> userManager, IMapper mapper, IAuthorizationService authorizationService, SignInManager<AppUser> signInManager)
+        public UserController(UserManager<AppUser> userManager, IMapper mapper,
+                              IAuthorizationService authorizationService, SignInManager<AppUser> signInManager,
+                              ILogger<UserController> logger, IHubContext<AnnoucementHub, IAnnouncementHub> announcementHubContext)
         {
             _userManager = userManager;
             _mapper = mapper;
             _authorizationService = authorizationService;
             _signInManager = signInManager;
+            _logger = logger;
+            _announcementHubContext = announcementHubContext;
         }
 
         [HttpGet]
@@ -62,13 +74,33 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                     Status = appUser.Status
                 };
                 var result = await _userManager.CreateAsync(user, appUser.Password);
-                if (result.Succeeded && appUser.Roles.Count > 0)
+                if (result.Succeeded)
                 {
-                    var createdUser = await _userManager.FindByNameAsync(user.UserName);
-                    if (createdUser != null)
+                    if (appUser.Roles != null)
                     {
-                        await _userManager.AddToRolesAsync(createdUser, appUser.Roles);
+                        var createdUser = await _userManager.FindByNameAsync(user.UserName);
+                        if (createdUser != null)
+                        {
+                            await _userManager.AddToRolesAsync(createdUser, appUser.Roles);
+                        }
                     }
+                    _logger.LogInformation($"User {user.UserName} has been created successfully!");
+
+                    // send announcement to all user
+                    var announcement = new AnnouncementViewModel()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Content = $"New user {user.UserName} is added into user list.",
+                        CreatedBy = User.FindFirst(ClaimTypes.Name).Value,
+                        TimeStamp = DateTime.Now.ToString(CultureInfo.InvariantCulture),
+                        Title = "New user",
+                        UserId = User.GetUserId()
+                    };
+                    await _announcementHubContext.Clients.All.BroadcastAnnouncement(announcement);
+                }
+                else
+                {
+                    return new BadRequestObjectResult(result.Errors);
                 }
             }
             else
@@ -95,6 +127,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 user.DateModified = DateTime.Now;
                 await _userManager.UpdateAsync(user);
 
+                _logger.LogInformation($"User {user.UserName} info has been updated!");
                 // update session
                 var session = new AppUserViewModel()
                 {

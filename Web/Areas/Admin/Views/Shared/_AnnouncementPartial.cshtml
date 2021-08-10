@@ -1,0 +1,29 @@
+﻿<li role="presentation" class="nav-item dropdown open">
+    <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-envelope"></i>
+        <span class="badge bg-green"><label id="totalAnnouncement"></label></span>
+    </a>
+    <ul id="announcementList" class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
+        <li class="nav-item">
+            <div class="text-center">
+                <a class="dropdown-item">
+                    <strong>See All Alerts</strong>
+                    <i class="fas fa-angle-right"></i>
+                </a>
+            </div>
+        </li>
+    </ul>
+</li>
+<script id="announcement-template" type="x-tmpl-mustache">
+    <li class="nav-item" data-id="{{Id}}">
+        <a class="dropdown-item">
+            <span>
+                <span>{{Title}}</span>
+                <span class="time">{{TimeStamp}}</span>
+            </span>
+            <span class="message">
+                {{Content}}
+            </span>
+        </a>
+    </li>
+</script>

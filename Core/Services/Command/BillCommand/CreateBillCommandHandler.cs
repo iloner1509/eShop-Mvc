@@ -8,14 +8,10 @@ namespace eShop_Mvc.Core.Services.Command.BillCommand
 {
     public class CreateBillCommandHandler : IRequestHandler<CreateBillCommand>
     {
-        private readonly IRepository<Product, int> _productRepository;
-        private readonly IRepository<Bill, int> _orderRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public CreateBillCommandHandler(IRepository<Product, int> productRepository, IRepository<Bill, int> orderRepository, IUnitOfWork unitOfWork)
+        public CreateBillCommandHandler(IUnitOfWork unitOfWork)
         {
-            _productRepository = productRepository;
-            _orderRepository = orderRepository;
             _unitOfWork = unitOfWork;
         }
 
@@ -23,12 +19,12 @@ namespace eShop_Mvc.Core.Services.Command.BillCommand
         {
             foreach (var billDetail in request.Bill.BillDetails)
             {
-                var product = await _productRepository.FindByIdAsync(billDetail.ProductId);
+                var product = await _unitOfWork.Repository<Product, int>().FindByIdAsync(billDetail.ProductId);
                 billDetail.Price = product.Price;
             }
 
-            await _orderRepository.AddAsync(request.Bill);
-            _unitOfWork.Commit();
+            await _unitOfWork.Repository<Bill, int>().AddAsync(request.Bill, cancellationToken: cancellationToken);
+            await _unitOfWork.CompleteAsync(cancellationToken);
             return Unit.Value;
         }
     }

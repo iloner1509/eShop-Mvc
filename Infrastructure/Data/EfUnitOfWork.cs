@@ -1,24 +1,50 @@
-﻿using eShop_Mvc.SharedKernel.Interfaces;
+﻿using System;
+using System.Collections;
+using System.Threading;
+using eShop_Mvc.SharedKernel;
+using eShop_Mvc.SharedKernel.Interfaces;
+using System.Threading.Tasks;
 
 namespace eShop_Mvc.Infrastructure.Data
 {
     public class EfUnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _context;
+        private Hashtable _repositories;
 
         public EfUnitOfWork(AppDbContext context)
         {
             _context = context;
         }
 
-        public void Dispose()
+        public int Complete()
         {
-            _context.Dispose();
+            return _context.SaveChanges();
         }
 
-        public void Commit()
+        public Task<int> CompleteAsync(CancellationToken cancellationToken)
         {
-            _context.SaveChanges();
+            return _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public void Dispose()
+        {
+            _context?.Dispose();
+        }
+
+        public IRepository<TEntity, TId> Repository<TEntity, TId>() where TEntity : BaseEntity<TId>
+        {
+            _repositories ??= new Hashtable();
+
+            var type = typeof(TEntity).Name;
+            if (!_repositories.Contains(type))
+            {
+                var repoType = typeof(EfRepository<,>);
+                var repoInstance = Activator.CreateInstance(repoType.MakeGenericType(typeof(TEntity)), _context);
+                _repositories.Add(repoType, repoInstance);
+            }
+
+            return (IRepository<TEntity, TId>)_repositories[type];
         }
     }
 }

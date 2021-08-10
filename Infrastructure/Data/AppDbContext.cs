@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace eShop_Mvc.Infrastructure.Data
 {
@@ -62,6 +64,23 @@ namespace eShop_Mvc.Infrastructure.Data
                 }
             }
             return base.SaveChanges();
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var modified = ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+            foreach (EntityEntry item in modified)
+            {
+                if (item.Entity is IAuditable changedOrAddedItem)
+                {
+                    if (item.State == EntityState.Added)
+                    {
+                        changedOrAddedItem.DateCreated = DateTime.Now;
+                    }
+                    changedOrAddedItem.DateModified = DateTime.Now;
+                }
+            }
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

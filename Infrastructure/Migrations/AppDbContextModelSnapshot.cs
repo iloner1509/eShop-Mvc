@@ -246,7 +246,9 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         .HasMaxLength(250);
 
                     b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
 
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
@@ -256,9 +258,6 @@ namespace eShop_Mvc.Infrastructure.Migrations
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()

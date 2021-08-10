@@ -11,7 +11,7 @@
         <img src="@session.Avatar" alt="">@session.FullName
     </a>
     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="/Admin/User/UserProfile">Tài khoản của tôi</a>
+        <a class="dropdown-item" asp-action="UserProfile" asp-controller="User">Tài khoản của tôi</a>
         <a class="dropdown-item" href="javascript:;">
             <span>Settings</span>
         </a>

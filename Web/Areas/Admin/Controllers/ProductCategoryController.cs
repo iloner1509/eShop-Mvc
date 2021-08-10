@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using eShop_Mvc.Core.Services.Query.CategoryQuery;
+using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
@@ -15,11 +18,15 @@ namespace eShop_Mvc.Areas.Admin.Controllers
     {
         private readonly IProductCategoryService _productCategoryService;
         private readonly IMapper _mapper;
+        private readonly ILogger<ProductCategoryController> _logger;
+        private readonly IMediator _mediator;
 
-        public ProductCategoryController(IProductCategoryService productCategoryService, IMapper mapper)
+        public ProductCategoryController(IProductCategoryService productCategoryService, IMapper mapper, ILogger<ProductCategoryController> logger, IMediator mediator)
         {
             _productCategoryService = productCategoryService;
             _mapper = mapper;
+            _logger = logger;
+            _mediator = mediator;
         }
 
         public IActionResult Index()
@@ -32,14 +39,17 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var model = _mapper.Map<IReadOnlyList<ProductCategory>, IReadOnlyList<ProductCategoryViewModel>>(await _productCategoryService.GetAllAsync());
+            var model = await _mediator.Send(new GetAllCategoryQuery());
             return new OkObjectResult(model);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetById(int id)
         {
-            var model = _mapper.Map<ProductCategory, ProductCategoryViewModel>(await _productCategoryService.GetByIdAsync(id));
+            var model = await _mediator.Send(new GetCategoryByIdQuery()
+            {
+                CategoryId = id
+            });
             return new OkObjectResult(model);
         }
 

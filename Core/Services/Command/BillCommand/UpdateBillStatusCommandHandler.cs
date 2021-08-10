@@ -8,21 +8,21 @@ namespace eShop_Mvc.Core.Services.Command.BillCommand
 {
     public class UpdateBillStatusCommandHandler : IRequestHandler<UpdateBillStatusCommand>
     {
-        private readonly IRepository<Bill, int> _orderRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateBillStatusCommandHandler(IRepository<Bill, int> orderRepository, IUnitOfWork unitOfWork)
+        public UpdateBillStatusCommandHandler(IUnitOfWork unitOfWork)
         {
-            _orderRepository = orderRepository;
             _unitOfWork = unitOfWork;
         }
 
         public async Task<Unit> Handle(UpdateBillStatusCommand request, CancellationToken cancellationToken)
         {
-            var order = await _orderRepository.FindByIdAsync(request.BillId);
+            var billRepo = _unitOfWork.Repository<Bill, int>();
+
+            var order = await billRepo.FindByIdAsync(request.BillId);
             order.BillStatus = request.Status;
-            await _orderRepository.UpdateAsync(order);
-            _unitOfWork.Commit();
+            billRepo.Update(order);
+            await _unitOfWork.CompleteAsync(cancellationToken);
             return Unit.Value;
         }
     }
