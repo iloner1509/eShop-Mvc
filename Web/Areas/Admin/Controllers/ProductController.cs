@@ -11,6 +11,8 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using eShop_Mvc.Core.Services.Query.CategoryQuery;
+using eShop_Mvc.Core.Services.Query.ProductQuery;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -51,15 +53,15 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var model = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(await _productService.GetAllAsync());
-            return new OkObjectResult(model);
+            var model = await _mediator.Send(new GetAllProductQuery());
+            return new OkObjectResult(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(model));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
-            var model = _mapper.Map<IReadOnlyList<ProductCategory>, IReadOnlyList<ProductCategoryViewModel>>(await _productCategoryService.GetAllAsync());
-            return new OkObjectResult(model);
+            var model = await _mediator.Send(new GetAllCategoryQuery());
+            return new OkObjectResult(_mapper.Map<IReadOnlyList<ProductCategory>, IReadOnlyList<ProductCategoryViewModel>>(model));
         }
 
         [HttpGet]
@@ -79,8 +81,11 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> GetById(int id)
         {
-            var model = _mapper.Map<Product, ProductViewModel>(await _productService.GetByIdAsync(id));
-            return new OkObjectResult(model);
+            var model = await _mediator.Send(new GetProductByIdQuery()
+            {
+                ProductId = id
+            });
+            return new OkObjectResult(_mapper.Map<Product, ProductViewModel>(model));
         }
 
         [HttpPost]

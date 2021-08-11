@@ -40,8 +40,6 @@ namespace eShop_Mvc.Core.Services
             GC.SuppressFinalize(this);
         }
 
-        public async Task<IReadOnlyList<Product>> GetAllAsync() => await _productRepository.FindAll(x => x.ProductCategory).ToListAsync();
-
         public async Task<Product> AddAsync(Product product)
         {
             List<ProductTag> productTags = new List<ProductTag>();

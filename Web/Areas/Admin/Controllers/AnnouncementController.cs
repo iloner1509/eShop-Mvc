@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
-    public class AnnouncementController : Controller
+    public class AnnouncementController : BaseController
     {
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;

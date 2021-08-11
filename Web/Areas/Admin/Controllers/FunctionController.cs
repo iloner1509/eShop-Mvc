@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Interfaces;
 using eShop_Mvc.Core.Services.Command.FunctionCommand;
 using eShop_Mvc.Core.Services.Query.FunctionQuery;
 using eShop_Mvc.Models.System;
@@ -17,14 +16,12 @@ namespace eShop_Mvc.Areas.Admin.Controllers
 {
     public class FunctionController : BaseController
     {
-        private readonly IFunctionService _functionService;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly ILogger<FunctionController> _logger;
 
-        public FunctionController(IFunctionService functionService, IMapper mapper, IMediator mediator, ILogger<FunctionController> logger)
+        public FunctionController(IMapper mapper, IMediator mediator, ILogger<FunctionController> logger)
         {
-            _functionService = functionService;
             _mapper = mapper;
             _mediator = mediator;
             _logger = logger;
@@ -163,7 +160,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             {
                 FunctionId = id
             });
-
+            _logger.LogInformation($"Function id: {id} had been deleted!");
             return new OkObjectResult(id);
         }
 

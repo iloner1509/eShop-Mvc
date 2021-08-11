@@ -12,7 +12,6 @@ namespace eShop_Mvc.Core.Services.Query.CategoryQuery
     public class GetAllCategoryQueryHandler : IRequestHandler<GetAllCategoryQuery, IReadOnlyList<ProductCategory>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IRepository<ProductCategory, int> _categoryRepository;
 
         public GetAllCategoryQueryHandler(IUnitOfWork unitOfWork)
         {

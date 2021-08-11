@@ -1,29 +1,27 @@
 ﻿using AutoMapper;
 using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Interfaces;
+using eShop_Mvc.Core.Services.Command.CategoryCommand;
+using eShop_Mvc.Core.Services.Query.CategoryQuery;
 using eShop_Mvc.Models.ProductViewModels;
 using eShop_Mvc.SharedKernel;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using eShop_Mvc.Core.Services.Query.CategoryQuery;
-using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
     public class ProductCategoryController : BaseController
     {
-        private readonly IProductCategoryService _productCategoryService;
         private readonly IMapper _mapper;
         private readonly ILogger<ProductCategoryController> _logger;
         private readonly IMediator _mediator;
 
-        public ProductCategoryController(IProductCategoryService productCategoryService, IMapper mapper, ILogger<ProductCategoryController> logger, IMediator mediator)
+        public ProductCategoryController(IMapper mapper, ILogger<ProductCategoryController> logger, IMediator mediator)
         {
-            _productCategoryService = productCategoryService;
             _mapper = mapper;
             _logger = logger;
             _mediator = mediator;
@@ -66,8 +64,12 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 return new BadRequestResult();
             }
 
-            await _productCategoryService.UpdateParentIdAsync(sourceId, targetId, items);
-            _productCategoryService.Save();
+            await _mediator.Send(new UpdateCategoryParentIdCommand()
+            {
+                SourceId = sourceId,
+                TargetId = targetId,
+                SubCategoryData = items
+            });
             return new OkResult();
         }
 
@@ -84,8 +86,12 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 return new BadRequestResult();
             }
 
-            await _productCategoryService.ReOrderAsync(sourceId, targetId);
-            _productCategoryService.Save();
+            await _mediator.Send(new UpdateCategoryOrderCommand()
+            {
+                SourceId = sourceId,
+                TargetId = targetId
+            });
+
             return new OkResult();
         }
 
@@ -101,13 +107,21 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             productCategoryViewModel.SeoAlias = TextHelper.ToUnsignString(productCategoryViewModel.Name);
             if (productCategoryViewModel.Id == 0)
             {
-                await _productCategoryService.AddAsync(_mapper.Map<ProductCategoryViewModel, ProductCategory>(productCategoryViewModel));
+                await _mediator.Send(new CreateCategoryCommand()
+                {
+                    Category = _mapper.Map<ProductCategoryViewModel, ProductCategory>(productCategoryViewModel)
+                });
+                _logger.LogInformation($"Category {productCategoryViewModel.Name} had been created!");
             }
             else
             {
-                await _productCategoryService.UpdateAsync(_mapper.Map<ProductCategoryViewModel, ProductCategory>(productCategoryViewModel));
+                await _mediator.Send(new UpdateCategoryCommand()
+                {
+                    Category = _mapper.Map<ProductCategoryViewModel, ProductCategory>(productCategoryViewModel)
+                });
+                _logger.LogInformation($"Category {productCategoryViewModel.Name} had been modified!");
             }
-            _productCategoryService.Save();
+
             return new OkObjectResult(productCategoryViewModel);
         }
 
@@ -119,8 +133,11 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 return new BadRequestResult();
             }
 
-            await _productCategoryService.DeleteAsync(id);
-            _productCategoryService.Save();
+            await _mediator.Send(new DeleteCategoryCommand()
+            {
+                CategoryId = id
+            });
+            _logger.LogInformation($"Category id: {id} had been deleted!");
             return new OkObjectResult(id);
         }
 

@@ -8,8 +8,6 @@ namespace eShop_Mvc.Core.Interfaces
 {
     public interface IProductService : IDisposable
     {
-        Task<IReadOnlyList<Product>> GetAllAsync();
-
         Task<Product> AddAsync(Product product);
 
         Task UpdateAsync(Product product);
