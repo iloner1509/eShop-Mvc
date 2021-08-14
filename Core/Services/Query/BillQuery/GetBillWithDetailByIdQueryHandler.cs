@@ -1,5 +1,5 @@
 ﻿using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Specifications;
+using eShop_Mvc.Core.Specifications.BillSpecification;
 using eShop_Mvc.SharedKernel.Interfaces;
 using MediatR;
 using System.Collections.Generic;

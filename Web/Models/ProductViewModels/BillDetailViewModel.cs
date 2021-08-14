@@ -9,7 +9,7 @@
 
         public decimal Price { get; set; }
 
-        public BillViewModel Bill { get; set; }
+        public ProductViewModel Bill { get; set; }
 
         public ProductViewModel Product { get; set; }
     }

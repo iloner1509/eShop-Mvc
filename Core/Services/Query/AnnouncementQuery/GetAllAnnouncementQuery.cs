@@ -7,6 +7,6 @@ namespace eShop_Mvc.Core.Services.Query.AnnouncementQuery
 {
     public class GetAllAnnouncementQuery : IRequest<PagedResult<Announcement>>
     {
-        public PagingParams PagingParams { get; set; }
+        public BasePagingParams PagingParams { get; set; }
     }
 }

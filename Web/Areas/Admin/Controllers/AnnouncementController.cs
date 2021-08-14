@@ -1,9 +1,8 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using eShop_Mvc.Core.Services.Query.AnnouncementQuery;
-using eShop_Mvc.Core.Specifications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
@@ -24,7 +23,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllPaging(PagingParams pagingParams)
+        public async Task<IActionResult> GetAllPaging(BasePagingParams pagingParams)
         {
             return new OkObjectResult(await _mediator.Send(new GetAllAnnouncementQuery()
             {

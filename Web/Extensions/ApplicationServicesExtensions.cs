@@ -28,11 +28,10 @@ namespace eShop_Mvc.Extensions
             services.AddTransient(typeof(IUnitOfWork), typeof(EfUnitOfWork));
 
             // Services
-            services.AddTransient<IProductCategoryService, ProductCategoryService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddTransient<IFunctionService, FunctionService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IRoleService, RoleService>();
-            services.AddTransient<IBillService, BillService>();
 
             // Host information
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

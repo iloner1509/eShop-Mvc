@@ -10,22 +10,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eShop_Mvc.Core.Services.Query.CategoryQuery;
+using eShop_Mvc.Core.Services.Query.ProductQuery;
+using eShop_Mvc.Core.Services.Query.TagQuery;
 using MediatR;
 
 namespace eShop_Mvc.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IProductService _productService;
-        private readonly IProductCategoryService _productCategoryService;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IMediator _mediator;
 
-        public ProductController(IProductService productService, IProductCategoryService productCategoryService, IMapper mapper, IConfiguration configuration, IMediator mediator)
+        public ProductController(IMapper mapper, IConfiguration configuration, IMediator mediator)
         {
-            _productService = productService;
-            _productCategoryService = productCategoryService;
             _mapper = mapper;
             _configuration = configuration;
             _mediator = mediator;
@@ -87,17 +85,32 @@ namespace eShop_Mvc.Controllers
         public async Task<IActionResult> Detail(int id)
         {
             ViewData["BodyClass"] = "product-page";
-            var model = new DetailViewModel();
-            model.Product = _mapper.Map<Product, ProductViewModel>(await _productService.GetByIdAsync(id));
-            model.Category = _mapper.Map<ProductCategory, ProductCategoryViewModel>(await _productCategoryService.GetByIdAsync(model.Product.CategoryId));
-            model.RelatedProducts =
-                _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(
-                    await _productService.GetRelatedProductsAsync(id, 9));
+            var relatedProduct = await _mediator.Send(new GetRelatedProductQuery()
+            {
+                ProductId = id,
+                Top = 10
+            });
+            var product = await _mediator.Send(new GetProductByIdQuery()
+            {
+                ProductId = id
+            });
+            var category = await _mediator.Send(new GetCategoryByIdQuery()
+            {
+                CategoryId = product.CategoryId
+            });
+            var tags = await _mediator.Send(new GetTagByProductIdQuery()
+            {
+                ProductId = id
+            });
+            var model = new DetailViewModel
+            {
+                Product = _mapper.Map<Product, ProductViewModel>(product),
+                Category = _mapper.Map<ProductCategory, ProductCategoryViewModel>(category),
+                RelatedProducts = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(relatedProduct),
+                Available = product.Quantity > 0,
+                Tags = _mapper.Map<IReadOnlyList<Tag>, IReadOnlyList<TagViewModel>>(tags)
+            };
 
-            model.Tags =
-                _mapper.Map<IReadOnlyList<Tag>, IReadOnlyList<TagViewModel>>(
-                    await _productService.GetProductTagsAsync(id));
-            model.Available = model.Product.Quantity > 0;
             return View(model);
         }
     }

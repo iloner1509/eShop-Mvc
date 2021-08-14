@@ -11,6 +11,7 @@ namespace eShop_Mvc.Models
         public IReadOnlyList<SlideViewModel> HomeSlides { get; set; }
         public IReadOnlyList<ProductViewModel> HotProducts { get; set; }
         public IReadOnlyList<ProductViewModel> TopSellProducts { get; set; }
+        public IReadOnlyList<ProductViewModel> LatestProducts { get; set; }
         public IReadOnlyList<ProductCategoryViewModel> HomeCategories { get; set; }
         public string Title { get; set; }
     }

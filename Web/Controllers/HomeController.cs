@@ -1,30 +1,24 @@
 ﻿using AutoMapper;
 using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Interfaces;
+using eShop_Mvc.Core.Services.Query.CategoryQuery;
+using eShop_Mvc.Core.Services.Query.ProductQuery;
 using eShop_Mvc.Models;
 using eShop_Mvc.Models.ProductViewModels;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using MediatR;
 
 namespace eShop_Mvc.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IProductService _productService;
-        private readonly IProductCategoryService _productCategoryService;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
 
-        public HomeController(ILogger<HomeController> logger, IProductService productService, IProductCategoryService productCategoryService, IMapper mapper, IMediator mediator)
+        public HomeController(IMapper mapper, IMediator mediator)
         {
-            _logger = logger;
-            _productService = productService;
-            _productCategoryService = productCategoryService;
             _mapper = mapper;
             _mediator = mediator;
         }
@@ -33,17 +27,23 @@ namespace eShop_Mvc.Controllers
         {
             ViewData["BodyClass"] = "cms-index-index cms-home-page";
             //var culture = HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture.Culture.Name;
+            var homeCategories = await _mediator.Send(new GetHomeCategoryQuery()
+            {
+                Top = 5
+            });
+            var latestProduct = await _mediator.Send(new GetLatestProductQuery()
+            {
+                Top = 5
+            });
+            var hotProducts = await _mediator.Send(new GetHotProductQuery()
+            {
+                Top = 5
+            });
             var homeViewModel = new HomeViewModel
             {
-                HomeCategories =
-                _mapper.Map<IReadOnlyList<ProductCategory>, IReadOnlyList<ProductCategoryViewModel>>(
-                    await _productCategoryService.GetHomeCategoriesAsync(5)),
-                HotProducts =
-                _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(
-                    await _productService.GetHotProductsAsync(5)),
-                TopSellProducts =
-                _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(
-                    await _productService.GetLatestAsync(5))
+                HomeCategories = _mapper.Map<IReadOnlyList<ProductCategory>, IReadOnlyList<ProductCategoryViewModel>>(homeCategories),
+                HotProducts = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(hotProducts),
+                LatestProducts = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(latestProduct)
             };
 
             return View(homeViewModel);

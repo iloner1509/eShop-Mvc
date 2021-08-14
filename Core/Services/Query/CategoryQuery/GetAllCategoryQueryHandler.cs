@@ -1,8 +1,7 @@
 ﻿using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Specifications;
+using eShop_Mvc.Core.Specifications.CategorySpecification;
 using eShop_Mvc.SharedKernel.Interfaces;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

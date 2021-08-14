@@ -7,7 +7,7 @@ using eShop_Mvc.SharedKernel.Enums;
 
 namespace eShop_Mvc.Models
 {
-    public class CheckoutViewModel : BillViewModel
+    public class CheckoutViewModel : ProductViewModel
     {
         public List<CartViewModel> Cart { get; set; }
 

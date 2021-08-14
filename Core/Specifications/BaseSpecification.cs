@@ -59,6 +59,16 @@ namespace eShop_Mvc.Core.Specifications
             OrderByDesc = orderByDescExpression;
         }
 
+        protected void AddTake(int take)
+        {
+            Take = take;
+        }
+
+        protected void AddSkip(int skip)
+        {
+            Skip = skip;
+        }
+
         protected void ApplyPaging(int take, int skip)
         {
             Take = take;

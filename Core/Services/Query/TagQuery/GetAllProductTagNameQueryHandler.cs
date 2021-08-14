@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Specifications;
+﻿using eShop_Mvc.Core.Entities;
+using eShop_Mvc.Core.Specifications.TagSpecification;
 using eShop_Mvc.SharedKernel.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace eShop_Mvc.Core.Services.Query.TagQuery
 {

@@ -1,5 +1,5 @@
 ﻿using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Specifications;
+using eShop_Mvc.Core.Specifications.TagSpecification;
 using eShop_Mvc.SharedKernel;
 using eShop_Mvc.SharedKernel.Interfaces;
 using MediatR;

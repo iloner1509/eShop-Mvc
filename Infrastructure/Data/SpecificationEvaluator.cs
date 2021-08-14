@@ -33,6 +33,14 @@ namespace eShop_Mvc.Infrastructure.Data
                 query = query.GroupBy(specification.GroupBy).SelectMany(x => x);
             }
 
+            if (specification.Take != 0 && !specification.IsPagingEnabled)
+            {
+                query = query.Take(specification.Take);
+            }
+            if (specification.Skip != 0 && !specification.IsPagingEnabled)
+            {
+                query = query.Skip(specification.Skip);
+            }
             if (specification.IsPagingEnabled)
             {
                 query = query.Skip(specification.Skip).Take(specification.Take);

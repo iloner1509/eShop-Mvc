@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Specifications;
 using eShop_Mvc.SharedKernel.Interfaces;
+using eShop_Mvc.Core.Specifications.FunctionSpecification;
 
 namespace eShop_Mvc.Core.Services.Command.FunctionCommand
 {

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Interfaces;
 using eShop_Mvc.Core.Services.Command.BillCommand;
 using eShop_Mvc.Core.Services.Query.BillQuery;
 using eShop_Mvc.Models.Common;
@@ -14,20 +13,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using eShop_Mvc.Core.Specifications;
+using eShop_Mvc.Core.Specifications.BillSpecification;
+using eShop_Mvc.SharedKernel;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
     public class BillController : BaseController
     {
-        private readonly IBillService _billService;
         private readonly IMapper _mapper;
         private readonly ILogger<BillController> _logger;
         private readonly IMediator _mediator;
 
-        public BillController(IBillService billService, IMapper mapper, ILogger<BillController> logger, IMediator mediator)
+        public BillController(IMapper mapper, ILogger<BillController> logger, IMediator mediator)
         {
-            _billService = billService;
             _mapper = mapper;
             _logger = logger;
             _mediator = mediator;
@@ -44,17 +42,24 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             {
                 BillId = billId
             });
-            return new OkObjectResult(_mapper.Map<Bill, BillViewModel>(model));
+            return new OkObjectResult(_mapper.Map<Bill, ProductViewModel>(model));
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllPaging(PagingParams pagingParams)
+        public async Task<IActionResult> GetAllPaging(BillPagingParams pagingParams)
         {
             //return new OkObjectResult(await _billService.GetAllPagingAsync(startDate, endDate, keyword, page, pageSize));
-            return new OkObjectResult(await _mediator.Send(new GetAllBillPagingQuery()
+            var model = await _mediator.Send(new GetAllBillPagingQuery()
             {
                 PagingParams = pagingParams
-            }));
+            });
+            return new OkObjectResult(new PagedResult<BillViewModel>()
+            {
+                CurrentPage = model.CurrentPage,
+                PageSize = model.PageSize,
+                RowCount = model.RowCount,
+                Results = _mapper.Map<IReadOnlyList<Bill>, IReadOnlyList<BillViewModel>>(model.Results)
+            });
         }
 
         [HttpPost]
@@ -71,7 +76,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveEntity(BillViewModel billViewModel)
+        public async Task<IActionResult> SaveEntity(ProductViewModel billViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -84,7 +89,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 //await _billService.CreateAsync(_mapper.Map<BillViewModel, Bill>(billViewModel));
                 await _mediator.Send(new CreateBillCommand()
                 {
-                    Bill = _mapper.Map<BillViewModel, Bill>(billViewModel)
+                    Bill = _mapper.Map<ProductViewModel, Bill>(billViewModel)
                 });
                 _logger.LogInformation("New order is created successfully!");
             }
@@ -93,7 +98,7 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                 //await _billService.UpdateAsync(_mapper.Map<BillViewModel, Bill>(billViewModel));
                 await _mediator.Send(new UpdateBillCommand()
                 {
-                    Bill = _mapper.Map<BillViewModel, Bill>(billViewModel)
+                    Bill = _mapper.Map<ProductViewModel, Bill>(billViewModel)
                 });
                 _logger.LogInformation($"order {billViewModel.Id} had been modified !");
             }
@@ -126,7 +131,10 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> ExportExcel(int billId)
         {
-            return new OkObjectResult(await _billService.ExportExcel(billId));
+            return new OkObjectResult(await _mediator.Send(new ExportBillToExcelFileQuery()
+            {
+                BillId = billId
+            }));
         }
 
         public IActionResult Index()

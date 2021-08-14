@@ -60,7 +60,7 @@ namespace eShop_Mvc.Controllers
                             ProductId = item.Product.Id
                         });
                     }
-                    var bill = new BillViewModel()
+                    var bill = new ProductViewModel()
                     {
                         CustomerMobile = model.CustomerMobile,
                         CustomerName = model.CustomerName,
@@ -74,7 +74,7 @@ namespace eShop_Mvc.Controllers
                         bill.CustomerId = Guid.Parse(User.GetSpecificClaim("UserId"));
                     }
 
-                    await _billService.CreateAsync(_mapper.Map<BillViewModel, Bill>(bill));
+                    await _billService.CreateAsync(_mapper.Map<ProductViewModel, Bill>(bill));
                     try
                     {
                         _billService.Save();

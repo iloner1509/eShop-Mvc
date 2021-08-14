@@ -5,6 +5,7 @@ using MediatR;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using eShop_Mvc.Core.Specifications.BillDetailSpecification;
 
 namespace eShop_Mvc.Core.Services.Query.BillQuery
 {

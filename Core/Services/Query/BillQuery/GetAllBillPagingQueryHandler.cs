@@ -5,6 +5,7 @@ using eShop_Mvc.SharedKernel.Interfaces;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
+using eShop_Mvc.Core.Specifications.BillSpecification;
 
 namespace eShop_Mvc.Core.Services.Query.BillQuery
 {
@@ -27,8 +28,7 @@ namespace eShop_Mvc.Core.Services.Query.BillQuery
                 CurrentPage = request.PagingParams.PageIndex,
                 RowCount = totalRow,
                 Results = data,
-                PageSize = request.PagingParams.PageSize,
-                PageCount = (totalRow / request.PagingParams.PageSize) + 1
+                PageSize = request.PagingParams.PageSize
             };
         }
     }

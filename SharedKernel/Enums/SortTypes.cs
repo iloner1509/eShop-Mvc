@@ -8,6 +8,8 @@
         TitleDesc,
         DateCreatedDesc,
         CustomerNameAsc,
-        CustomerNameDesc
+        CustomerNameDesc,
+        PriceAsc,
+        PriceDesc
     }
 }
