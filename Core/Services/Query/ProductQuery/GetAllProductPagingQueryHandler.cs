@@ -1,10 +1,10 @@
 ﻿using eShop_Mvc.Core.Entities;
+using eShop_Mvc.Core.Specifications.ProductSpecification;
 using eShop_Mvc.SharedKernel;
+using eShop_Mvc.SharedKernel.Interfaces;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
-using eShop_Mvc.Core.Specifications.ProductSpecification;
-using eShop_Mvc.SharedKernel.Interfaces;
 
 namespace eShop_Mvc.Core.Services.Query.ProductQuery
 {

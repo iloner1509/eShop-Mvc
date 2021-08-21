@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace eShop_Mvc.Core.Services.Query.CategoryQuery
 {
-    public class GetAllByParentIdQuery : IRequest<IReadOnlyList<ProductCategory>>
+    public class GetAllCategoryByParentIdQuery : IRequest<IReadOnlyList<ProductCategory>>
     {
         public int ParentId { get; set; }
     }

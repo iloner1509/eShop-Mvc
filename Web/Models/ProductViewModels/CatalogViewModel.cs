@@ -13,9 +13,12 @@ namespace eShop_Mvc.Models.ProductViewModels
 
         public List<SelectListItem> SortTypes { get; } = new List<SelectListItem>()
         {
-            new SelectListItem(){Value = "latest",Text = "Mới nhất"},
-            new SelectListItem(){Value = "price",Text = "Giá"},
-            new SelectListItem(){Value = "name",Text = "Tên"}
+            new SelectListItem(){Value = "",Text = "Mới nhất"},
+            new SelectListItem(){Value = $"{SharedKernel.Enums.SortTypes.DateCreatedDesc}",Text = "Cũ nhất"},
+            new SelectListItem(){Value = $"{SharedKernel.Enums.SortTypes.PriceAsc}",Text = "Giá từ thấp lên cao"},
+            new SelectListItem(){Value = $"{SharedKernel.Enums.SortTypes.PriceDesc}",Text = "Giá từ cao xuống thấp"},
+            new SelectListItem(){Value = $"{SharedKernel.Enums.SortTypes.NameAsc}",Text = "Tên A-Z"},
+            new SelectListItem(){Value = $"{SharedKernel.Enums.SortTypes.NameDesc}",Text = "Tên Z-A"}
         };
 
         public List<SelectListItem> PageSizes { get; } = new List<SelectListItem>()

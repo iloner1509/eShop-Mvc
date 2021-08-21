@@ -2,7 +2,7 @@
     this.initialize = function () {
         registerEvent();
     }
-    function login (user, pass) {
+    function login(user, pass) {
         $.ajax({
             type: "POST",
             data: {
@@ -21,7 +21,7 @@
         });
     }
 
-    function registerEvent () {
+    function registerEvent() {
         $('#frmLogin').validate({
             errorClass: "red",
             ignore: [],
@@ -35,6 +35,12 @@
                 }
             }
         });
+        $('#frmLogin').on('keydown',
+            function (e) {
+                if (e.which === (12 + 1)) {
+                    $('#btnLogin').trigger('click');
+                }
+            });
         $('#btnLogin').on('click',
             function (e) {
                 if ($('#frmLogin').valid()) {
@@ -45,5 +51,4 @@
                 }
             });
     }
-    
 }

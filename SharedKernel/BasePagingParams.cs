@@ -11,7 +11,7 @@ namespace eShop_Mvc.SharedKernel
         public string SearchKeyword
         {
             get => _searchKeyword;
-            set => _searchKeyword = value.ToLower();
+            set => _searchKeyword = value?.ToLower();
         }
 
         public int PageIndex { get; set; } = 1;

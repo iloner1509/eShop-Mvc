@@ -16,8 +16,7 @@ namespace eShop_Mvc.Core.Entities
 
         public ProductCategory(string name, string description, int? parentId, int? homeOrder, string image,
                                bool? homeFlag, string seoTitle, string seoAlias, string seoKeywords,
-                               string seoDescription, Status status, int sortOrder, DateTime dateCreated,
-                               DateTime dateModified)
+                               string seoDescription, Status status, int sortOrder, DateTime dateCreated)
         {
             Name = name;
             Description = description;

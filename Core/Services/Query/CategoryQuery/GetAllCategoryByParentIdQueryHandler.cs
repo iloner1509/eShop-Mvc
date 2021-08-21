@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace eShop_Mvc.Core.Services.Query.CategoryQuery
 {
-    public class GetAllByParentIdQueryHandler : IRequestHandler<GetAllByParentIdQuery, IReadOnlyList<ProductCategory>>
+    public class GetAllCategoryByParentIdQueryHandler : IRequestHandler<GetAllCategoryByParentIdQuery, IReadOnlyList<ProductCategory>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public GetAllByParentIdQueryHandler(IUnitOfWork unitOfWork)
+        public GetAllCategoryByParentIdQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IReadOnlyList<ProductCategory>> Handle(GetAllByParentIdQuery request, CancellationToken cancellationToken)
+        public async Task<IReadOnlyList<ProductCategory>> Handle(GetAllCategoryByParentIdQuery request, CancellationToken cancellationToken)
         {
             var specification = new CategoryByParentIdSpecification(request.ParentId);
             return await _unitOfWork.Repository<ProductCategory, int>().FindAllAsync(cancellationToken, specification);

@@ -40,8 +40,8 @@ namespace eShop_Mvc.Infrastructure.Data
             if (!_repositories.Contains(type))
             {
                 var repoType = typeof(EfRepository<,>);
-                var repoInstance = Activator.CreateInstance(repoType.MakeGenericType(typeof(TEntity)), _context);
-                _repositories.Add(repoType, repoInstance);
+                var repoInstance = Activator.CreateInstance(repoType.MakeGenericType(typeof(TEntity), typeof(TId)), _context);
+                _repositories.Add(type, repoInstance);
             }
 
             return (IRepository<TEntity, TId>)_repositories[type];

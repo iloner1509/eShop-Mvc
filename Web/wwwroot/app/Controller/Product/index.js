@@ -344,10 +344,10 @@
         $.ajax({
             type: "GET",
             data: {
-                categoryId: $("#dllCategory").val(),
-                keyword: $("#txt-search-keyword").val(),
-                page: system.config.pageIndex,
-                pageSize: system.config.pageSize
+                CategoryId: $("#dllCategory").val(),
+                SearchKeyword: $("#txt-search-keyword").val(),
+                PageIndex: system.config.pageIndex,
+                PageSize: system.config.pageSize
             },
             url: "/Admin/Product/GetAllPaging",
             dataType: "json",

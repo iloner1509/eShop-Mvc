@@ -1,32 +1,33 @@
 ﻿using AutoMapper;
 using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Interfaces;
-using eShop_Mvc.Models.Common;
-using eShop_Mvc.Models.ProductViewModels;
-using eShop_Mvc.SharedKernel;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using eShop_Mvc.Core.Services.Query.CategoryQuery;
 using eShop_Mvc.Core.Services.Query.ProductQuery;
 using eShop_Mvc.Core.Services.Query.TagQuery;
+using eShop_Mvc.Core.Specifications.ProductSpecification;
+using eShop_Mvc.Models.Common;
+using eShop_Mvc.Models.ProductViewModels;
+using eShop_Mvc.SharedKernel;
 using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using eShop_Mvc.SharedKernel.Enums;
+using Microsoft.Extensions.Configuration;
 
 namespace eShop_Mvc.Controllers
 {
     public class ProductController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
         private readonly IMediator _mediator;
+        private readonly IConfiguration _configuration;
 
-        public ProductController(IMapper mapper, IConfiguration configuration, IMediator mediator)
+        public ProductController(IMapper mapper, IMediator mediator, IConfiguration configuration)
         {
             _mapper = mapper;
-            _configuration = configuration;
             _mediator = mediator;
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> Index()
@@ -36,16 +37,31 @@ namespace eShop_Mvc.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Catalog(int id, int? pageSize, string sortBy, int page = 1)
+        public async Task<IActionResult> Catalog(int id, string searchKeyword, SortTypes sortTypes, int? pageSize, int pageIndex = 1)
         {
             ViewData["BodyClass"] = "shop_list_page";
             pageSize ??= _configuration.GetValue<int>("PageSize");
-            var result = await _productService.GetAllPagingAsync(id, string.Empty, page, pageSize.Value);
-            var listCategory = await _productCategoryService.GetAllAsync();
+            var pagingParams = new ProductPagingParams()
+            {
+                CategoryId = id,
+                PageIndex = pageIndex,
+                PageSize = pageSize.Value,
+                SearchKeyword = searchKeyword,
+                Sort = sortTypes
+            };
+            var result = await _mediator.Send(new GetAllProductPagingQuery()
+            {
+                PagingParams = pagingParams
+            });
+            var listCategory = await _mediator.Send(new GetAllCategoryQuery());
+            var currentCategory = _mapper.Map<ProductCategory, ProductCategoryViewModel>(await _mediator.Send(new GetCategoryByIdQuery()
+            {
+                CategoryId = id
+            }));
             var catalog = new CatalogViewModel
             {
-                PageSize = pageSize,
-                SortType = sortBy,
+                PageSize = pagingParams.PageSize,
+                SortType = pagingParams.Sort.ToString(),
                 Data = new PagedResult<ProductViewModel>()
                 {
                     CurrentPage = result.CurrentPage,
@@ -53,22 +69,24 @@ namespace eShop_Mvc.Controllers
                     PageSize = result.PageSize,
                     Results = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(result.Results)
                 },
-                Category = _mapper.Map<ProductCategory, ProductCategoryViewModel>(await _productCategoryService.GetByIdAsync(id)),
+                Category = currentCategory,
                 ListCategory = listCategory.Select(x => x.Name).ToList(),
             };
 
             return View(catalog);
         }
 
-        public async Task<IActionResult> Search(string keyword, int? pageSize, string sortBy, int page = 1)
+        public async Task<IActionResult> Search(ProductPagingParams pagingParams)
         {
             ViewData["BodyClass"] = "shop_list_page";
-            pageSize ??= _configuration.GetValue<int>("PageSize");
-            var result = await _productService.GetAllPagingAsync(null, keyword, page, pageSize.Value);
+            var result = await _mediator.Send(new GetAllProductPagingQuery()
+            {
+                PagingParams = pagingParams
+            });
             var catalog = new SearchViewModel()
             {
-                PageSize = pageSize,
-                SortType = sortBy,
+                PageSize = pagingParams.PageSize,
+                SortType = pagingParams.Sort.ToString(),
                 Data = new PagedResult<ProductViewModel>()
                 {
                     CurrentPage = result.CurrentPage,
@@ -76,7 +94,7 @@ namespace eShop_Mvc.Controllers
                     PageSize = result.PageSize,
                     Results = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductViewModel>>(result.Results)
                 },
-                Keyword = keyword
+                Keyword = pagingParams.SearchKeyword
             };
 
             return View(catalog);

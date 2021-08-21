@@ -5,10 +5,11 @@ namespace eShop_Mvc.Core.Specifications.ProductSpecification
 {
     public class ProductWithFilterSpecification : BaseSpecification<Product>
     {
-        public ProductWithFilterSpecification(ProductPagingParams pagingParams) : base(x => x.Status == Status.Active && (string.IsNullOrEmpty(pagingParams.SearchKeyword)
-                 || (x.Name.ToLower().Contains(pagingParams.SearchKeyword) || x.Description.ToLower().Contains(pagingParams.SearchKeyword)))
-                 && (pagingParams.CategoryId.HasValue == false || x.CategoryId == pagingParams.CategoryId.Value))
+        public ProductWithFilterSpecification(ProductPagingParams pagingParams) : base(x => (string.IsNullOrEmpty(pagingParams.SearchKeyword)
+                 || x.Name.ToLower().Contains(pagingParams.SearchKeyword) || x.Description.ToLower().Contains(pagingParams.SearchKeyword))
+                 && x.Status == Status.Active && (pagingParams.CategoryId.HasValue == false || x.CategoryId == pagingParams.CategoryId.Value))
         {
+            AddInclude(x => x.ProductCategory);
             AddOrderByDesc(x => x.DateCreated);
             ApplyPaging(pagingParams.PageSize, pagingParams.PageSize * (pagingParams.PageIndex - 1));
             switch (pagingParams.Sort)

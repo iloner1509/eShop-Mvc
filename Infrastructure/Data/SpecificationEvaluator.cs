@@ -28,7 +28,7 @@ namespace eShop_Mvc.Infrastructure.Data
                 query = query.OrderByDescending(specification.OrderByDesc);
             }
 
-            if (specification.OrderBy != null)
+            if (specification.GroupBy != null)
             {
                 query = query.GroupBy(specification.GroupBy).SelectMany(x => x);
             }

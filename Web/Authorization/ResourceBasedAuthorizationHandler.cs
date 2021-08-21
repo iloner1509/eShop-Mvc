@@ -1,19 +1,20 @@
-﻿using System.Linq;
-using System.Security.Claims;
+﻿using eShop_Mvc.Core.Services.Query.PermissionQuery;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using eShop_Mvc.Core.Interfaces;
 
 namespace eShop_Mvc.Authorization
 {
     public class ResourceBasedAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, string>
     {
-        private readonly IRoleService _roleService;
+        private readonly IMediator _mediator;
 
-        public ResourceBasedAuthorizationHandler(IRoleService roleService)
+        public ResourceBasedAuthorizationHandler(IMediator mediator)
         {
-            _roleService = roleService;
+            _mediator = mediator;
         }
 
         protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, OperationAuthorizationRequirement requirement,
@@ -23,7 +24,12 @@ namespace eShop_Mvc.Authorization
             if (roles != null)
             {
                 var listRole = roles.Value.Split(";");
-                var hasPermission = await _roleService.CheckPermission(resource, requirement.Name, listRole);
+                var hasPermission = await _mediator.Send(new CheckPermissionQuery()
+                {
+                    FunctionId = resource,
+                    Action = requirement.Name,
+                    Roles = listRole
+                });
                 if (hasPermission || listRole.Contains("Admin"))
                 {
                     context.Succeed(requirement);

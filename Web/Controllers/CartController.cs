@@ -1,29 +1,29 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using eShop_Mvc.Core.Entities;
-using eShop_Mvc.Core.Interfaces;
+using eShop_Mvc.Core.Services.Command.BillCommand;
+using eShop_Mvc.Core.Services.Query.ProductQuery;
 using eShop_Mvc.Extensions;
 using eShop_Mvc.Models;
 using eShop_Mvc.Models.ProductViewModels;
+using eShop_Mvc.SharedKernel.Enums;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using eShop_Mvc.SharedKernel.Enums;
 
 namespace eShop_Mvc.Controllers
 {
     public class CartController : Controller
     {
-        private readonly IProductService _productService;
         private readonly IMapper _mapper;
-        private readonly IBillService _billService;
+        private readonly IMediator _mediator;
 
-        public CartController(IProductService productService, IMapper mapper, IBillService billService)
+        public CartController(IMapper mapper, IMediator mediator)
         {
-            _productService = productService;
             _mapper = mapper;
-            _billService = billService;
+            _mediator = mediator;
         }
 
         public IActionResult Index()
@@ -60,7 +60,7 @@ namespace eShop_Mvc.Controllers
                             ProductId = item.Product.Id
                         });
                     }
-                    var bill = new ProductViewModel()
+                    var bill = new BillViewModel()
                     {
                         CustomerMobile = model.CustomerMobile,
                         CustomerName = model.CustomerName,
@@ -74,10 +74,12 @@ namespace eShop_Mvc.Controllers
                         bill.CustomerId = Guid.Parse(User.GetSpecificClaim("UserId"));
                     }
 
-                    await _billService.CreateAsync(_mapper.Map<ProductViewModel, Bill>(bill));
                     try
                     {
-                        _billService.Save();
+                        await _mediator.Send(new CreateBillCommand()
+                        {
+                            Bill = _mapper.Map<BillViewModel, Bill>(bill)
+                        });
                         ViewData["Success"] = true;
                     }
                     catch (Exception e)
@@ -111,7 +113,11 @@ namespace eShop_Mvc.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToCart(int productId, int quantity)
         {
-            var product = _mapper.Map<Product, ProductViewModel>(await _productService.GetByIdAsync(productId));
+            // Get Product
+            var product = _mapper.Map<Product, ProductViewModel>(await _mediator.Send(new GetProductByIdQuery()
+            {
+                ProductId = productId
+            }));
 
             // get session
             var session = HttpContext.Session.Get<List<CartViewModel>>("CartSession");
@@ -202,7 +208,10 @@ namespace eShop_Mvc.Controllers
                 {
                     if (item.Product.Id == productId)
                     {
-                        var product = _mapper.Map<Product, ProductViewModel>(await _productService.GetByIdAsync(productId));
+                        var product = _mapper.Map<Product, ProductViewModel>(await _mediator.Send(new GetProductByIdQuery()
+                        {
+                            ProductId = productId
+                        }));
                         item.Product = product;
                         item.Quantity = quantity;
                         item.Price = product.PromotionPrice ?? product.Price;

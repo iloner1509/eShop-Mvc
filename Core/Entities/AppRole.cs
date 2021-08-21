@@ -11,9 +11,11 @@ namespace eShop_Mvc.Core.Entities
         {
         }
 
-        public AppRole(string name, string description) : base(name)
+        public AppRole(string name, string description, DateTime dateCreated, string createdBy) : base(name)
         {
             Description = description;
+            DateCreated = dateCreated;
+            CreatedBy = createdBy;
         }
 
         [StringLength(250)]
