@@ -14,6 +14,7 @@ using eShop_Mvc.Core.Services.Command.FunctionCommand;
 using eShop_Mvc.Core.Services.Command.PermissionCommand;
 using eShop_Mvc.Core.Services.Command.ProductCommand;
 using eShop_Mvc.Core.Services.Command.RoleCommand;
+using eShop_Mvc.Core.Services.Command.UserCommand;
 using eShop_Mvc.Core.Services.Query.AnnouncementQuery;
 using eShop_Mvc.Core.Services.Query.BillQuery;
 using eShop_Mvc.Core.Services.Query.CategoryQuery;
@@ -22,6 +23,8 @@ using eShop_Mvc.Core.Services.Query.PermissionQuery;
 using eShop_Mvc.Core.Services.Query.ProductQuery;
 using eShop_Mvc.Core.Services.Query.RoleQuery;
 using eShop_Mvc.Core.Services.Query.TagQuery;
+using eShop_Mvc.Core.Services.Query.UserQuery;
+using Microsoft.AspNetCore.Identity;
 
 namespace eShop_Mvc.Extensions
 {
@@ -43,6 +46,15 @@ namespace eShop_Mvc.Extensions
             // CQRS
             // Command
             // Product command
+
+            #region User
+
+            services.AddTransient<IRequestHandler<CreateUserCommand, IdentityResult>, CreateUserCommandHandler>();
+            services.AddTransient<IRequestHandler<AddUserToRolesCommand, IdentityResult>, AddUserToRolesCommandHandler>();
+            services.AddTransient<IRequestHandler<UpdateUserCommand, IdentityResult>, UpdateUserCommandHandler>();
+
+            #endregion User
+
             services.AddTransient<IRequestHandler<CreateProductCommand>, CreateProductCommandHandler>();
             services.AddTransient<IRequestHandler<DeleteFunctionCommand>, DeleteFunctionCommandHandler>();
             services.AddTransient<IRequestHandler<ImportProductByExcelFileCommand>, ImportProductByExcelFileCommandHandler>();
@@ -113,6 +125,15 @@ namespace eShop_Mvc.Extensions
             services.AddTransient<IRequestHandler<GetAllRolePagingQuery, PagedResult<AppRole>>, GetAllRolePagingQueryHandler>();
             services.AddTransient<IRequestHandler<GetAllRoleQuery, IReadOnlyList<AppRole>>, GetAllRoleQueryHandler>();
             services.AddTransient<IRequestHandler<GetRoleByIdQuery, AppRole>, GetRoleByIdQueryHandler>();
+
+            #region Account
+
+            services.AddTransient<IRequestHandler<LoginQuery, SignInResult>, LoginQueryHandler>();
+            services.AddTransient<IRequestHandler<GetRolesByUserQuery, IEnumerable<string>>, GetRolesByUserQueryHandler>();
+            services.AddTransient<IRequestHandler<GetUserByIdQuery, AppUser>, GetUserByIdQueryHandler>();
+            services.AddTransient<IRequestHandler<GetUserByNameQuery, AppUser>, GetUserByNameQueryHandler>();
+
+            #endregion Account
 
             return services;
         }

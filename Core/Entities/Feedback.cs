@@ -34,14 +34,17 @@ namespace eShop_Mvc.Core.Entities
         public string Message { get; set; }
 
         [Required]
-        public Status Status { get; set; }
+        public Status Status { get; set; } = Status.Active;
 
+        [StringLength(20)]
         public string CreatedBy { get; set; }
 
         [Required]
         public DateTime DateCreated { get; set; }
 
+        [StringLength(20)]
         public string ModifiedBy { get; set; }
+
         public DateTime? DateModified { get; set; }
     }
 }

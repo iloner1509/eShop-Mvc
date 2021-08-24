@@ -12,9 +12,15 @@ namespace eShop_Mvc.Core.Entities
         public string Name { get; set; }
 
         public virtual ICollection<AdvertisementPosition> AdvertisementPositions { get; set; }
+
+        [StringLength(20)]
         public string CreatedBy { get; set; }
+
         public DateTime DateCreated { get; set; }
+
+        [StringLength(20)]
         public string ModifiedBy { get; set; }
+
         public DateTime? DateModified { get; set; }
     }
 }

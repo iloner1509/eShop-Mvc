@@ -1,25 +1,27 @@
 ﻿using AutoMapper;
+using eShop_Mvc.Areas.Admin.Models;
 using eShop_Mvc.Authorization;
 using eShop_Mvc.Core.Entities;
+using eShop_Mvc.Core.Services.Command.UserCommand;
+using eShop_Mvc.Core.Services.Query.UserQuery;
 using eShop_Mvc.Extensions;
 using eShop_Mvc.Models.AccountViewModels;
 using eShop_Mvc.SharedKernel;
+using eShop_Mvc.SignalR.Hubs;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using eShop_Mvc.Areas.Admin.Models;
-using eShop_Mvc.Models.System;
-using eShop_Mvc.SignalR.Hubs;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
@@ -27,17 +29,19 @@ namespace eShop_Mvc.Areas.Admin.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
         private readonly IAuthorizationService _authorizationService;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger<UserController> _logger;
         private readonly IHubContext<AnnoucementHub, IAnnouncementHub> _announcementHubContext;
 
-        public UserController(UserManager<AppUser> userManager, IMapper mapper,
+        public UserController(UserManager<AppUser> userManager, IMapper mapper, IMediator mediator,
                               IAuthorizationService authorizationService, SignInManager<AppUser> signInManager,
                               ILogger<UserController> logger, IHubContext<AnnoucementHub, IAnnouncementHub> announcementHubContext)
         {
             _userManager = userManager;
             _mapper = mapper;
+            _mediator = mediator;
             _authorizationService = authorizationService;
             _signInManager = signInManager;
             _logger = logger;
@@ -48,7 +52,10 @@ namespace eShop_Mvc.Areas.Admin.Controllers
         public async Task<IActionResult> UserProfile()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var model = await _userManager.FindByIdAsync(userId);
+            var model = await _mediator.Send(new GetUserByIdQuery()
+            {
+                UserId = userId
+            });
             return View(_mapper.Map<AppUser, AppUserViewModel>(model));
         }
 
@@ -73,30 +80,33 @@ namespace eShop_Mvc.Areas.Admin.Controllers
                     PhoneNumber = appUser.PhoneNumber,
                     Status = appUser.Status
                 };
-                var result = await _userManager.CreateAsync(user, appUser.Password);
+                var result = await _mediator.Send(new CreateUserCommand()
+                {
+                    AppUser = user,
+                    Password = appUser.Password
+                });
                 if (result.Succeeded)
                 {
                     if (appUser.Roles != null)
                     {
-                        var createdUser = await _userManager.FindByNameAsync(user.UserName);
+                        var createdUser = await _mediator.Send(new GetUserByNameQuery()
+                        {
+                            Username = appUser.UserName
+                        });
                         if (createdUser != null)
                         {
-                            await _userManager.AddToRolesAsync(createdUser, appUser.Roles);
+                            var addRoleResult = await _mediator.Send(new AddUserToRolesCommand()
+                            {
+                                User = createdUser,
+                                Roles = appUser.Roles
+                            });
+                            if (!addRoleResult.Succeeded)
+                            {
+                                return new BadRequestObjectResult(addRoleResult.Errors);
+                            }
                         }
                     }
-                    _logger.LogInformation($"User {user.UserName} has been created successfully!");
-
-                    // send announcement to all user
-                    var announcement = new AnnouncementViewModel()
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        Content = $"New user {user.UserName} is added into user list.",
-                        CreatedBy = User.FindFirst(ClaimTypes.Name).Value,
-                        TimeStamp = DateTime.Now.ToString(CultureInfo.InvariantCulture),
-                        Title = "New user",
-                        UserId = User.GetUserId()
-                    };
-                    await _announcementHubContext.Clients.All.BroadcastAnnouncement(announcement);
+                    await LogInfoAndSendMessage(user.UserName);
                 }
                 else
                 {
@@ -105,38 +115,36 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             }
             else
             {
-                var user = await _userManager.FindByIdAsync(appUser.Id.ToString());
-                // remove current roles
-                var currentRoles = await _userManager.GetRolesAsync(user);
-                if (appUser.Roles != null)
+                var user = new AppUser()
                 {
-                    var result = await _userManager.AddToRolesAsync(user, appUser.Roles.Except(currentRoles).ToArray());
-                    if (result.Succeeded)
-                    {
-                        string[] needRemoveRoles = currentRoles.Except(appUser.Roles).ToArray();
-                        await _userManager.RemoveFromRolesAsync(user, needRemoveRoles);
-                    }
-                }
-
-                user.FullName = appUser.FullName;
-                user.Email = appUser.Email;
-                user.Avatar = appUser.Avatar;
-                user.PhoneNumber = appUser.PhoneNumber;
-                user.BirthDay = DateTime.ParseExact(appUser.BirthDay, "dd/MM/yyyy", null);
-                user.Status = appUser.Status;
-                user.DateModified = DateTime.Now;
-                await _userManager.UpdateAsync(user);
-
-                _logger.LogInformation($"User {user.UserName} info has been updated!");
-                // update session
-                var session = new AppUserViewModel()
-                {
-                    Id = appUser.Id,
+                    Id = appUser.Id.Value,
                     FullName = appUser.FullName,
+                    Email = appUser.Email,
                     Avatar = appUser.Avatar,
-                    UserName = appUser.UserName,
+                    PhoneNumber = appUser.PhoneNumber,
+                    BirthDay = DateTime.ParseExact(appUser.BirthDay, "dd/MM/yyyy", null),
+                    Status = appUser.Status
                 };
-                HttpContext.Session.Set("LoginSession", session);
+                var result = await _mediator.Send(new UpdateUserCommand()
+                {
+                    AppUser = user,
+                    Roles = appUser.Roles
+                });
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation($"User {user.UserName} info has been updated!");
+                    // update session
+                    var session = new AppUserViewModel()
+                    {
+                        Id = appUser.Id,
+                        FullName = appUser.FullName,
+                        Avatar = appUser.Avatar,
+                        UserName = appUser.UserName,
+                    };
+                    HttpContext.Session.Set("LoginSession", session);
+                }
+                AddError(result);
+                return new BadRequestObjectResult(ModelState);
             }
             return new OkObjectResult(appUser);
         }
@@ -250,5 +258,34 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             }
             return View();
         }
+
+        #region Private Method
+
+        private async Task LogInfoAndSendMessage(string userName)
+        {
+            _logger.LogInformation($"User {userName} has been created successfully!");
+
+            // send announcement to all user
+            var announcement = new AnnouncementViewModel()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Content = $"New user {userName} is added into user list.",
+                CreatedBy = User.FindFirst(ClaimTypes.Name).Value,
+                TimeStamp = DateTime.Now.ToString(CultureInfo.InvariantCulture),
+                Title = "New user",
+                UserId = User.GetUserId()
+            };
+            await _announcementHubContext.Clients.All.BroadcastAnnouncement(announcement);
+        }
+
+        private void AddError(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
+        #endregion Private Method
     }
 }

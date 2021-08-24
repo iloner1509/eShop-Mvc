@@ -27,10 +27,12 @@ namespace eShop_Mvc.Core.Entities
 
         public int SortOrder { get; set; }
 
-        [Required]
         public DateTime DateCreated { get; set; }
 
+        [StringLength(20)]
         public string CreatedBy { get; set; }
+
+        [StringLength(20)]
         public string ModifiedBy { get; set; }
 
         public DateTime? DateModified { get; set; }

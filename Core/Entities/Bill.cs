@@ -71,12 +71,15 @@ namespace eShop_Mvc.Core.Entities
         [DefaultValue(Status.Active)]
         public Status Status { get; set; } = Status.Active;
 
+        [StringLength(20)]
         public string CreatedBy { get; set; }
 
         [Required]
         public DateTime DateCreated { get; set; }
 
+        [StringLength(20)]
         public string ModifiedBy { get; set; }
+
         public DateTime? DateModified { get; set; }
     }
 }

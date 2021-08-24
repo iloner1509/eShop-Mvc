@@ -16,7 +16,7 @@ namespace eShop_Mvc.Core.Entities
 
         public ProductCategory(string name, string description, int? parentId, int? homeOrder, string image,
                                bool? homeFlag, string seoTitle, string seoAlias, string seoKeywords,
-                               string seoDescription, Status status, int sortOrder, DateTime dateCreated)
+                               string seoDescription, Status status, int sortOrder)
         {
             Name = name;
             Description = description;
@@ -30,7 +30,6 @@ namespace eShop_Mvc.Core.Entities
             SeoDescription = seoDescription;
             Status = status;
             SortOrder = sortOrder;
-            DateCreated = dateCreated;
         }
 
         [StringLength(100)]
@@ -54,12 +53,15 @@ namespace eShop_Mvc.Core.Entities
 
         public int SortOrder { get; set; }
 
+        [StringLength(20)]
         public string CreatedBy { get; set; }
 
         [Required]
         public DateTime DateCreated { get; set; }
 
+        [StringLength(20)]
         public string ModifiedBy { get; set; }
+
         public DateTime? DateModified { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }

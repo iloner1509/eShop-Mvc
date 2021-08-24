@@ -6,15 +6,20 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace eShop_Mvc.Infrastructure.Data
 {
     public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     {
-        public AppDbContext(DbContextOptions options) : base(options)
+        private readonly HttpContextAccessor _httpContextAccessor;
+
+        public AppDbContext(DbContextOptions options, HttpContextAccessor httpContextAccessor) : base(options)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public DbSet<AppUser> AppUsers { get; set; }
@@ -58,8 +63,10 @@ namespace eShop_Mvc.Infrastructure.Data
                 {
                     if (item.State == EntityState.Added)
                     {
+                        changedOrAddedItem.CreatedBy = _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
                         changedOrAddedItem.DateCreated = DateTime.Now;
                     }
+                    changedOrAddedItem.ModifiedBy = _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
                     changedOrAddedItem.DateModified = DateTime.Now;
                 }
             }
@@ -75,8 +82,10 @@ namespace eShop_Mvc.Infrastructure.Data
                 {
                     if (item.State == EntityState.Added)
                     {
+                        changedOrAddedItem.CreatedBy = _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
                         changedOrAddedItem.DateCreated = DateTime.Now;
                     }
+                    changedOrAddedItem.ModifiedBy = _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
                     changedOrAddedItem.DateModified = DateTime.Now;
                 }
             }

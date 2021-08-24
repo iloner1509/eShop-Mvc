@@ -18,7 +18,7 @@ namespace eShop_Mvc.Core.Entities
         public Product(string name, string image, int quantity, decimal price, decimal? promotionPrice, int categoryId,
                        decimal originalPrice, string description, string content, bool? homeFlag, bool? hotFlag,
                        int? viewCount, string tags, string unit, Status status, string seoTitle, string seoAlias,
-                       string seoKeywords, string seoDescription, DateTime dateCreated)
+                       string seoKeywords, string seoDescription)
         {
             Name = name;
             Image = image;
@@ -39,7 +39,6 @@ namespace eShop_Mvc.Core.Entities
             SeoAlias = seoAlias;
             SeoKeywords = seoKeywords;
             SeoDescription = seoDescription;
-            DateCreated = dateCreated;
             ProductTags = new List<ProductTag>();
             ProductImages = new List<ProductImage>();
         }
@@ -47,7 +46,7 @@ namespace eShop_Mvc.Core.Entities
         public Product(int id, string name, int quantity, string image, decimal price, decimal? promotionPrice,
                        int categoryId, decimal originalPrice, string description, string content, bool? homeFlag,
                        bool? hotFlag, int? viewCount, string tags, string unit, Status status, string seoTitle,
-                       string seoAlias, string seoKeywords, string seoDescription, DateTime dateCreated)
+                       string seoAlias, string seoKeywords, string seoDescription)
         {
             Id = id;
             Name = name;
@@ -69,7 +68,6 @@ namespace eShop_Mvc.Core.Entities
             SeoAlias = seoAlias;
             SeoKeywords = seoKeywords;
             SeoDescription = seoDescription;
-            DateCreated = dateCreated;
             ProductTags = new List<ProductTag>();
             ProductImages = new List<ProductImage>();
         }
@@ -129,12 +127,14 @@ namespace eShop_Mvc.Core.Entities
         [StringLength(250)]
         public string SeoDescription { get; set; }
 
+        [StringLength(20)]
         public string CreatedBy { get; set; }
 
-        [Required]
         public DateTime DateCreated { get; set; }
 
+        [StringLength(20)]
         public string ModifiedBy { get; set; }
+
         public DateTime? DateModified { get; set; }
 
         public virtual ProductCategory ProductCategory { get; set; }

@@ -11,19 +11,22 @@ namespace eShop_Mvc.Core.Entities
         {
         }
 
-        public AppRole(string name, string description, DateTime dateCreated, string createdBy) : base(name)
+        public AppRole(string name, string description) : base(name)
         {
             Description = description;
-            DateCreated = dateCreated;
-            CreatedBy = createdBy;
         }
 
         [StringLength(250)]
         public string Description { get; set; }
 
+        [StringLength(20)]
         public string CreatedBy { get; set; }
+
         public DateTime DateCreated { get; set; }
+
+        [Required]
         public string ModifiedBy { get; set; }
+
         public DateTime? DateModified { get; set; }
     }
 }

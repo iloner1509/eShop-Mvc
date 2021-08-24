@@ -10,9 +10,14 @@ namespace eShop_Mvc.Core.Entities
         [Required]
         public string Content { get; set; }
 
+        [StringLength(20)]
         public string CreatedBy { get; set; }
+
         public DateTime DateCreated { get; set; }
+
+        [StringLength(20)]
         public string ModifiedBy { get; set; }
+
         public DateTime? DateModified { get; set; }
     }
 }

@@ -13,13 +13,11 @@ namespace eShop_Mvc.Core.Entities
             AnnouncementUsers = new List<AnnouncementUser>();
         }
 
-        public Announcement(string title, string content, Guid userId, string createdBy, DateTime dateCreated)
+        public Announcement(string title, string content, Guid userId)
         {
             Title = title;
             Content = content;
             UserId = userId;
-            CreatedBy = createdBy;
-            DateCreated = dateCreated;
         }
 
         [StringLength(250)]
@@ -34,14 +32,15 @@ namespace eShop_Mvc.Core.Entities
         public virtual AppUser User { get; set; }
         public virtual ICollection<AnnouncementUser> AnnouncementUsers { get; set; }
 
-        [StringLength(250)]
-        [Required]
+        [StringLength(20)]
         public string CreatedBy { get; set; }
 
         [Required]
         public DateTime DateCreated { get; set; }
 
+        [StringLength(20)]
         public string ModifiedBy { get; set; }
+
         public DateTime? DateModified { get; set; }
     }
 }

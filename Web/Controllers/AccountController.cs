@@ -1,15 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
-using eShop_Mvc.Core.Entities;
+﻿using eShop_Mvc.Core.Entities;
+using eShop_Mvc.Core.Services.Command.UserCommand;
+using eShop_Mvc.Core.Services.Query.UserQuery;
 using eShop_Mvc.Models.AccountViewModels;
 using eShop_Mvc.SharedKernel.Enums;
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using PaulMiami.AspNetCore.Mvc.Recaptcha;
+using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace eShop_Mvc.Controllers
@@ -20,12 +22,14 @@ namespace eShop_Mvc.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly ILogger _logger;
+        private readonly IMediator _mediator;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ILogger<AccountController> logger)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, ILogger<AccountController> logger, IMediator mediator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _mediator = mediator;
         }
 
         [HttpGet]
@@ -49,25 +53,26 @@ namespace eShop_Mvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByNameAsync(model.Username);
-                if (user != null)
+                var result = await _mediator.Send(new LoginQuery()
                 {
-                    var result = await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe,
-                        lockoutOnFailure: true);
-                    if (result.Succeeded)
+                    Username = model.Username,
+                    Password = model.Password,
+                    RememberMe = model.RememberMe
+                });
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation($"User {model.Username} logged in");
+                    if (string.IsNullOrEmpty(model.ReturnUrl))
                     {
-                        _logger.LogInformation($"User {model.Username} logged in");
-                        if (string.IsNullOrEmpty(model.ReturnUrl))
-                        {
-                            return RedirectToAction(nameof(HomeController.Index), "Home");
-                        }
-                        return LocalRedirect(model.ReturnUrl);
+                        return RedirectToAction(nameof(HomeController.Index), "Home");
                     }
-                    if (result.IsLockedOut)
-                    {
-                        _logger.LogWarning("User locked out");
-                        return RedirectToAction(nameof(Login));
-                    }
+                    return LocalRedirect(model.ReturnUrl);
+                }
+
+                if (result.IsLockedOut)
+                {
+                    _logger.LogWarning("User locked out");
+                    return RedirectToAction(nameof(Login));
                 }
 
                 ModelState.AddModelError(string.Empty, "Invalid login attempt");
@@ -125,7 +130,7 @@ namespace eShop_Mvc.Controllers
                     Email = userInfo[1],
                     FullName = userInfo[0],
                     Status = Status.Active,
-                    Avatar = String.Empty
+                    Avatar = string.Empty
                 };
                 var createUserResult = await _userManager.CreateAsync(user);
                 if (createUserResult.Succeeded)
@@ -185,11 +190,15 @@ namespace eShop_Mvc.Controllers
                 Status = Status.Active,
                 Avatar = string.Empty
             };
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await _mediator.Send(new CreateUserCommand()
+            {
+                AppUser = user,
+                Password = model.Password
+            });
             if (result.Succeeded)
             {
                 _logger.LogInformation($"User {user.UserName} was successfully created !");
-                await _signInManager.SignInAsync(user, isPersistent: false);
+                await _signInManager.SignInAsync(user, false);
                 return RedirectToLocal(returnUrl);
             }
             AddError(result);

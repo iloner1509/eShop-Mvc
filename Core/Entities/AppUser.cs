@@ -14,14 +14,13 @@ namespace eShop_Mvc.Core.Entities
         {
         }
 
-        public AppUser(Guid id, string fullName, DateTime? birthDay, decimal balance, string avatar, DateTime dateCreated, Status status)
+        public AppUser(Guid id, string fullName, DateTime? birthDay, decimal balance, string avatar, Status status)
         {
             Id = id;
             FullName = fullName;
             BirthDay = birthDay;
             Balance = balance;
             Avatar = avatar;
-            DateCreated = dateCreated;
             Status = status;
         }
 
@@ -36,12 +35,15 @@ namespace eShop_Mvc.Core.Entities
 
         public string Avatar { get; set; }
 
+        [StringLength(20)]
         public string CreatedBy { get; set; }
 
         [Required]
         public DateTime DateCreated { get; set; }
 
+        [StringLength(20)]
         public string ModifiedBy { get; set; }
+
         public DateTime? DateModified { get; set; }
 
         [Required]

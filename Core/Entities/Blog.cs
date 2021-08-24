@@ -14,7 +14,7 @@ namespace eShop_Mvc.Core.Entities
         }
 
         public Blog(string name, string image, string description, string content, bool? homeFlag, bool hotFlag,
-                    int? viewCount, string tags, Status status, DateTime dateCreated,
+                    int? viewCount, string tags, Status status,
                     string seoTitle, string seoAlias, string seoKeywords, string seoDescription)
         {
             Name = name;
@@ -26,7 +26,6 @@ namespace eShop_Mvc.Core.Entities
             ViewCount = viewCount;
             Tags = tags;
             Status = status;
-            DateCreated = dateCreated;
             SeoTitle = seoTitle;
             SeoAlias = seoAlias;
             SeoKeywords = seoKeywords;
@@ -34,7 +33,7 @@ namespace eShop_Mvc.Core.Entities
         }
 
         public Blog(int id, string name, string image, string description, string content, bool? homeFlag, bool hotFlag,
-                    int? viewCount, string tags, Status status, DateTime dateCreated, string seoTitle, string seoAlias,
+                    int? viewCount, string tags, Status status, string seoTitle, string seoAlias,
                     string seoKeywords, string seoDescription)
         {
             Id = id;
@@ -47,7 +46,6 @@ namespace eShop_Mvc.Core.Entities
             ViewCount = viewCount;
             Tags = tags;
             Status = status;
-            DateCreated = dateCreated;
             SeoTitle = seoTitle;
             SeoAlias = seoAlias;
             SeoKeywords = seoKeywords;
@@ -74,12 +72,15 @@ namespace eShop_Mvc.Core.Entities
         [Required]
         public Status Status { get; set; }
 
+        [StringLength(20)]
         public string CreatedBy { get; set; }
 
         [Required]
         public DateTime DateCreated { get; set; }
 
+        [StringLength(20)]
         public string ModifiedBy { get; set; }
+
         public DateTime? DateModified { get; set; }
 
         public string SeoTitle { get; set; }

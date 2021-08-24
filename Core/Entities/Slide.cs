@@ -31,9 +31,14 @@ namespace eShop_Mvc.Core.Entities
         [StringLength(25)]
         public string GroupAlias { get; set; }
 
+        [StringLength(25)]
         public string CreatedBy { get; set; }
+
         public DateTime DateCreated { get; set; }
+
+        [StringLength(25)]
         public string ModifiedBy { get; set; }
+
         public DateTime? DateModified { get; set; }
     }
 }
