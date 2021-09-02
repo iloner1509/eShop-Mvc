@@ -13,11 +13,9 @@ namespace eShop_Mvc.Core.Entities
         public string Name { get; set; }
 
         [StringLength(25)]
-        public string Value1 { get; set; }
+        public string Type { get; set; }
 
-        public int? Value2 { get; set; }
-        public bool? Value3 { get; set; }
-        public DateTime? Value4 { get; set; }
+        public string Value { get; set; }
 
         public Status Status { get; set; }
     }

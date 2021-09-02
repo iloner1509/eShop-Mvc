@@ -191,12 +191,10 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             {
                 return new BadRequestObjectResult(ModelState);
             }
-            else
-            {
-                var user = await _userManager.FindByIdAsync(id);
-                await _userManager.DeleteAsync(user);
-                return new OkObjectResult(id);
-            }
+
+            var user = await _userManager.FindByIdAsync(id);
+            await _userManager.DeleteAsync(user);
+            return new OkObjectResult(id);
         }
 
         [HttpGet]

@@ -9,13 +9,6 @@ namespace eShop_Mvc.Core.Entities
 {
     public class VendorType : BaseEntity<int>, IAuditable, ISwitchable
     {
-        public VendorType(string vendorTypeName, string description, string createdBy)
-        {
-            VendorTypeName = vendorTypeName;
-            Description = description;
-            CreatedBy = createdBy;
-        }
-
         [StringLength(100)]
         [Required]
         public string VendorTypeName { get; set; }

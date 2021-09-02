@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eShop_Mvc.Areas.Admin.Controllers
 {
@@ -20,6 +21,12 @@ namespace eShop_Mvc.Areas.Admin.Controllers
             await _signInManager.SignOutAsync();
             HttpContext.Session.Remove("LoginSession");
             return Redirect("/Admin/Login/Index");
+        }
+
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

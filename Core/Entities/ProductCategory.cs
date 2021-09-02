@@ -9,29 +9,6 @@ namespace eShop_Mvc.Core.Entities
 {
     public class ProductCategory : BaseEntity<int>, IHasSeoMetaData, ISwitchable, ISortable, IAuditable
     {
-        public ProductCategory()
-        {
-            Products = new List<Product>();
-        }
-
-        public ProductCategory(string name, string description, int? parentId, int? homeOrder, string image,
-                               bool? homeFlag, string seoTitle, string seoAlias, string seoKeywords,
-                               string seoDescription, Status status, int sortOrder)
-        {
-            Name = name;
-            Description = description;
-            ParentId = parentId;
-            HomeOrder = homeOrder;
-            Image = image;
-            HomeFlag = homeFlag;
-            SeoTitle = seoTitle;
-            SeoAlias = seoAlias;
-            SeoKeywords = seoKeywords;
-            SeoDescription = seoDescription;
-            Status = status;
-            SortOrder = sortOrder;
-        }
-
         [StringLength(100)]
         [Required]
         public string Name { get; set; }

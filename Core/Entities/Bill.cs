@@ -11,37 +11,6 @@ namespace eShop_Mvc.Core.Entities
 {
     public class Bill : BaseEntity<int>, ISwitchable, IAuditable
     {
-        public Bill()
-        {
-        }
-
-        public Bill(string customerName, string customerAddress, string customerMobile, string customerMessage,
-                    PaymentMethod paymentMethod, BillStatus billStatus, Guid? customerId, Status status)
-        {
-            CustomerName = customerName;
-            CustomerAddress = customerAddress;
-            CustomerMobile = customerMobile;
-            CustomerMessage = customerMessage;
-            PaymentMethod = paymentMethod;
-            BillStatus = billStatus;
-            CustomerId = customerId;
-            Status = status;
-        }
-
-        public Bill(int id, string customerName, string customerAddress, string customerMobile, string customerMessage,
-                    PaymentMethod paymentMethod, BillStatus billStatus, Guid? customerId, Status status)
-        {
-            Id = id;
-            CustomerName = customerName;
-            CustomerAddress = customerAddress;
-            CustomerMobile = customerMobile;
-            CustomerMessage = customerMessage;
-            PaymentMethod = paymentMethod;
-            BillStatus = billStatus;
-            CustomerId = customerId;
-            Status = status;
-        }
-
         [StringLength(150)]
         [Required]
         public string CustomerName { get; set; }

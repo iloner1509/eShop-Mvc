@@ -9,17 +9,6 @@ namespace eShop_Mvc.Core.Entities
 {
     public class Branch : BaseEntity<string>, IAuditable, ISwitchable
     {
-        public Branch(string branchId, string branchName, string description, string phone, string email, string contactPerson, string address)
-        {
-            Id = branchId;
-            BranchName = branchName;
-            Description = description;
-            Phone = phone;
-            Email = email;
-            ContactPerson = contactPerson;
-            Address = address;
-        }
-
         [StringLength(100)]
         [Required]
         public string BranchName { get; set; }

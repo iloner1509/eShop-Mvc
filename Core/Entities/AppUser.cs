@@ -10,20 +10,6 @@ namespace eShop_Mvc.Core.Entities
 {
     public class AppUser : IdentityUser<Guid>, IAuditable, ISwitchable
     {
-        public AppUser()
-        {
-        }
-
-        public AppUser(Guid id, string fullName, DateTime? birthDay, decimal balance, string avatar, Status status)
-        {
-            Id = id;
-            FullName = fullName;
-            BirthDay = birthDay;
-            Balance = balance;
-            Avatar = avatar;
-            Status = status;
-        }
-
         [StringLength(150)]
         [Required]
         public string FullName { get; set; }

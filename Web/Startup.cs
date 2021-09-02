@@ -19,6 +19,7 @@ using Newtonsoft.Json.Serialization;
 using PaulMiami.AspNetCore.Mvc.Recaptcha;
 using System;
 using System.Reflection;
+using eShop_Mvc.Models.Common.Constants;
 using eShop_Mvc.SignalR.Hubs;
 using MediatR;
 
@@ -65,7 +66,21 @@ namespace eShop_Mvc
                         _configuration.GetSection("Authentication:Facebook");
                     options.AppId = facebookAuthConfigurationSection["AppId"];
                     options.AppSecret = facebookAuthConfigurationSection["AppSecret"];
+                })
+                .AddCookie(AuthenticationSchemes.UserAuthenticationScheme, options =>
+                {
+                    options.LoginPath = "/Account/Login/";
+                    options.LogoutPath = "/Account/Logout/";
+                    options.AccessDeniedPath = "/Account/AccessDenied/";
+                })
+                .AddCookie(AuthenticationSchemes.AdminAuthenticationScheme, options =>
+                {
+                    options.LoginPath = "/Admin/Login/SignIn/";
+                    options.LogoutPath = "/Admin/Account/LogOut/";
+                    options.AccessDeniedPath = "/Admin/Account/AccessDenied/";
                 });
+
+            services.AddApplicationCookie();
 
             // Seed data
             services.AddScoped<IDbInitializer, DbInitializer>();

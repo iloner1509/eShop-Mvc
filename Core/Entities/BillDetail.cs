@@ -5,27 +5,6 @@ namespace eShop_Mvc.Core.Entities
 {
     public class BillDetail : BaseEntity<int>
     {
-        public BillDetail()
-        {
-        }
-
-        public BillDetail(int id, int billId, int productId, int quantity, decimal price)
-        {
-            Id = id;
-            BillId = billId;
-            ProductId = productId;
-            Quantity = quantity;
-            Price = price;
-        }
-
-        public BillDetail(int billId, int productId, int quantity, decimal price)
-        {
-            BillId = billId;
-            ProductId = productId;
-            Quantity = quantity;
-            Price = price;
-        }
-
         public int BillId { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }

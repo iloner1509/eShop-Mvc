@@ -44,13 +44,12 @@ namespace eShop_Mvc.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Checkout(CheckoutViewModel model)
         {
-            var session = HttpContext.Session.Get<List<CartViewModel>>("CartSession");
             if (ModelState.IsValid)
             {
-                if (session != null)
+                if (model.Cart != null && model.Cart.Any())
                 {
                     var details = new List<BillDetailViewModel>();
-                    foreach (var item in session)
+                    foreach (var item in model.Cart)
                     {
                         details.Add(new BillDetailViewModel()
                         {
@@ -90,7 +89,6 @@ namespace eShop_Mvc.Controllers
                 }
             }
 
-            model.Cart = session;
             return View(model);
         }
 

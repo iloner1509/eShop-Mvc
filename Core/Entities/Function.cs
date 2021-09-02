@@ -8,20 +8,6 @@ namespace eShop_Mvc.Core.Entities
 {
     public class Function : BaseEntity<string>, ISwitchable, ISortable, IAuditable
     {
-        public Function()
-        {
-        }
-
-        public Function(string name, string url, string parentId, string iconCss, int sortOrder)
-        {
-            Name = name;
-            URL = url;
-            ParentId = parentId;
-            IconCss = iconCss;
-            Status = Status.Active;
-            SortOrder = sortOrder;
-        }
-
         [Required]
         [StringLength(150)]
         public string Name { get; set; }

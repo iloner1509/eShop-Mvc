@@ -8,18 +8,6 @@ namespace eShop_Mvc.Core.Entities
 {
     public class Announcement : BaseEntity<string>, IAuditable
     {
-        public Announcement()
-        {
-            AnnouncementUsers = new List<AnnouncementUser>();
-        }
-
-        public Announcement(string title, string content, Guid userId)
-        {
-            Title = title;
-            Content = content;
-            UserId = userId;
-        }
-
         [StringLength(250)]
         [Required]
         public string Title { get; set; }

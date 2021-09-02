@@ -15,11 +15,8 @@ namespace eShop_Mvc.Infrastructure.Data
 {
     public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     {
-        private readonly HttpContextAccessor _httpContextAccessor;
-
-        public AppDbContext(DbContextOptions options, HttpContextAccessor httpContextAccessor) : base(options)
+        public AppDbContext(DbContextOptions options) : base(options)
         {
-            _httpContextAccessor = httpContextAccessor;
         }
 
         public DbSet<AppUser> AppUsers { get; set; }
@@ -47,49 +44,15 @@ namespace eShop_Mvc.Infrastructure.Data
         public DbSet<SystemConfig> SystemConfigs { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<WholePrice> WholePrices { get; set; }
+        public DbSet<Branch> Branches { get; set; }
+        public DbSet<Currency> Currencies { get; set; }
+        public DbSet<Vendor> Vendors { get; set; }
+        public DbSet<VendorType> VendorTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        }
-
-        public override int SaveChanges()
-        {
-            var modified = ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
-            foreach (EntityEntry item in modified)
-            {
-                if (item.Entity is IAuditable changedOrAddedItem)
-                {
-                    if (item.State == EntityState.Added)
-                    {
-                        changedOrAddedItem.CreatedBy = _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
-                        changedOrAddedItem.DateCreated = DateTime.Now;
-                    }
-                    changedOrAddedItem.ModifiedBy = _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
-                    changedOrAddedItem.DateModified = DateTime.Now;
-                }
-            }
-            return base.SaveChanges();
-        }
-
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            var modified = ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
-            foreach (EntityEntry item in modified)
-            {
-                if (item.Entity is IAuditable changedOrAddedItem)
-                {
-                    if (item.State == EntityState.Added)
-                    {
-                        changedOrAddedItem.CreatedBy = _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
-                        changedOrAddedItem.DateCreated = DateTime.Now;
-                    }
-                    changedOrAddedItem.ModifiedBy = _httpContextAccessor?.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
-                    changedOrAddedItem.DateModified = DateTime.Now;
-                }
-            }
-            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

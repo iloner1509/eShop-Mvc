@@ -11,67 +11,6 @@ namespace eShop_Mvc.Core.Entities
 {
     public class Product : BaseEntity<int>, ISwitchable, IHasSeoMetaData, IAuditable
     {
-        public Product()
-        {
-        }
-
-        public Product(string name, string image, int quantity, decimal price, decimal? promotionPrice, int categoryId,
-                       decimal originalPrice, string description, string content, bool? homeFlag, bool? hotFlag,
-                       int? viewCount, string tags, string unit, Status status, string seoTitle, string seoAlias,
-                       string seoKeywords, string seoDescription)
-        {
-            Name = name;
-            Image = image;
-            Price = price;
-            PromotionPrice = promotionPrice;
-            CategoryId = categoryId;
-            OriginalPrice = originalPrice;
-            Description = description;
-            Content = content;
-            HomeFlag = homeFlag;
-            HotFlag = hotFlag;
-            ViewCount = viewCount;
-            Tags = tags;
-            Unit = unit;
-            Quantity = quantity;
-            Status = status;
-            SeoTitle = seoTitle;
-            SeoAlias = seoAlias;
-            SeoKeywords = seoKeywords;
-            SeoDescription = seoDescription;
-            ProductTags = new List<ProductTag>();
-            ProductImages = new List<ProductImage>();
-        }
-
-        public Product(int id, string name, int quantity, string image, decimal price, decimal? promotionPrice,
-                       int categoryId, decimal originalPrice, string description, string content, bool? homeFlag,
-                       bool? hotFlag, int? viewCount, string tags, string unit, Status status, string seoTitle,
-                       string seoAlias, string seoKeywords, string seoDescription)
-        {
-            Id = id;
-            Name = name;
-            Image = image;
-            Price = price;
-            PromotionPrice = promotionPrice;
-            CategoryId = categoryId;
-            OriginalPrice = originalPrice;
-            Description = description;
-            Content = content;
-            Quantity = quantity;
-            HomeFlag = homeFlag;
-            HotFlag = hotFlag;
-            ViewCount = viewCount;
-            Tags = tags;
-            Unit = unit;
-            Status = status;
-            SeoTitle = seoTitle;
-            SeoAlias = seoAlias;
-            SeoKeywords = seoKeywords;
-            SeoDescription = seoDescription;
-            ProductTags = new List<ProductTag>();
-            ProductImages = new List<ProductImage>();
-        }
-
         [StringLength(100)]
         [Required]
         public string Name { get; set; }

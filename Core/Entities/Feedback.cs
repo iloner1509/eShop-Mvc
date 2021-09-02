@@ -9,19 +9,6 @@ namespace eShop_Mvc.Core.Entities
 {
     public class Feedback : BaseEntity<int>, ISwitchable, IAuditable
     {
-        public Feedback()
-        {
-        }
-
-        public Feedback(int id, string name, string email, string message, Status status)
-        {
-            Id = id;
-            Name = name;
-            Email = email;
-            Message = message;
-            Status = status;
-        }
-
         [StringLength(150)]
         [Required]
         public string Name { get; set; }

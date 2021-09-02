@@ -9,49 +9,6 @@ namespace eShop_Mvc.Core.Entities
 {
     public class Blog : BaseEntity<int>, ISwitchable, IAuditable, IHasSeoMetaData
     {
-        public Blog()
-        {
-        }
-
-        public Blog(string name, string image, string description, string content, bool? homeFlag, bool hotFlag,
-                    int? viewCount, string tags, Status status,
-                    string seoTitle, string seoAlias, string seoKeywords, string seoDescription)
-        {
-            Name = name;
-            Image = image;
-            Description = description;
-            Content = content;
-            HomeFlag = homeFlag;
-            HotFlag = hotFlag;
-            ViewCount = viewCount;
-            Tags = tags;
-            Status = status;
-            SeoTitle = seoTitle;
-            SeoAlias = seoAlias;
-            SeoKeywords = seoKeywords;
-            SeoDescription = seoDescription;
-        }
-
-        public Blog(int id, string name, string image, string description, string content, bool? homeFlag, bool hotFlag,
-                    int? viewCount, string tags, Status status, string seoTitle, string seoAlias,
-                    string seoKeywords, string seoDescription)
-        {
-            Id = id;
-            Name = name;
-            Image = image;
-            Description = description;
-            Content = content;
-            HomeFlag = homeFlag;
-            HotFlag = hotFlag;
-            ViewCount = viewCount;
-            Tags = tags;
-            Status = status;
-            SeoTitle = seoTitle;
-            SeoAlias = seoAlias;
-            SeoKeywords = seoKeywords;
-            SeoDescription = seoDescription;
-        }
-
         [Required]
         [StringLength(100)]
         public string Name { get; set; }

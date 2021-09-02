@@ -15,6 +15,8 @@
     <Compile Remove="Migrations\20210801153225_ModifyAnnouncement.Designer.cs" />
     <Compile Remove="Migrations\20210801153839_ModifyAnnouncement.cs" />
     <Compile Remove="Migrations\20210801153839_ModifyAnnouncement.Designer.cs" />
+    <Compile Remove="Migrations\20210902151347_UpdateVer1.cs" />
+    <Compile Remove="Migrations\20210902151347_UpdateVer1.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

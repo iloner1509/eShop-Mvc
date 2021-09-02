@@ -9,17 +9,6 @@ namespace eShop_Mvc.Core.Entities
 {
     public class Vendor : BaseEntity<int>, IAuditable, ISwitchable
     {
-        public Vendor(string vendorName, string address, string phone, string email, int vendorTypeId, string contactPerson, string createdBy)
-        {
-            VendorName = vendorName;
-            Address = address;
-            Phone = phone;
-            Email = email;
-            VendorTypeId = vendorTypeId;
-            ContactPerson = contactPerson;
-            CreatedBy = createdBy;
-        }
-
         [StringLength(100)]
         [Required]
         public string VendorName { get; set; }

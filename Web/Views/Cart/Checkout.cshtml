@@ -49,7 +49,7 @@
                     }
                     else
                     {
-                        <form action="/Cart/Checkout" method="post">
+                        <form asp-action="Checkout" method="post">
                             @Html.AntiForgeryToken()
                             <h4 class="checkout-sep">1. Cách thức đặt hàng</h4>
                             <div class="box-border">
@@ -66,12 +66,12 @@
                                 <ul>
                                     <li class="row">
                                         <div class="col-sm-6">
-                                            <label class="required">Tên người nhận:</label>
+                                            <label class="required" asp-for="CustomerName">Tên người nhận:</label>
                                             <input type="text" class="input form-control" asp-for="CustomerName">
                                         </div>
                                         <!--/ [col] -->
                                         <div class="col-sm-6">
-                                            <label class="required">SĐT:</label>
+                                            <label class="required" asp-for="CustomerMobile">SĐT:</label>
                                             <input type="text" class="input form-control" asp-for="CustomerMobile">
                                         </div>
                                         <!--/ [col] -->
@@ -79,12 +79,12 @@
                                     <!--/ .row -->
                                     <li class="row">
                                         <div class="col-sm-6">
-                                            <label for="company_name">Địa chỉ nhận hàng:</label>
+                                            <label asp-for="CustomerAddress">Địa chỉ nhận hàng:</label>
                                             <input type="text" class="input form-control" asp-for="CustomerAddress">
                                         </div>
                                         <!--/ [col] -->
                                         <div class="col-sm-12">
-                                            <label class="required">Chi tiết nhận hàng:</label>
+                                            <label class="required" asp-for="CustomerMessage">Chi tiết nhận hàng:</label>
                                             <textarea class="form-control" asp-for="CustomerMessage"></textarea>
                                         </div>
                                         <!--/ [col] -->

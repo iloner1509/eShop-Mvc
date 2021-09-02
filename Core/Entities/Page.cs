@@ -8,19 +8,6 @@ namespace eShop_Mvc.Core.Entities
 {
     public class Page : BaseEntity<int>, ISwitchable, IAuditable
     {
-        public Page()
-        {
-        }
-
-        public Page(int id, string name, string alias, string content, Status status)
-        {
-            Id = id;
-            Name = name;
-            Alias = alias;
-            Content = content;
-            Status = status;
-        }
-
         [Required]
         [StringLength(150)]
         public string Name { get; set; }
