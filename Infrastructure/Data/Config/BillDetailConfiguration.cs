@@ -8,6 +8,7 @@ namespace eShop_Mvc.Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<BillDetail> builder)
         {
+            //builder.Property(bd => bd.Id).UseIdentityColumn();
             builder.HasOne(bd => bd.Bill).WithMany(b => b.BillDetails).HasForeignKey(bd => bd.BillId)
                 .OnDelete(DeleteBehavior.Cascade);
             builder.HasOne(bd => bd.Product).WithMany(p => p.BillDetails).HasForeignKey(bd => bd.ProductId)

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Page : BaseEntity<int>, ISwitchable, IAuditable
+    public class Page : BaseEntity<int>, ISwitchable, IAuditable, IIpTracking
     {
         [Required]
         [StringLength(150)]
@@ -30,5 +30,8 @@ namespace eShop_Mvc.Core.Entities
         public string ModifiedBy { get; set; }
 
         public DateTime? DateModified { get; set; }
+
+        [StringLength(30)]
+        public string IpAddress { get; set; }
     }
 }

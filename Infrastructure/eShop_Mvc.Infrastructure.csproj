@@ -17,6 +17,10 @@
     <Compile Remove="Migrations\20210801153839_ModifyAnnouncement.Designer.cs" />
     <Compile Remove="Migrations\20210902151347_UpdateVer1.cs" />
     <Compile Remove="Migrations\20210902151347_UpdateVer1.Designer.cs" />
+    <Compile Remove="Migrations\20210902151622_UpdateEntities.cs" />
+    <Compile Remove="Migrations\20210902151622_UpdateEntities.Designer.cs" />
+    <Compile Remove="Migrations\20210905155133_UpdateEntities.cs" />
+    <Compile Remove="Migrations\20210905155133_UpdateEntities.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

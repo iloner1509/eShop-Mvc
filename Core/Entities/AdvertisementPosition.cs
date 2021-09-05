@@ -6,7 +6,7 @@ using eShop_Mvc.SharedKernel.Interfaces;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class AdvertisementPosition : BaseEntity<string>, IAuditable
+    public class AdvertisementPosition : BaseEntity<string>, IAuditable, IIpTracking
     {
         public string PageId { get; set; }
 
@@ -26,5 +26,8 @@ namespace eShop_Mvc.Core.Entities
         public string ModifiedBy { get; set; }
 
         public DateTime? DateModified { get; set; }
+
+        [StringLength(30)]
+        public string IpAddress { get; set; }
     }
 }

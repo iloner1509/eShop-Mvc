@@ -7,7 +7,7 @@ using eShop_Mvc.SharedKernel.Interfaces;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Branch : BaseEntity<string>, IAuditable, ISwitchable
+    public class Branch : BaseEntity<string>, IAuditable, ISwitchable, IIpTracking
     {
         [StringLength(100)]
         [Required]
@@ -38,5 +38,8 @@ namespace eShop_Mvc.Core.Entities
 
         public DateTime? DateModified { get; set; }
         public Status Status { get; set; } = Status.Active;
+
+        [StringLength(30)]
+        public string IpAddress { get; set; }
     }
 }

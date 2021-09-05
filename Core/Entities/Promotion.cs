@@ -1,25 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using eShop_Mvc.SharedKernel;
 using eShop_Mvc.SharedKernel.Enums;
 using eShop_Mvc.SharedKernel.Interfaces;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class VendorType : BaseEntity<int>, IAuditable, ISwitchable, IIpTracking
+    public class Promotion : BaseEntity<string>, IAuditable, ISwitchable, IIpTracking
     {
         [StringLength(100)]
         [Required]
-        public string VendorTypeName { get; set; }
+        public string Name { get; set; }
 
         [StringLength(250)]
         public string Description { get; set; }
 
+        public double? DiscountPercent { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal? DiscountValue { get; set; }
+
         [StringLength(20)]
         public string CreatedBy { get; set; }
-
-        public ICollection<Vendor> Vendors { get; set; }
 
         public DateTime DateCreated { get; set; }
 
@@ -31,5 +35,7 @@ namespace eShop_Mvc.Core.Entities
 
         [StringLength(30)]
         public string IpAddress { get; set; }
+
+        public ICollection<PromotionProduct> PromotionProducts { get; set; }
     }
 }

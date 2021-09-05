@@ -48,6 +48,8 @@ namespace eShop_Mvc.Infrastructure.Data
         public DbSet<Currency> Currencies { get; set; }
         public DbSet<Vendor> Vendors { get; set; }
         public DbSet<VendorType> VendorTypes { get; set; }
+        public DbSet<Promotion> Promotions { get; set; }
+        public DbSet<PromotionProduct> PromotionProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

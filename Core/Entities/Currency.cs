@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Currency : BaseEntity<int>, IAuditable, ISwitchable
+    public class Currency : BaseEntity<int>, IAuditable, ISwitchable, IIpTracking
     {
         [StringLength(100)]
         [Required]
@@ -30,5 +30,8 @@ namespace eShop_Mvc.Core.Entities
 
         public DateTime? DateModified { get; set; }
         public Status Status { get; set; } = Status.Active;
+
+        [StringLength(30)]
+        public string IpAddress { get; set; }
     }
 }

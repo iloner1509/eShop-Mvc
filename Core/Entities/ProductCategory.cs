@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class ProductCategory : BaseEntity<int>, IHasSeoMetaData, ISwitchable, ISortable, IAuditable
+    public class ProductCategory : BaseEntity<int>, IHasSeoMetaData, ISwitchable, ISortable, IAuditable, IIpTracking
     {
         [StringLength(100)]
         [Required]
@@ -40,6 +40,9 @@ namespace eShop_Mvc.Core.Entities
         public string ModifiedBy { get; set; }
 
         public DateTime? DateModified { get; set; }
+
+        [StringLength(30)]
+        public string IpAddress { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
     }

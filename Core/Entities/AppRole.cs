@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class AppRole : IdentityRole<Guid>, IAuditable
+    public class AppRole : IdentityRole<Guid>, IAuditable, IIpTracking
     {
         [StringLength(250)]
         public string Description { get; set; }
@@ -15,8 +15,12 @@ namespace eShop_Mvc.Core.Entities
 
         public DateTime DateCreated { get; set; }
 
+        [StringLength(20)]
         public string ModifiedBy { get; set; }
 
         public DateTime? DateModified { get; set; }
+
+        [StringLength(30)]
+        public string IpAddress { get; set; }
     }
 }

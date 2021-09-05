@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Product : BaseEntity<int>, ISwitchable, IHasSeoMetaData, IAuditable
+    public class Product : BaseEntity<int>, ISwitchable, IHasSeoMetaData, IAuditable, IIpTracking
     {
         [StringLength(100)]
         [Required]
@@ -31,7 +31,6 @@ namespace eShop_Mvc.Core.Entities
         [Column(TypeName = "decimal(18,2)")]
         public decimal? PromotionPrice { get; set; }
 
-        [Required]
         public int CategoryId { get; set; }
 
         [Required]
@@ -52,7 +51,7 @@ namespace eShop_Mvc.Core.Entities
         public string Unit { get; set; }
 
         [Required]
-        public Status Status { get; set; }
+        public Status Status { get; set; } = Status.Active;
 
         [StringLength(250)]
         public string SeoTitle { get; set; }
@@ -76,10 +75,14 @@ namespace eShop_Mvc.Core.Entities
 
         public DateTime? DateModified { get; set; }
 
+        [StringLength(30)]
+        public string IpAddress { get; set; }
+
         public virtual ProductCategory ProductCategory { get; set; }
         public virtual ICollection<ProductTag> ProductTags { get; set; }
         public virtual ICollection<BillDetail> BillDetails { get; set; }
         public virtual ICollection<ProductImage> ProductImages { get; set; }
         public virtual ICollection<WholePrice> WholePrices { get; set; }
+        public ICollection<PromotionProduct> PromotionProducts { get; set; }
     }
 }

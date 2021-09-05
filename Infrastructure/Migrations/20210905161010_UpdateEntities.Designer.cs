@@ -10,7 +10,7 @@ using eShop_Mvc.Infrastructure.Data;
 namespace eShop_Mvc.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210902151622_UpdateEntities")]
+    [Migration("20210905161010_UpdateEntities")]
     partial class UpdateEntities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -151,6 +151,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
@@ -195,6 +199,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
@@ -223,6 +231,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
 
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
@@ -262,6 +274,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
 
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
@@ -330,8 +346,13 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
                     b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(256)")
@@ -394,6 +415,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(150)")
                         .HasMaxLength(150);
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -489,6 +514,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
@@ -568,6 +597,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
@@ -613,7 +646,9 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         .HasMaxLength(50);
 
                     b.Property<int>("Id")
-                        .HasColumnType("int");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("BlogId", "TagId");
 
@@ -655,6 +690,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
@@ -702,6 +741,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
@@ -734,6 +777,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("varchar(150)")
                         .HasMaxLength(150);
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(500)")
@@ -776,6 +823,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
@@ -803,6 +854,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
 
                     b.Property<string>("IconCss")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
@@ -881,6 +936,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
 
                     b.Property<DateTime?>("DateModified")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
@@ -973,6 +1032,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
@@ -1060,6 +1123,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
@@ -1106,11 +1173,28 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
                     b.Property<string>("Path")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
                     b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SortOrder")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1139,6 +1223,77 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     b.HasIndex("TagId");
 
                     b.ToTable("ProductTags");
+                });
+
+            modelBuilder.Entity("eShop_Mvc.Core.Entities.Promotion", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(250)")
+                        .HasMaxLength(250);
+
+                    b.Property<double?>("DiscountPercent")
+                        .HasColumnType("float");
+
+                    b.Property<decimal?>("DiscountValue")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Promotions");
+                });
+
+            modelBuilder.Entity("eShop_Mvc.Core.Entities.PromotionProduct", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PromotionId")
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ProductId", "PromotionId");
+
+                    b.HasIndex("PromotionId");
+
+                    b.ToTable("PromotionProducts");
                 });
 
             modelBuilder.Entity("eShop_Mvc.Core.Entities.Slide", b =>
@@ -1176,6 +1331,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(25)")
@@ -1273,6 +1432,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
                         .HasMaxLength(20);
@@ -1319,6 +1482,10 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
 
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(20)")
@@ -1530,6 +1697,21 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         .WithMany("ProductTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("eShop_Mvc.Core.Entities.PromotionProduct", b =>
+                {
+                    b.HasOne("eShop_Mvc.Core.Entities.Product", "Product")
+                        .WithMany("PromotionProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("eShop_Mvc.Core.Entities.Promotion", "Promotion")
+                        .WithMany("PromotionProducts")
+                        .HasForeignKey("PromotionId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

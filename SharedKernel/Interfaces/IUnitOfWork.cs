@@ -11,5 +11,17 @@ namespace eShop_Mvc.SharedKernel.Interfaces
         int Complete();
 
         Task<int> CompleteAsync(CancellationToken cancellationToken);
+
+        void BeginTransaction();
+
+        Task BeginTransactionAsync();
+
+        void Commit();
+
+        Task CommitAsync();
+
+        void Rollback();
+
+        Task RollbackAsync();
     }
 }

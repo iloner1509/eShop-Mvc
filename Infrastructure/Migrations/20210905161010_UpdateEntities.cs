@@ -52,6 +52,12 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldType: "nvarchar(max)",
                 oldNullable: true);
 
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "Slides",
+                maxLength: 30,
+                nullable: true);
+
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
                 table: "Products",
@@ -69,6 +75,41 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "Products",
+                maxLength: 30,
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "CreatedBy",
+                table: "ProductImages",
+                maxLength: 20,
+                nullable: true);
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "DateCreated",
+                table: "ProductImages",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
+
+            migrationBuilder.AddColumn<DateTime>(
+                name: "DateModified",
+                table: "ProductImages",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "ModifiedBy",
+                table: "ProductImages",
+                maxLength: 20,
+                nullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "SortOrder",
+                table: "ProductImages",
+                nullable: false,
+                defaultValue: 0);
 
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
@@ -88,6 +129,12 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldType: "nvarchar(max)",
                 oldNullable: true);
 
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "ProductCategories",
+                maxLength: 30,
+                nullable: true);
+
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
                 table: "Pages",
@@ -105,6 +152,12 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "Pages",
+                maxLength: 30,
+                nullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
@@ -124,6 +177,12 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldType: "nvarchar(max)",
                 oldNullable: true);
 
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "Functions",
+                maxLength: 30,
+                nullable: true);
+
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
                 table: "Footers",
@@ -141,6 +200,12 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "Footers",
+                maxLength: 30,
+                nullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
@@ -160,6 +225,20 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldType: "nvarchar(max)",
                 oldNullable: true);
 
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "Feedbacks",
+                maxLength: 30,
+                nullable: true);
+
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "BlogTags",
+                nullable: false,
+                oldClrType: typeof(int),
+                oldType: "int")
+                .Annotation("SqlServer:Identity", "1, 1");
+
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
                 table: "Blogs",
@@ -177,6 +256,12 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "Blogs",
+                maxLength: 30,
+                nullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
@@ -196,6 +281,12 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldType: "nvarchar(max)",
                 oldNullable: true);
 
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "Bills",
+                maxLength: 30,
+                nullable: true);
+
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
                 table: "AspNetUsers",
@@ -208,6 +299,21 @@ namespace eShop_Mvc.Infrastructure.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "CreatedBy",
                 table: "AspNetUsers",
+                maxLength: 20,
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "AspNetUsers",
+                maxLength: 30,
+                nullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "ModifiedBy",
+                table: "AspNetRoles",
                 maxLength: 20,
                 nullable: true,
                 oldClrType: typeof(string),
@@ -222,6 +328,12 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "AspNetRoles",
+                maxLength: 30,
+                nullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
@@ -241,6 +353,12 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldType: "nvarchar(250)",
                 oldMaxLength: 250);
 
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "Announcements",
+                maxLength: 30,
+                nullable: true);
+
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
                 table: "Advertisements",
@@ -258,6 +376,12 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "Advertisements",
+                maxLength: 30,
+                nullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
@@ -277,6 +401,12 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldType: "nvarchar(max)",
                 oldNullable: true);
 
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "AdvertisementPositions",
+                maxLength: 30,
+                nullable: true);
+
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
                 table: "AdvertisementPages",
@@ -294,6 +424,12 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
                 oldNullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "IpAddress",
+                table: "AdvertisementPages",
+                maxLength: 30,
+                nullable: true);
 
             migrationBuilder.CreateTable(
                 name: "Branches",
@@ -310,7 +446,8 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     DateCreated = table.Column<DateTime>(nullable: false),
                     ModifiedBy = table.Column<string>(maxLength: 20, nullable: true),
                     DateModified = table.Column<DateTime>(nullable: true),
-                    Status = table.Column<int>(nullable: false)
+                    Status = table.Column<int>(nullable: false),
+                    IpAddress = table.Column<string>(maxLength: 30, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -330,11 +467,33 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     DateCreated = table.Column<DateTime>(nullable: false),
                     ModifiedBy = table.Column<string>(maxLength: 20, nullable: true),
                     DateModified = table.Column<DateTime>(nullable: true),
-                    Status = table.Column<int>(nullable: false)
+                    Status = table.Column<int>(nullable: false),
+                    IpAddress = table.Column<string>(maxLength: 30, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Currencies", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Promotions",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    Name = table.Column<string>(maxLength: 100, nullable: false),
+                    Description = table.Column<string>(maxLength: 250, nullable: true),
+                    DiscountPercent = table.Column<double>(nullable: true),
+                    DiscountValue = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    CreatedBy = table.Column<string>(maxLength: 20, nullable: true),
+                    DateCreated = table.Column<DateTime>(nullable: false),
+                    ModifiedBy = table.Column<string>(maxLength: 20, nullable: true),
+                    DateModified = table.Column<DateTime>(nullable: true),
+                    Status = table.Column<int>(nullable: false),
+                    IpAddress = table.Column<string>(maxLength: 30, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Promotions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -349,11 +508,39 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     DateCreated = table.Column<DateTime>(nullable: false),
                     ModifiedBy = table.Column<string>(maxLength: 20, nullable: true),
                     DateModified = table.Column<DateTime>(nullable: true),
-                    Status = table.Column<int>(nullable: false)
+                    Status = table.Column<int>(nullable: false),
+                    IpAddress = table.Column<string>(maxLength: 30, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_VendorTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PromotionProducts",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(nullable: false),
+                    PromotionId = table.Column<string>(nullable: false),
+                    Id = table.Column<int>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PromotionProducts", x => new { x.ProductId, x.PromotionId });
+                    table.ForeignKey(
+                        name: "FK_PromotionProducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PromotionProducts_Promotions_PromotionId",
+                        column: x => x.PromotionId,
+                        principalTable: "Promotions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -372,7 +559,8 @@ namespace eShop_Mvc.Infrastructure.Migrations
                     DateCreated = table.Column<DateTime>(nullable: false),
                     ModifiedBy = table.Column<string>(maxLength: 20, nullable: true),
                     DateModified = table.Column<DateTime>(nullable: true),
-                    Status = table.Column<int>(nullable: false)
+                    Status = table.Column<int>(nullable: false),
+                    IpAddress = table.Column<string>(maxLength: 30, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -384,6 +572,11 @@ namespace eShop_Mvc.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PromotionProducts_PromotionId",
+                table: "PromotionProducts",
+                column: "PromotionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Vendors_VendorTypeId",
@@ -400,7 +593,13 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 name: "Currencies");
 
             migrationBuilder.DropTable(
+                name: "PromotionProducts");
+
+            migrationBuilder.DropTable(
                 name: "Vendors");
+
+            migrationBuilder.DropTable(
+                name: "Promotions");
 
             migrationBuilder.DropTable(
                 name: "VendorTypes");
@@ -412,6 +611,86 @@ namespace eShop_Mvc.Infrastructure.Migrations
             migrationBuilder.DropColumn(
                 name: "Value",
                 table: "SystemConfigs");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "Slides");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "Products");
+
+            migrationBuilder.DropColumn(
+                name: "CreatedBy",
+                table: "ProductImages");
+
+            migrationBuilder.DropColumn(
+                name: "DateCreated",
+                table: "ProductImages");
+
+            migrationBuilder.DropColumn(
+                name: "DateModified",
+                table: "ProductImages");
+
+            migrationBuilder.DropColumn(
+                name: "ModifiedBy",
+                table: "ProductImages");
+
+            migrationBuilder.DropColumn(
+                name: "SortOrder",
+                table: "ProductImages");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "ProductCategories");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "Pages");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "Functions");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "Footers");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "Feedbacks");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "Blogs");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "Bills");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "AspNetRoles");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "Announcements");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "Advertisements");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "AdvertisementPositions");
+
+            migrationBuilder.DropColumn(
+                name: "IpAddress",
+                table: "AdvertisementPages");
 
             migrationBuilder.AddColumn<string>(
                 name: "Value1",
@@ -563,6 +842,14 @@ namespace eShop_Mvc.Infrastructure.Migrations
                 oldMaxLength: 20,
                 oldNullable: true);
 
+            migrationBuilder.AlterColumn<int>(
+                name: "Id",
+                table: "BlogTags",
+                type: "int",
+                nullable: false,
+                oldClrType: typeof(int))
+                .OldAnnotation("SqlServer:Identity", "1, 1");
+
             migrationBuilder.AlterColumn<string>(
                 name: "ModifiedBy",
                 table: "Blogs",
@@ -611,6 +898,15 @@ namespace eShop_Mvc.Infrastructure.Migrations
             migrationBuilder.AlterColumn<string>(
                 name: "CreatedBy",
                 table: "AspNetUsers",
+                type: "nvarchar(max)",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldMaxLength: 20,
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "ModifiedBy",
+                table: "AspNetRoles",
                 type: "nvarchar(max)",
                 nullable: true,
                 oldClrType: typeof(string),

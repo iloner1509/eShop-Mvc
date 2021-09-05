@@ -8,8 +8,8 @@ namespace eShop_Mvc.Infrastructure.Data.Config
     {
         public void Configure(EntityTypeBuilder<Advertisement> builder)
         {
-            builder.HasOne(a => a.AdvertisementPosition).WithMany(ap => ap.Advertisements)
-                .HasForeignKey(a => a.PositionId).OnDelete(DeleteBehavior.Restrict);
+            //builder.Property(ad => ad.Id).HasMaxLength(50).HasColumnType("varchar(20)").IsRequired();
+            builder.HasOne(a => a.AdvertisementPosition).WithMany(ap => ap.Advertisements).HasForeignKey(a => a.PositionId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

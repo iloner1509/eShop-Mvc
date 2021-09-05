@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Bill : BaseEntity<int>, ISwitchable, IAuditable
+    public class Bill : BaseEntity<int>, ISwitchable, IAuditable, IIpTracking
     {
         [StringLength(150)]
         [Required]
@@ -50,5 +50,8 @@ namespace eShop_Mvc.Core.Entities
         public string ModifiedBy { get; set; }
 
         public DateTime? DateModified { get; set; }
+
+        [StringLength(30)]
+        public string IpAddress { get; set; }
     }
 }

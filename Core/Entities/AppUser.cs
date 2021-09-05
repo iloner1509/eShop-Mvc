@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class AppUser : IdentityUser<Guid>, IAuditable, ISwitchable
+    public class AppUser : IdentityUser<Guid>, IAuditable, ISwitchable, IIpTracking
     {
         [StringLength(150)]
         [Required]
@@ -34,6 +34,9 @@ namespace eShop_Mvc.Core.Entities
 
         [Required]
         public Status Status { get; set; }
+
+        [StringLength(30)]
+        public string IpAddress { get; set; }
 
         public virtual ICollection<Announcement> Announcements { get; set; }
         public virtual ICollection<Bill> Bills { get; set; }

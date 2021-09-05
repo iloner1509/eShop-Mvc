@@ -5,7 +5,7 @@ using eShop_Mvc.SharedKernel.Interfaces;
 
 namespace eShop_Mvc.Core.Entities
 {
-    public class Footer : BaseEntity<string>, IAuditable
+    public class Footer : BaseEntity<string>, IAuditable, IIpTracking
     {
         [Required]
         public string Content { get; set; }
@@ -19,5 +19,8 @@ namespace eShop_Mvc.Core.Entities
         public string ModifiedBy { get; set; }
 
         public DateTime? DateModified { get; set; }
+
+        [StringLength(30)]
+        public string IpAddress { get; set; }
     }
 }
